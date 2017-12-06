@@ -1,0 +1,16 @@
+/.metadata/
+/.recommenders/
+/HT/bin/
+/HT/src/
+/HT.ORM/bin/
+/HT.ORM/target/
+/HT.Portal/build/
+/HT.Portal/target/
+/HT.UnitTest/bin/
+/HT.UnitTest/target/
+/RemoteSystemsTempFiles/
+/Servers/
+/HT/.settings/
+/HT.ORM/.settings/
+/HT.Portal/.settings/
+/HT.UnitTest/.settings/
