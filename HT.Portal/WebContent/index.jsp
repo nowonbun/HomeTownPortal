@@ -1,8 +1,26 @@
+<%@page import="HT.Portal.authentication.ServletHeader"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	new ServletHeader(request,response).index();
+%>
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="./common/header.jsp"></jsp:include>
+	<script>
+	var _login_process = function(auth) {
+		auth.isSignedIn.listen(function(isSignedIn) {
+			if(!auth.isSignedIn.get()) {
+				location.href="./login.jsp";
+			}
+		});
+	};
+	var ins = (function (obj) {
+		return obj;
+	})({
+		
+	});
+	</script>
 </head>
 <body>
     <div id="wrapper">

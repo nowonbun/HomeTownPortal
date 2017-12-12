@@ -28,6 +28,4 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 <!--<script src="./js/morris-data.js"></script>-->
-
-
-
+<script src="./js/common.js"></script>
