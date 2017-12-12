@@ -1,8 +1,21 @@
+<%@page import="HT.Portal.authentication.ServletHeader"%>
+<%@page import="HT.Portal.common.PropertyMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	new ServletHeader(request,response).login();
+%>
 <!DOCTYPE html>
 <html>
 <head>  
 	<jsp:include page="./common/header.jsp"></jsp:include>
+	<link href="./css/login.css" rel="stylesheet">
+	<script>
+	var ctl = {
+		onLoad: function(){
+			
+		}
+	};
+	</script>
 </head>
 <body>
     <div class="container">
@@ -10,24 +23,17 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
+                        <h3 class="panel-title">Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div>
-                                <a href="index.jsp" class="btn btn-lg btn-success btn-block">Login</a>
-                            </fieldset>
+                        <form role="form" id="loginform" method="get" action="https://accounts.google.com/o/oauth2/auth">
+                            <input type="hidden" name="scope" value="https://www.googleapis.com/auth/plus.profile.emails.read" />
+				            <input type="hidden" name="client_id" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "client_id")%>" />
+				            <input type="hidden" name="redirect_uri" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "redirect_url")%>" />
+				            <input type="hidden" name="access_type" value="offline" />
+				            <input type="hidden" name="response_type" value="code" />
+				            <input type="hidden" name="approval_prompt" value="force" />
+				            <input type="image" class="loginBtn" src="./contents/loginBtn.png">
                         </form>
                     </div>
                 </div>
