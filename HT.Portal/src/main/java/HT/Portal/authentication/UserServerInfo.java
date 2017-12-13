@@ -8,7 +8,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-public class UserSession {
+public class UserServerInfo {
 	public static String SESSION_ID = "user";
 	private String access_token;
 	private int expires_in;
@@ -19,8 +19,6 @@ public class UserSession {
 	private String etag;
 	private String nickname;
 	private String gender;
-	private List<String> email;
-	private List<String> email_type;
 	private String objectType;
 	private String id;
 	private String displayName;
@@ -31,6 +29,7 @@ public class UserSession {
 	private String image_url;
 	private boolean image_isDefault;
 	private boolean isPlusUser;
+	private String language;
 	private int circledByCount;
 	private boolean verified;
 	private String cover_layout;
@@ -80,12 +79,8 @@ public class UserSession {
 		return gender;
 	}
 
-	public List<String> getEmail() {
-		return email;
-	}
-
-	public List<String> getEmail_type() {
-		return email_type;
+	public String getLanguage() {
+		return language;
 	}
 
 	public String getObjectType() {
@@ -178,12 +173,6 @@ public class UserSession {
 			this.etag = obj.getString("etag");
 			this.nickname = obj.getString("nickname");
 			this.gender = obj.getString("gender");
-			this.email = new ArrayList<>();
-			this.email_type = new ArrayList<>();
-			for(int i=0;i<obj.getJsonArray("emails").size();i++) {
-				this.email.add(obj.getJsonArray("emails").getJsonObject(i).getString("value"));
-				this.email_type.add(obj.getJsonArray("emails").getJsonObject(i).getString("type"));
-			}
 			this.objectType = obj.getString("objectType");
 			this.id = obj.getString("id");
 			this.displayName = obj.getString("displayName");
@@ -194,6 +183,7 @@ public class UserSession {
 			this.image_url = obj.getJsonObject("image").getString("url");
 			this.image_isDefault = obj.getJsonObject("image").getBoolean("isDefault");
 			this.isPlusUser = obj.getBoolean("isPlusUser");
+			this.language = obj.getString("language");
 			this.circledByCount = obj.getInt("circledByCount");
 			this.verified = obj.getBoolean("verified");
 			this.cover_layout = obj.getJsonObject("cover").getString("layout");
