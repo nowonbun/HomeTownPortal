@@ -43,7 +43,7 @@ public class Certification extends HttpServlet {
 		String client_secret = PropertyMap.getInstance().getProperty("googleApiConfig", "client_secret");
 		String redirect = PropertyMap.getInstance().getProperty("googleApiConfig", "redirect_url");
 		//String api_key = PropertyMap.getInstance().getProperty("googleApiConfig", "api_key");
-		
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("code=").append(code).append("&");
 		sb.append("client_id=").append(client_id).append("&");
@@ -53,36 +53,36 @@ public class Certification extends HttpServlet {
 
 		con.setUseCaches(false);
 		con.setDefaultUseCaches(false);
-		
-		try(OutputStream stream = con.getOutputStream()){
+
+		try (OutputStream stream = con.getOutputStream()) {
 			byte[] temp = sb.toString().getBytes(StandardCharsets.UTF_8);
 			stream.write(temp);
 		}
 		sb.setLength(0);
 		int responseCode = con.getResponseCode();
-		if(responseCode != 200) {
+		if (responseCode != 200) {
 			throw new RuntimeException(GetReponse(con.getErrorStream()));
 		}
-		UserSession user = new UserSession();
+		UserServerInfo user = new UserServerInfo();
 		user.setToken(con.getInputStream());
-		
+
 		sb.append("https://www.googleapis.com/plus/v1/people/me?");
 		sb.append("access_token=");
 		sb.append(user.getAccess_token());
 		url = new URL(sb.toString());
 		con = (HttpURLConnection) url.openConnection();
-		
+
 		responseCode = con.getResponseCode();
-		if(responseCode != 200) {
+		if (responseCode != 200) {
 			throw new RuntimeException(GetReponse(con.getErrorStream()));
 		}
 		user.setUser(con.getInputStream());
-		
-		//TODO: The user session will change database
+
+		// TODO: The user session will change database
 		HttpSession session = request.getSession();
-		session.setAttribute(UserSession.SESSION_ID, user);
-		for(Cookie cookie : request.getCookies()) {
-			if("JSESSIONID".equals(cookie.getName())) {
+		session.setAttribute(UserServerInfo.SESSION_ID, user);
+		for (Cookie cookie : request.getCookies()) {
+			if ("JSESSIONID".equals(cookie.getName())) {
 				System.out.println(cookie.getValue());
 				break;
 			}
@@ -94,10 +94,10 @@ public class Certification extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-	
+
 	private String GetReponse(InputStream stream) throws IOException {
 		StringBuffer sb = new StringBuffer();
-		try(BufferedReader in = new BufferedReader(new InputStreamReader(stream))){
+		try (BufferedReader in = new BufferedReader(new InputStreamReader(stream))) {
 			String inputLine;
 			while ((inputLine = in.readLine()) != null) {
 				sb.append(inputLine);
