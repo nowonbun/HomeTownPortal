@@ -27,7 +27,7 @@
                     </div>
                     <div class="panel-body">
                         <form role="form" id="loginform" method="get" action="https://accounts.google.com/o/oauth2/auth">
-                            <input type="hidden" name="scope" value="https://www.googleapis.com/auth/plus.profile.emails.read" />
+                            <input type="hidden" name="scope" value="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me" />
 				            <input type="hidden" name="client_id" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "client_id")%>" />
 				            <input type="hidden" name="redirect_uri" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "redirect_url")%>" />
 				            <input type="hidden" name="access_type" value="offline" />
