@@ -83,7 +83,8 @@ public class Certification extends HttpServlet {
 		session.setAttribute(UserServerInfo.SESSION_ID, user);
 		for (Cookie cookie : request.getCookies()) {
 			if ("JSESSIONID".equals(cookie.getName())) {
-				System.out.println(cookie.getValue());
+				//TODO:: it will modify later.
+				//System.out.println(cookie.getValue());
 				break;
 			}
 		}

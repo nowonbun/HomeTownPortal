@@ -1,0 +1,1 @@
+insert into Member (id,givenName,name)values('test','aa','aa');
