@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import common.Dao;
-import model.UserInfo;
+import model.Cookieinfo;
+import model.Userinfo;
 
 public final class FactoryDao {
 
@@ -16,11 +17,19 @@ public final class FactoryDao {
 		}
 	}
 
-	public static UserInfoDao getUserInfoDao() {
+	public static UserinfoDao getUserInfoDao() {
 		Init();
-		if (!flyweight.containsKey(UserInfo.class)) {
-			flyweight.put(UserInfo.class, new UserInfoDao());
+		if (!flyweight.containsKey(Userinfo.class)) {
+			flyweight.put(Userinfo.class, new UserinfoDao());
 		}
-		return (UserInfoDao) flyweight.get(UserInfo.class);
+		return (UserinfoDao) flyweight.get(Userinfo.class);
+	}
+
+	public static CookieinfoDao getCookieinfoDao() {
+		Init();
+		if (!flyweight.containsKey(Cookieinfo.class)) {
+			flyweight.put(Cookieinfo.class, new CookieinfoDao());
+		}
+		return (CookieinfoDao) flyweight.get(Cookieinfo.class);
 	}
 }

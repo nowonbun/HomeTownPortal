@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -16,10 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import HT.Portal.common.PropertyMap;
+import HT.Portal.common.Util;
+import dao.CookieinfoDao;
+import dao.FactoryDao;
+import model.Cookieinfo;
+import model.CookieinfoPK;
 
 @WebServlet("/certification")
 public class Certification extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static final String COOKIE_KEY = "HomePortalKey";
 
 	public Certification() {
 		super();
@@ -81,13 +89,26 @@ public class Certification extends HttpServlet {
 		// TODO: The user session will change database
 		HttpSession session = request.getSession();
 		session.setAttribute(UserServerInfo.SESSION_ID, user);
-		for (Cookie cookie : request.getCookies()) {
-			if ("JSESSIONID".equals(cookie.getName())) {
-				//TODO:: it will modify later.
-				//System.out.println(cookie.getValue());
-				break;
-			}
+		String key = Util.createCookieKey();
+		Cookie cookie = new Cookie(COOKIE_KEY, key);
+		cookie.setMaxAge(Util.getCookieExpire());
+		cookie.setPath(Util.getCookiePath());
+		response.addCookie(cookie);
+		
+		CookieinfoDao dao =  FactoryDao.getCookieinfoDao();
+		Cookieinfo entity = dao.getEntityByCookiekey(key);
+		if(entity != null) {
+			dao.delete(entity);
 		}
+		entity = new Cookieinfo();
+		CookieinfoPK pk =  new CookieinfoPK();
+		pk.setId(user.getId());
+		pk.setCookiekey(key);
+		entity.setId(pk);
+		entity.setCreatedate(new Date());
+		entity.setUserinfo(user.getUserinfo());
+		dao.create(entity);
+		
 		response.sendRedirect("./index.jsp");
 	}
 

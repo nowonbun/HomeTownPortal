@@ -5,18 +5,25 @@ import java.util.List;
 import org.junit.Test;
 
 import dao.FactoryDao;
-import dao.UserInfoDao;
-import model.UserInfo;
+import dao.UserinfoDao;
+import model.Userinfo;
 
 public class MemberDaoTest {
 	
 	@Test
 	public void UserInfoDaoTest() {
-		UserInfoDao dao = FactoryDao.getUserInfoDao();
-		List<UserInfo> list = dao.findAll();
+		UserinfoDao dao = FactoryDao.getUserInfoDao();
+		List<Userinfo> list = dao.findAll();
 		
-		for(UserInfo l : list) {
-			System.out.println(l.getId().getId());
+		for(Userinfo l : list) {
+			System.out.println(l.getId());
 		}
+	}
+	
+	@Test
+	public void getUserTest() {
+		UserinfoDao dao = FactoryDao.getUserInfoDao();
+		Userinfo info = dao.getUser("test");
+		System.out.println(info.getGivenName());
 	}
 }
