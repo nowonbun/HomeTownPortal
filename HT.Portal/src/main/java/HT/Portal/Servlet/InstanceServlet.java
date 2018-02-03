@@ -1,12 +1,12 @@
-package HT.Portal.authentication;
-
-import java.io.Serializable;
+package HT.Portal.Servlet;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import HT.Portal.authentication.Certification;
+import HT.Portal.authentication.UserServerInfo;
 import HT.Portal.common.Util;
 import dao.CookieinfoDao;
 import dao.FactoryDao;
@@ -14,18 +14,21 @@ import dao.UserinfoDao;
 import model.Cookieinfo;
 import model.Userinfo;
 
-public class ServletHeader implements Serializable {
+public class InstanceServlet {
+	private static InstanceServlet instance = null;
 
-	private static final long serialVersionUID = 1L;
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-
-	public ServletHeader(HttpServletRequest request, HttpServletResponse response) {
-		this.request = request;
-		this.response = response;
+	public static InstanceServlet get() {
+		if (instance == null) {
+			instance = new InstanceServlet();
+		}
+		return instance;
 	}
 
-	private boolean getAuthorization() {
+	private InstanceServlet() {
+
+	}
+
+	private boolean getAuthorization(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		if (session.getAttribute(UserServerInfo.SESSION_ID) != null) {
 			return true;
@@ -52,9 +55,9 @@ public class ServletHeader implements Serializable {
 		return true;
 	}
 
-	public void login() {
+	public void login(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			if (getAuthorization()) {
+			if (getAuthorization(request, response)) {
 				response.sendRedirect("./");
 			}
 		} catch (Throwable e) {
@@ -62,11 +65,23 @@ public class ServletHeader implements Serializable {
 		}
 	}
 
-	public void index() {
+	public void index(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			if (!getAuthorization()) {
+			if (!getAuthorization(request, response)) {
 				response.sendRedirect("./login.jsp");
 			}
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String tile(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (!getAuthorization(request, response)) {
+				response.sendRedirect("./login.jsp");
+				return null;
+			}
+			return "hello world";
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}

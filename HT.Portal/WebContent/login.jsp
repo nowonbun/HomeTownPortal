@@ -1,8 +1,8 @@
-<%@page import="HT.Portal.authentication.ServletHeader"%>
+<%@page import="HT.Portal.Servlet.InstanceServlet"%>
 <%@page import="HT.Portal.common.PropertyMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	new ServletHeader(request,response).login();
+	InstanceServlet.get().login(request, response);
 %>
 <!DOCTYPE html>
 <html>
