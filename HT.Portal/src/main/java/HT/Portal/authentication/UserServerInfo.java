@@ -1,13 +1,9 @@
 package HT.Portal.authentication;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-
 import dao.FactoryDao;
 import dao.UserinfoDao;
 import model.Userinfo;
@@ -217,6 +213,7 @@ public class UserServerInfo {
 		this.userinfo.setBackgroundImg(this.coverPhoto_url);
 		dao.create(this.userinfo);
 	}
+
 	public void setUser(Userinfo info) {
 		this.userinfo = info;
 		this.id = this.userinfo.getId();

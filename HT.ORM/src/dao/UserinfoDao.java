@@ -27,7 +27,7 @@ public class UserinfoDao extends Dao<Userinfo> {
 			try {
 				Query query = Manager.get().createQuery("SELECT u FROM Userinfo u WHERE u.id = :id");
 				query.setParameter("id", id);
-				return (Userinfo)query.getSingleResult();
+				return (Userinfo) query.getSingleResult();
 			} catch (NoResultException e) {
 				return null;
 			}

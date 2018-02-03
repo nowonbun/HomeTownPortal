@@ -31,12 +31,11 @@ public class CookieinfoDao extends Dao<Cookieinfo> {
 			}
 		});
 	}
-	
+
 	public Cookieinfo getEntityByCookiekey(String cookiekey) {
 		return Manager.transaction(() -> {
 			try {
-				Query query = Manager.get()
-						.createQuery("SELECT c FROM Cookieinfo c WHERE c.id.cookiekey = :cookiekey");
+				Query query = Manager.get().createQuery("SELECT c FROM Cookieinfo c WHERE c.id.cookiekey = :cookiekey");
 				query.setParameter("cookiekey", cookiekey);
 				return (Cookieinfo) query.getSingleResult();
 			} catch (NoResultException e) {

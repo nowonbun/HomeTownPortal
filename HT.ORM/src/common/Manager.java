@@ -17,21 +17,23 @@ public class Manager {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hometown");
 		entityManager = emf.createEntityManager();
 	}
-	private static Manager manager(){
+
+	private static Manager manager() {
 		if (instance == null) {
 			instance = new Manager();
 		}
 		return instance;
 	}
+
 	public static EntityManager get() {
 		return manager().entityManager;
 	}
 
-	public static <V> V  transaction(Callable<V> callable) {
+	public static <V> V transaction(Callable<V> callable) {
 		return transaction(callable, false);
 	}
 
-	public static <V> V  transaction(Callable<V> callable, boolean readonly) {
+	public static <V> V transaction(Callable<V> callable, boolean readonly) {
 		EntityTransaction transaction = manager().entityManager.getTransaction();
 		transaction.begin();
 		try {

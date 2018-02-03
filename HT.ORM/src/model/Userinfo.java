@@ -4,21 +4,20 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the USERINFO database table.
  * 
  */
 @Entity
-@Table(name="USERINFO")
-@NamedQuery(name="Userinfo.findAll", query="SELECT u FROM Userinfo u")
+@Table(name = "USERINFO")
+@NamedQuery(name = "Userinfo.findAll", query = "SELECT u FROM Userinfo u")
 public class Userinfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;
 
-	@Column(name="background_img")
+	@Column(name = "background_img")
 	private String backgroundImg;
 
 	private String givenName;
@@ -29,8 +28,8 @@ public class Userinfo implements Serializable {
 
 	private String nickname;
 
-	//bi-directional many-to-one association to Cookieinfo
-	@OneToMany(mappedBy="userinfo")
+	// bi-directional many-to-one association to Cookieinfo
+	@OneToMany(mappedBy = "userinfo")
 	private List<Cookieinfo> cookieinfos;
 
 	public Userinfo() {

@@ -1,7 +1,5 @@
 package HT.Portal.console;
 
-import java.lang.reflect.Array;
-
 public class Test {
 	public static void main(String... arg) {
 		byte[] data = new byte[1024];

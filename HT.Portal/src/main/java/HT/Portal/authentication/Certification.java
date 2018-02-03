@@ -50,7 +50,8 @@ public class Certification extends HttpServlet {
 		String client_id = PropertyMap.getInstance().getProperty("googleApiConfig", "client_id");
 		String client_secret = PropertyMap.getInstance().getProperty("googleApiConfig", "client_secret");
 		String redirect = PropertyMap.getInstance().getProperty("googleApiConfig", "redirect_url");
-		//String api_key = PropertyMap.getInstance().getProperty("googleApiConfig", "api_key");
+		// String api_key = PropertyMap.getInstance().getProperty("googleApiConfig",
+		// "api_key");
 
 		StringBuffer sb = new StringBuffer();
 		sb.append("code=").append(code).append("&");
@@ -94,21 +95,21 @@ public class Certification extends HttpServlet {
 		cookie.setMaxAge(Util.getCookieExpire());
 		cookie.setPath(Util.getCookiePath());
 		response.addCookie(cookie);
-		
-		CookieinfoDao dao =  FactoryDao.getCookieinfoDao();
+
+		CookieinfoDao dao = FactoryDao.getCookieinfoDao();
 		Cookieinfo entity = dao.getEntityByCookiekey(key);
-		if(entity != null) {
+		if (entity != null) {
 			dao.delete(entity);
 		}
 		entity = new Cookieinfo();
-		CookieinfoPK pk =  new CookieinfoPK();
+		CookieinfoPK pk = new CookieinfoPK();
 		pk.setId(user.getId());
 		pk.setCookiekey(key);
 		entity.setId(pk);
 		entity.setCreatedate(new Date());
 		entity.setUserinfo(user.getUserinfo());
 		dao.create(entity);
-		
+
 		response.sendRedirect("./index.jsp");
 	}
 
