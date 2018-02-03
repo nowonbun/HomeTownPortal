@@ -1,39 +1,44 @@
 package HT.Portal.authentication;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import HT.Portal.common.IServlet;
 import HT.Portal.common.Util;
+import dao.CookieinfoDao;
+import dao.FactoryDao;
+import model.Cookieinfo;
 
 @WebServlet("/Logout")
-public class Logout extends HttpServlet {
+public class Logout extends IServlet {
 	private static final long serialVersionUID = 1L;
 
 	public Logout() {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		Cookie cookie = Util.searchArray(request.getCookies(), (node) -> {
-			return Certification.COOKIE_KEY.equals(node.getName());
-		});
-		if (cookie != null) {
-			request.getSession().invalidate();
-			cookie.setPath(Util.getCookiePath());
-			cookie.setMaxAge(0);
-			response.addCookie(cookie);
+	protected void doGet() {
+		try {
+			Cookie cookie = getCookie(Certification.COOKIE_KEY);
+			UserServerInfo info = getUserinfo();
+			CookieinfoDao dao = FactoryDao.getCookieinfoDao();
+			Cookieinfo cookieitem = dao.getEntity(info.getUserinfo().getId(), cookie.getValue());
+			if (cookieitem != null) {
+				dao.delete(cookieitem);
+			}
+
+			getSession().invalidate();
+			if (cookie != null) {
+				cookie.setPath(Util.getCookiePath());
+				cookie.setMaxAge(0);
+				getResponse().addCookie(cookie);
+			}
+			Redirect("./login.jsp");
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
-		response.sendRedirect("./login.jsp");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
+	protected void doPost() {
+		doGet();
 	}
 }

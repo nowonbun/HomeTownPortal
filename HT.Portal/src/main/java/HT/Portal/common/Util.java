@@ -8,7 +8,8 @@ import java.util.UUID;
 import HT.Portal.common.interfaces.LambdaExpression;
 
 public class Util {
-	//private static DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	// private static DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd
+	// HH:mm:ss");
 	private static DateFormat dateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	public static String createCookieKey() {
@@ -34,5 +35,15 @@ public class Util {
 			}
 		}
 		return null;
+	}
+
+	public static boolean StringEquals(String val1, String val2) {
+		if (val1 == null) {
+			return false;
+		}
+		if (val2 == null) {
+			return false;
+		}
+		return val1.equals(val2);
 	}
 }
