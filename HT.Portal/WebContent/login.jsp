@@ -9,13 +9,6 @@
 <head>  
 	<jsp:include page="./common/header.jsp"></jsp:include>
 	<link href="./css/login.css" rel="stylesheet">
-	<script>
-	var ctl = {
-		onLoad: function(){
-			
-		}
-	};
-	</script>
 </head>
 <body>
     <div class="container">
@@ -40,5 +33,6 @@
             </div>
         </div>
     </div>
+    <jsp:include page="./common/footer.jsp"></jsp:include>
 </body>
 </html>

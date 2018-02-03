@@ -1,6 +1,5 @@
-/**
- * 
- */
+/*
+var ctl = null;
 var common = (function(obj) {
 	$(obj.onLoad);
 	return obj;
@@ -15,3 +14,4 @@ var common = (function(obj) {
 		}
 	}
 });
+*/
