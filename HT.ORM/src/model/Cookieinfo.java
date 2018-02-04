@@ -19,13 +19,15 @@ public class Cookieinfo implements Serializable {
 	private CookieinfoPK id;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name="CREATEDATE")
 	private Date createdate;
 
+	@Column(name="IPADDRESS")
 	private String ipaddress;
 
 	//bi-directional many-to-one association to Userinfo
 	@ManyToOne
-	@JoinColumn(name="id")
+	@JoinColumn(name="ID")
 	private Userinfo userinfo;
 
 	public Cookieinfo() {

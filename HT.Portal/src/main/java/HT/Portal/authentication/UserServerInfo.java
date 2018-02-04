@@ -206,7 +206,7 @@ public class UserServerInfo {
 			this.userinfo = new Userinfo();
 		}
 		this.userinfo.setId(this.id);
-		this.userinfo.setGivenName(this.givenName);
+		this.userinfo.setGivenname(this.givenName);
 		this.userinfo.setName(this.displayName);
 		this.userinfo.setNickname(this.nickname);
 		this.userinfo.setImg(this.image_url);
@@ -217,7 +217,7 @@ public class UserServerInfo {
 	public void setUser(Userinfo info) {
 		this.userinfo = info;
 		this.id = this.userinfo.getId();
-		this.givenName = this.userinfo.getGivenName();
+		this.givenName = this.userinfo.getGivenname();
 		this.displayName = this.userinfo.getName();
 		this.nickname = this.userinfo.getNickname();
 		this.image_url = this.userinfo.getImg();

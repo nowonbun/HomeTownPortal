@@ -24,6 +24,6 @@ public class MemberDaoTest {
 	public void getUserTest() {
 		UserinfoDao dao = FactoryDao.getUserInfoDao();
 		Userinfo info = dao.getUser("test");
-		System.out.println(info.getGivenName());
+		System.out.println(info.getGivenname());
 	}
 }

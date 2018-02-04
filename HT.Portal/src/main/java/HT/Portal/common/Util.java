@@ -24,7 +24,7 @@ public class Util {
 	}
 
 	public static String getCookiePath() {
-		return "/HT.Portal/";
+		return "/Portal/";
 	}
 
 	public static <T> T searchArray(T[] array, LambdaExpression<T, Boolean> condition) {

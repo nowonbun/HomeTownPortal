@@ -16,17 +16,22 @@ public class Userinfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="ID")
 	private String id;
 
 	@Column(name="background_img")
 	private String backgroundImg;
 
-	private String givenName;
+	@Column(name="GIVENNAME")
+	private String givenname;
 
+	@Column(name="IMG")
 	private String img;
 
+	@Column(name="NAME")
 	private String name;
 
+	@Column(name="NICKNAME")
 	private String nickname;
 
 	//bi-directional many-to-one association to Cookieinfo
@@ -52,12 +57,12 @@ public class Userinfo implements Serializable {
 		this.backgroundImg = backgroundImg;
 	}
 
-	public String getGivenName() {
-		return this.givenName;
+	public String getGivenname() {
+		return this.givenname;
 	}
 
-	public void setGivenName(String givenName) {
-		this.givenName = givenName;
+	public void setGivenname(String givenname) {
+		this.givenname = givenname;
 	}
 
 	public String getImg() {

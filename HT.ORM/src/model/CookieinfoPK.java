@@ -12,24 +12,25 @@ public class CookieinfoPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(insertable=false, updatable=false)
-	private String id;
-
+	@Column(name="COOKIEKEY")
 	private String cookiekey;
 
+	@Column(name="ID", insertable=false, updatable=false)
+	private String id;
+
 	public CookieinfoPK() {
-	}
-	public String getId() {
-		return this.id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public String getCookiekey() {
 		return this.cookiekey;
 	}
 	public void setCookiekey(String cookiekey) {
 		this.cookiekey = cookiekey;
+	}
+	public String getId() {
+		return this.id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public boolean equals(Object other) {
@@ -41,15 +42,15 @@ public class CookieinfoPK implements Serializable {
 		}
 		CookieinfoPK castOther = (CookieinfoPK)other;
 		return 
-			this.id.equals(castOther.id)
-			&& this.cookiekey.equals(castOther.cookiekey);
+			this.cookiekey.equals(castOther.cookiekey)
+			&& this.id.equals(castOther.id);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.id.hashCode();
 		hash = hash * prime + this.cookiekey.hashCode();
+		hash = hash * prime + this.id.hashCode();
 		
 		return hash;
 	}
