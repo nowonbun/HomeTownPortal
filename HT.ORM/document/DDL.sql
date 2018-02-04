@@ -12,6 +12,7 @@ create table USERINFO (
 create table COOKIEINFO(
     id varchar(255) not null,
     cookiekey varchar(255) not null,
+    ipaddress varchar(100),
     createdate date,
     
     PRIMARY KEY(id, cookiekey),

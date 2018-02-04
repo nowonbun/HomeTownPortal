@@ -4,13 +4,14 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
+
 /**
  * The persistent class for the COOKIEINFO database table.
  * 
  */
 @Entity
-@Table(name = "COOKIEINFO")
-@NamedQuery(name = "Cookieinfo.findAll", query = "SELECT c FROM Cookieinfo c")
+@Table(name="COOKIEINFO")
+@NamedQuery(name="Cookieinfo.findAll", query="SELECT c FROM Cookieinfo c")
 public class Cookieinfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -20,9 +21,11 @@ public class Cookieinfo implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date createdate;
 
-	// bi-directional many-to-one association to Userinfo
+	private String ipaddress;
+
+	//bi-directional many-to-one association to Userinfo
 	@ManyToOne
-	@JoinColumn(name = "id")
+	@JoinColumn(name="id")
 	private Userinfo userinfo;
 
 	public Cookieinfo() {
@@ -42,6 +45,14 @@ public class Cookieinfo implements Serializable {
 
 	public void setCreatedate(Date createdate) {
 		this.createdate = createdate;
+	}
+
+	public String getIpaddress() {
+		return this.ipaddress;
+	}
+
+	public void setIpaddress(String ipaddress) {
+		this.ipaddress = ipaddress;
 	}
 
 	public Userinfo getUserinfo() {

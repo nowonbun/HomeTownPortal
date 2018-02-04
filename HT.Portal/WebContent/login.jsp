@@ -7,32 +7,38 @@
 <!DOCTYPE html>
 <html>
 <head>  
-	<jsp:include page="./common/header.jsp"></jsp:include>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Hometown Portal</title>
+	<link rel="icon" href="./favicon.ico"> 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="./css/sb-admin.css" rel="stylesheet">	
 	<link href="./css/login.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form" id="loginform" method="get" action="https://accounts.google.com/o/oauth2/auth">
-                            <input type="hidden" name="scope" value="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me" />
-				            <input type="hidden" name="client_id" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "client_id")%>" />
-				            <input type="hidden" name="redirect_uri" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "redirect_url")%>" />
-				            <input type="hidden" name="access_type" value="offline" />
-				            <input type="hidden" name="response_type" value="code" />
-				            <input type="hidden" name="approval_prompt" value="force" />
-				            <input type="image" class="loginBtn" src="./contents/loginBtn.png">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <jsp:include page="./common/footer.jsp"></jsp:include>
+<body class="bg-dark">
+	<div class="container">
+		<div class="card card-login mx-auto mt-5">
+		<div class="card-header">Login</div>
+		<div class="card-body">
+			<form role="form" id="loginform" method="get" action="https://accounts.google.com/o/oauth2/auth">
+				<input type="hidden" name="scope" value="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me" />
+				<input type="hidden" name="client_id" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "client_id")%>" />
+				<input type="hidden" name="redirect_uri" value="<%=PropertyMap.getInstance().getProperty("googleApiConfig", "redirect_url")%>" />
+				<input type="hidden" name="access_type" value="offline" />
+				<input type="hidden" name="response_type" value="code" />
+				<input type="hidden" name="approval_prompt" value="force" />
+				<input type="image" class="loginBtn" src="./contents/loginBtn.png">
+			</form>
+		</div>
+	  </div>
+	</div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 </body>
 </html>

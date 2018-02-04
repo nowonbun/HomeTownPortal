@@ -9,29 +9,25 @@ import javax.persistence.*;
  */
 @Embeddable
 public class CookieinfoPK implements Serializable {
-	// default serial version id, required for serializable classes.
+	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(insertable = false, updatable = false)
+	@Column(insertable=false, updatable=false)
 	private String id;
 
 	private String cookiekey;
 
 	public CookieinfoPK() {
 	}
-
 	public String getId() {
 		return this.id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
 	public String getCookiekey() {
 		return this.cookiekey;
 	}
-
 	public void setCookiekey(String cookiekey) {
 		this.cookiekey = cookiekey;
 	}
@@ -43,8 +39,10 @@ public class CookieinfoPK implements Serializable {
 		if (!(other instanceof CookieinfoPK)) {
 			return false;
 		}
-		CookieinfoPK castOther = (CookieinfoPK) other;
-		return this.id.equals(castOther.id) && this.cookiekey.equals(castOther.cookiekey);
+		CookieinfoPK castOther = (CookieinfoPK)other;
+		return 
+			this.id.equals(castOther.id)
+			&& this.cookiekey.equals(castOther.cookiekey);
 	}
 
 	public int hashCode() {
@@ -52,7 +50,7 @@ public class CookieinfoPK implements Serializable {
 		int hash = 17;
 		hash = hash * prime + this.id.hashCode();
 		hash = hash * prime + this.cookiekey.hashCode();
-
+		
 		return hash;
 	}
 }

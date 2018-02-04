@@ -103,8 +103,8 @@ public class Certification extends IServlet {
 			entity.setId(pk);
 			entity.setCreatedate(new Date());
 			entity.setUserinfo(user.getUserinfo());
+			entity.setIpaddress(Util.getRemoteAddr(getRequest()));
 			dao.create(entity);
-
 			Redirect("./index.jsp");
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
