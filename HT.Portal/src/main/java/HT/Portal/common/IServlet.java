@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import HT.Portal.authentication.UserServerInfo;
+import HT.Portal.authentication.UserServer;
 
 public abstract class IServlet extends HttpServlet {
 
@@ -19,7 +19,7 @@ public abstract class IServlet extends HttpServlet {
 
 	protected boolean checkAuthorization() {
 		HttpSession session = request.getSession();
-		if (session.getAttribute(UserServerInfo.SESSION_ID) != null) {
+		if (session.getAttribute(UserServer.SESSION_ID) != null) {
 			return true;
 		}
 		return false;
@@ -61,9 +61,9 @@ public abstract class IServlet extends HttpServlet {
 		});
 	}
 
-	protected UserServerInfo getUserinfo() {
+	protected UserServer getUserinfo() {
 		HttpSession session = request.getSession();
-		return (UserServerInfo) session.getAttribute(UserServerInfo.SESSION_ID);
+		return (UserServer) session.getAttribute(UserServer.SESSION_ID);
 	}
 
 	protected void Redirect(String url) throws IOException {

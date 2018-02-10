@@ -5,10 +5,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import dao.FactoryDao;
-import dao.UserinfoDao;
-import model.Userinfo;
+import dao.UserDao;
+import model.User;
 
-public class UserServerInfo {
+public class UserServer {
 	public static final String SESSION_ID = "user";
 	private String access_token;
 	private int expires_in;
@@ -38,7 +38,7 @@ public class UserServerInfo {
 	private int coverPhoto_width;
 	private int coverInfo_topImageOffset;
 	private int coverInfo_leftImageOffset;
-	private Userinfo userinfo;
+	private User user;
 
 	public static String getSESSION_ID() {
 		return SESSION_ID;
@@ -156,8 +156,8 @@ public class UserServerInfo {
 		return coverInfo_leftImageOffset;
 	}
 
-	public Userinfo getUserinfo() {
-		return userinfo;
+	public User getUser() {
+		return user;
 	}
 
 	public void setToken(InputStream stream) {
@@ -200,27 +200,27 @@ public class UserServerInfo {
 			this.coverInfo_leftImageOffset = obj.getJsonObject("cover").getJsonObject("coverInfo")
 					.getInt("leftImageOffset");
 		}
-		UserinfoDao dao = FactoryDao.getUserInfoDao();
-		this.userinfo = dao.getUser(this.id);
-		if (this.userinfo == null) {
-			this.userinfo = new Userinfo();
+		UserDao dao = FactoryDao.getDao(UserDao.class);
+		this.user = dao.getUser(this.id);
+		if (this.user == null) {
+			this.user = new User();
 		}
-		this.userinfo.setId(this.id);
-		this.userinfo.setGivenname(this.givenName);
-		this.userinfo.setName(this.displayName);
-		this.userinfo.setNickname(this.nickname);
-		this.userinfo.setImg(this.image_url);
-		this.userinfo.setBackgroundImg(this.coverPhoto_url);
-		dao.create(this.userinfo);
+		this.user.setId(this.id);
+		this.user.setGivenName(this.givenName);
+		this.user.setName(this.displayName);
+		this.user.setNickname(this.nickname);
+		this.user.setImg(this.image_url);
+		this.user.setBackgroundImg(this.coverPhoto_url);
+		dao.create(this.user);
 	}
 
-	public void setUser(Userinfo info) {
-		this.userinfo = info;
-		this.id = this.userinfo.getId();
-		this.givenName = this.userinfo.getGivenname();
-		this.displayName = this.userinfo.getName();
-		this.nickname = this.userinfo.getNickname();
-		this.image_url = this.userinfo.getImg();
-		this.coverPhoto_url = this.userinfo.getBackgroundImg();
+	public void setUser(User info) {
+		this.user = info;
+		this.id = this.user.getId();
+		this.givenName = this.user.getGivenName();
+		this.displayName = this.user.getName();
+		this.nickname = this.user.getNickname();
+		this.image_url = this.user.getImg();
+		this.coverPhoto_url = this.user.getBackgroundImg();
 	}
 }

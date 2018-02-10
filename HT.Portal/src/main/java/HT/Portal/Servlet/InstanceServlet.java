@@ -6,13 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import HT.Portal.authentication.Certification;
-import HT.Portal.authentication.UserServerInfo;
+import HT.Portal.authentication.UserServer;
 import HT.Portal.common.Util;
-import dao.CookieinfoDao;
+import dao.CookieDao;
 import dao.FactoryDao;
-import dao.UserinfoDao;
-import model.Cookieinfo;
-import model.Userinfo;
+import dao.UserDao;
+import model.User;
 
 public class InstanceServlet {
 	private static InstanceServlet instance = null;
@@ -30,7 +29,7 @@ public class InstanceServlet {
 
 	private boolean getAuthorization(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		if (session.getAttribute(UserServerInfo.SESSION_ID) != null) {
+		if (session.getAttribute(UserServer.SESSION_ID) != null) {
 			return true;
 		}
 		Cookie cookie = Util.searchArray(request.getCookies(), (node) -> {
@@ -41,17 +40,17 @@ public class InstanceServlet {
 		}
 		cookie.setMaxAge(Util.getCookieExpire());
 		cookie.setPath(Util.getCookiePath());
-		CookieinfoDao cookie_dao = FactoryDao.getCookieinfoDao();
-		Cookieinfo entity = cookie_dao.getEntityByCookiekey(cookie.getValue());
+		CookieDao cookie_dao = FactoryDao.getDao(CookieDao.class);
+		model.Cookie entity = cookie_dao.getEntityByCookiekey(cookie.getValue());
 		if (entity == null) {
 			return false;
 		}
 		String id = entity.getId().getId();
-		UserinfoDao user_dao = FactoryDao.getUserInfoDao();
-		Userinfo user = user_dao.getUser(id);
-		UserServerInfo info = new UserServerInfo();
+		UserDao user_dao = FactoryDao.getDao(UserDao.class);
+		User user = user_dao.getUser(id);
+		UserServer info = new UserServer();
 		info.setUser(user);
-		session.setAttribute(UserServerInfo.SESSION_ID, info);
+		session.setAttribute(UserServer.SESSION_ID, info);
 		return true;
 	}
 

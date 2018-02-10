@@ -4,9 +4,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import HT.Portal.common.IServlet;
 import HT.Portal.common.Util;
-import dao.CookieinfoDao;
+import dao.CookieDao;
 import dao.FactoryDao;
-import model.Cookieinfo;
 
 @WebServlet("/Logout")
 public class Logout extends IServlet {
@@ -19,9 +18,9 @@ public class Logout extends IServlet {
 	protected void doGet() {
 		try {
 			Cookie cookie = getCookie(Certification.COOKIE_KEY);
-			UserServerInfo info = getUserinfo();
-			CookieinfoDao dao = FactoryDao.getCookieinfoDao();
-			Cookieinfo cookieitem = dao.getEntity(info.getUserinfo().getId(), cookie.getValue());
+			UserServer info = getUserinfo();
+			CookieDao dao = FactoryDao.getDao(CookieDao.class);
+			model.Cookie cookieitem = dao.getEntity(info.getUser().getId(), cookie.getValue());
 			if (cookieitem != null) {
 				dao.delete(cookieitem);
 			}

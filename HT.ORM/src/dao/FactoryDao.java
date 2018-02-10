@@ -4,32 +4,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 import common.Dao;
-import model.Cookieinfo;
-import model.Userinfo;
 
-public final class FactoryDao {
+public class FactoryDao {
 
+	private static FactoryDao instance = null;
 	private static Map<Class<?>, Dao<?>> flyweight = null;
 
-	private static void Init() {
-		if (flyweight == null) {
-			flyweight = new HashMap<Class<?>, Dao<?>>();
+	@SuppressWarnings("unchecked")
+	public static <T> T getDao(Class<T> clz) {
+		try {
+			if (instance == null) {
+				instance = new FactoryDao();
+			}
+			if (flyweight == null) {
+				flyweight = new HashMap<Class<?>, Dao<?>>();
+			}
+			if (!flyweight.containsKey(clz)) {
+				flyweight.put(clz, (Dao<?>) clz.newInstance());
+			}
+			return (T) flyweight.get(clz);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
-	}
-
-	public static UserinfoDao getUserInfoDao() {
-		Init();
-		if (!flyweight.containsKey(Userinfo.class)) {
-			flyweight.put(Userinfo.class, new UserinfoDao());
-		}
-		return (UserinfoDao) flyweight.get(Userinfo.class);
-	}
-
-	public static CookieinfoDao getCookieinfoDao() {
-		Init();
-		if (!flyweight.containsKey(Cookieinfo.class)) {
-			flyweight.put(Cookieinfo.class, new CookieinfoDao());
-		}
-		return (CookieinfoDao) flyweight.get(Cookieinfo.class);
 	}
 }

@@ -17,10 +17,9 @@ import javax.servlet.http.HttpSession;
 import HT.Portal.common.IServlet;
 import HT.Portal.common.PropertyMap;
 import HT.Portal.common.Util;
-import dao.CookieinfoDao;
+import dao.CookieDao;
 import dao.FactoryDao;
-import model.Cookieinfo;
-import model.CookieinfoPK;
+import model.CookiePK;
 
 @WebServlet("/Certification")
 public class Certification extends IServlet {
@@ -67,7 +66,7 @@ public class Certification extends IServlet {
 			if (responseCode != 200) {
 				throw new RuntimeException(GetResponse(con.getErrorStream()));
 			}
-			UserServerInfo user = new UserServerInfo();
+			UserServer user = new UserServer();
 			user.setToken(con.getInputStream());
 
 			sb.append("https://www.googleapis.com/plus/v1/people/me?");
@@ -84,25 +83,25 @@ public class Certification extends IServlet {
 
 			// TODO: The user session will change database
 			HttpSession session = getRequest().getSession();
-			session.setAttribute(UserServerInfo.SESSION_ID, user);
+			session.setAttribute(UserServer.SESSION_ID, user);
 			String key = Util.createCookieKey();
 			Cookie cookie = new Cookie(COOKIE_KEY, key);
 			cookie.setMaxAge(Util.getCookieExpire());
 			cookie.setPath(Util.getCookiePath());
 			getResponse().addCookie(cookie);
 
-			CookieinfoDao dao = FactoryDao.getCookieinfoDao();
-			Cookieinfo entity = dao.getEntityByCookiekey(key);
+			CookieDao dao = FactoryDao.getDao(CookieDao.class);
+			model.Cookie entity = dao.getEntityByCookiekey(key);
 			if (entity != null) {
 				dao.delete(entity);
 			}
-			entity = new Cookieinfo();
-			CookieinfoPK pk = new CookieinfoPK();
+			entity = new model.Cookie();
+			CookiePK pk = new CookiePK();
 			pk.setId(user.getId());
 			pk.setCookiekey(key);
 			entity.setId(pk);
 			entity.setCreatedate(new Date());
-			entity.setUserinfo(user.getUserinfo());
+			entity.setTsnUser(user.getUser());
 			entity.setIpaddress(Util.getRemoteAddr(getRequest()));
 			dao.create(entity);
 			Redirect("./index.jsp");
