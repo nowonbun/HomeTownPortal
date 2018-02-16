@@ -1,60 +1,78 @@
-create table MST_GROUP(
-	idx int not null AUTO_INCREMENT,
-	name varchar(255) not null,
-	authority varchar(255) not null,
+DROP DATABASE hometown;
+CREATE DATABASE hometown;
+
+USE hometown;
+
+CREATE TABLE MST_GROUP(
+	CODE CHAR(5) NOT NULL,
+	NAME VARCHAR(255) NOT NULL,
 	
-	PRIMARY KEY(idx)
+	PRIMARY KEY (CODE)
 );
 
-create table TSN_USER (
-	id varchar(255) not null,
-	givenName varchar(255) not null,
-	name varchar(255) not null,
-	nickname varchar(255),
-	img varchar(255),
-	background_img varchar(255),
-	groupidx int,
-
-	PRIMARY KEY(id),
-	FOREIGN KEY (groupidx) REFERENCES MST_GROUP (idx)-- ON DELETE CASCADE ON UPDATE RESTRICT
+CREATE TABLE MST_CARD_STEP(
+    STEP CHAR(4) NOT NULL,
+    NAME VARCHAR(200) NOT NULL,
+    PRIMARY KEY (STEP)
 );
 
-create table TSN_COOKIE(
-    id varchar(255) not null,
-    cookiekey varchar(255) not null,
-    ipaddress varchar(100),
-    createdate date,
-    lastconnecteddate date,
-    
-    PRIMARY KEY(id, cookiekey),
-    FOREIGN KEY (id) REFERENCES TSN_USER (id)-- ON DELETE CASCADE ON UPDATE RESTRICT
-);
-
-CREATE TABLE MST_PAGE_TAB(
-    idx int not null AUTO_INCREMENT,
-    PAGE_TAB varchar(200) not null,
-    
-    PRIMARY KEY(idx)
-);
-
-CREATE TABLE TSN_CARD(
-    idx int not null  AUTO_INCREMENT,
-    name varchar(200) not null,
-    page_tab int not null,
-    href varchar(200) not null,
-    img blob,
-    icon varchar(50),
-    color varchar(50),
-    
-    PRIMARY KEY(idx),
-    FOREIGN KEY (page_tab) REFERENCES MST_PAGE_TAB (idx)
+CREATE TABLE MST_CARD(
+    CODE CHAR(4) NOT NULL,
+    NAME VARCHAR(200) NOT NULL,
+    HREF varchar(200) NOT NULL,
+    STEP CHAR(4) NOT NULL,
+    IMG BLOB,
+    ICON VARCHAR(50),
+    COLOR VARCHAR(50),
+    PRIMARY KEY (CODE),
+    FOREIGN KEY (STEP) REFERENCES MST_CARD_STEP (STEP)
 );
 
 CREATE TABLE MAP_CARD_GROUP(
-    group_idx int not null,
-    card_idx int not null,
+    GROUP_CODE CHAR(5) NOT NULL,
+    CARD_CODE CHAR(4) NOT NULL,
     
-    primary key(group_idx,card_idx),
-    FOREIGN KEY (group_idx) REFERENCES MST_GROUP (idx),
-    FOREIGN KEY (card_idx) REFERENCES TSN_CARD (idx)
+    PRIMARY KEY (GROUP_CODE,CARD_CODE),
+    FOREIGN KEY (GROUP_CODE) REFERENCES MST_GROUP (CODE),
+    FOREIGN KEY (CARD_CODE) REFERENCES MST_CARD (CODE)
+);
+
+CREATE TABLE TSN_STATE(
+    IDX int NOT NULL AUTO_INCREMENT,
+    CREATER VARCHAR(255) NOT NULL,
+    CREATE_DATE DATETIME NOT NULL,
+    LAST_UPDATER VARCHAR(255) NULL,
+    LAST_UPDATE DATETIME NULL,
+    IS_DELETE BOOLEAN DEFAULT FALSE,
+    STATE INT NULL,
+    
+    PRIMARY KEY (IDX)
+);
+
+
+CREATE TABLE TSN_USER (
+	ID VARCHAR(255) NOT NULL,
+	GIVEN_NAME VARCHAR(255) NOT NULL,
+    NAME VARCHAR(255) NOT NULL,
+    NICK_NAME VARCHAR(255) NULL,
+	IMG VARCHAR(255) NULL,
+    BACKGROUND_IMG VARCHAR(255) NULL,
+	GROUP_CODE CHAR(5) NOT NULL,
+    STATE INT NOT NULL,
+
+	PRIMARY KEY(ID),
+	FOREIGN KEY (GROUP_CODE) REFERENCES MST_GROUP (CODE),-- ON DELETE CASCADE ON UPDATE RESTRICT
+    FOREIGN KEY (STATE) REFERENCES TSN_STATE(IDX) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+
+CREATE TABLE TSN_COOKIE(
+    ID VARCHAR(255) NOT NULL,
+    COOKIEKEY VARCHAR(255) NOT NULL,
+    IPADDRESS VARCHAR(100),
+    LAST_CONNECT_DATE DATE,
+    STATE int,
+    
+    PRIMARY KEY (ID, COOKIEKEY),
+    FOREIGN KEY (ID) REFERENCES TSN_USER (ID),-- ON DELETE CASCADE ON UPDATE RESTRICT
+    FOREIGN KEY (STATE) REFERENCES TSN_STATE(IDX) ON DELETE CASCADE ON UPDATE RESTRICT
 );

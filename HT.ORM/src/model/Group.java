@@ -16,37 +16,27 @@ public class Group implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idx;
+	@Column(name="CODE")
+	private String code;
 
-	private String authority;
-
+	@Column(name="NAME")
 	private String name;
 
-	//bi-directional many-to-many association to Card
-	@ManyToMany(mappedBy="mstGroups")
-	private List<Card> tsnCards;
+	@ManyToMany(mappedBy="groups")
+	private List<Card> cards;
 
-	//bi-directional many-to-one association to User
-	@OneToMany(mappedBy="mstGroup")
-	private List<User> tsnUsers;
+	@OneToOne(mappedBy="group")
+	private User user;
 
 	public Group() {
 	}
 
-	public int getIdx() {
-		return this.idx;
+	public String getCode() {
+		return this.code;
 	}
 
-	public void setIdx(int idx) {
-		this.idx = idx;
-	}
-
-	public String getAuthority() {
-		return this.authority;
-	}
-
-	public void setAuthority(String authority) {
-		this.authority = authority;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getName() {
@@ -57,34 +47,19 @@ public class Group implements Serializable {
 		this.name = name;
 	}
 
-	public List<Card> getTsnCards() {
-		return this.tsnCards;
+	public List<Card> getCards() {
+		return this.cards;
 	}
 
-	public void setTsnCards(List<Card> tsnCards) {
-		this.tsnCards = tsnCards;
+	public void setMstCards(List<Card> cards) {
+		this.cards = cards;
 	}
 
-	public List<User> getTsnUsers() {
-		return this.tsnUsers;
+	public User getUser() {
+		return this.user;
 	}
 
-	public void setTsnUsers(List<User> tsnUsers) {
-		this.tsnUsers = tsnUsers;
+	public void setTsnUsers(User user) {
+		this.user = user;
 	}
-
-	public User addTsnUser(User tsnUser) {
-		getTsnUsers().add(tsnUser);
-		tsnUser.setMstGroup(this);
-
-		return tsnUser;
-	}
-
-	public User removeTsnUser(User tsnUser) {
-		getTsnUsers().remove(tsnUser);
-		tsnUser.setMstGroup(null);
-
-		return tsnUser;
-	}
-
 }

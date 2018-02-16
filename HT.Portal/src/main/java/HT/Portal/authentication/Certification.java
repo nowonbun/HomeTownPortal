@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import HT.Portal.common.IServlet;
 import HT.Portal.common.PropertyMap;
 import HT.Portal.common.Util;
+import common.DBUtil;
 import dao.CookieDao;
 import dao.FactoryDao;
 import model.CookiePK;
@@ -100,9 +100,9 @@ public class Certification extends IServlet {
 			pk.setId(user.getId());
 			pk.setCookiekey(key);
 			entity.setId(pk);
-			entity.setCreatedate(new Date());
-			entity.setTsnUser(user.getUser());
+			entity.setUser(user.getUser());
 			entity.setIpaddress(Util.getRemoteAddr(getRequest()));
+			entity.setState(DBUtil.createState(user.getId()));
 			dao.create(entity);
 			Redirect("./index.jsp");
 		} catch (Throwable e) {

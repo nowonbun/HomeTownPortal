@@ -4,7 +4,10 @@ import java.io.InputStream;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+
+import common.DBUtil;
 import dao.FactoryDao;
+import dao.GroupDao;
 import dao.UserDao;
 import model.User;
 
@@ -208,9 +211,11 @@ public class UserServer {
 		this.user.setId(this.id);
 		this.user.setGivenName(this.givenName);
 		this.user.setName(this.displayName);
-		this.user.setNickname(this.nickname);
+		this.user.setNickName(this.nickname);
 		this.user.setImg(this.image_url);
 		this.user.setBackgroundImg(this.coverPhoto_url);
+		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(DBUtil.GUEST));
+		this.user.setState(DBUtil.createState(this.id));
 		dao.create(this.user);
 	}
 
@@ -219,7 +224,7 @@ public class UserServer {
 		this.id = this.user.getId();
 		this.givenName = this.user.getGivenName();
 		this.displayName = this.user.getName();
-		this.nickname = this.user.getNickname();
+		this.nickname = this.user.getNickName();
 		this.image_url = this.user.getImg();
 		this.coverPhoto_url = this.user.getBackgroundImg();
 	}

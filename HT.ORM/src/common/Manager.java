@@ -65,7 +65,9 @@ public class Manager {
 				transaction.commit();
 			}
 		} catch (Throwable e) {
-			transaction.rollback();
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
 			throw new RuntimeException(e);
 		}
 	}

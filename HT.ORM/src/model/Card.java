@@ -4,62 +4,59 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
- * The persistent class for the TSN_CARD database table.
+ * The persistent class for the MST_CARD database table.
  * 
  */
 @Entity
-@Table(name="TSN_CARD")
-@NamedQuery(name="Card.findAll", query="SELECT c FROM Card c")
+@Table(name = "MST_CARD")
+@NamedQuery(name = "Card.findAll", query = "SELECT c FROM Card c")
 public class Card implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idx;
+	@Column(name = "CODE")
+	private String code;
 
+	@Column(name = "COLOR")
 	private String color;
 
+	@Column(name = "HREF")
 	private String href;
 
+	@Column(name = "ICON")
 	private String icon;
 
+	@Column(name = "IMG")
 	@Lob
 	private byte[] img;
 
+	@Column(name = "NAME")
 	private String name;
 
-	//bi-directional many-to-one association to LinkCardGroup
-	@OneToMany(mappedBy="tsnCard")
-	private List<LinkCardGroup> mapCardGroups;
-
-	//bi-directional many-to-many association to Group
+	// bi-directional many-to-many association to Group
 	@ManyToMany
 	@JoinTable(
-		name="MAP_CARD_GROUP"
-		, joinColumns={
-			@JoinColumn(name="card_idx")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="group_idx")
-			}
-		)
-	private List<Group> mstGroups;
+				name = "MAP_CARD_GROUP", 
+				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
+				inverseJoinColumns = { @JoinColumn(name = "GROUP_CODE") }
+			  )
+	private List<Group> groups;
 
-	//bi-directional many-to-one association to PageTab
+	// bi-directional many-to-one association to CardStep
 	@ManyToOne
-	@JoinColumn(name="page_tab")
-	private PageTab mstPageTab;
+	@JoinColumn(name = "STEP")
+	private CardStep cardStep;
 
 	public Card() {
 	}
 
-	public int getIdx() {
-		return this.idx;
+	public String getCode() {
+		return this.code;
 	}
 
-	public void setIdx(int idx) {
-		this.idx = idx;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getColor() {
@@ -102,42 +99,20 @@ public class Card implements Serializable {
 		this.name = name;
 	}
 
-	public List<LinkCardGroup> getMapCardGroups() {
-		return this.mapCardGroups;
+	public List<Group> getGroups() {
+		return this.groups;
 	}
 
-	public void setMapCardGroups(List<LinkCardGroup> mapCardGroups) {
-		this.mapCardGroups = mapCardGroups;
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
 	}
 
-	public LinkCardGroup addMapCardGroup(LinkCardGroup mapCardGroup) {
-		getMapCardGroups().add(mapCardGroup);
-		mapCardGroup.setTsnCard(this);
-
-		return mapCardGroup;
+	public CardStep getCardStep() {
+		return this.cardStep;
 	}
 
-	public LinkCardGroup removeMapCardGroup(LinkCardGroup mapCardGroup) {
-		getMapCardGroups().remove(mapCardGroup);
-		mapCardGroup.setTsnCard(null);
-
-		return mapCardGroup;
-	}
-
-	public List<Group> getMstGroups() {
-		return this.mstGroups;
-	}
-
-	public void setMstGroups(List<Group> mstGroups) {
-		this.mstGroups = mstGroups;
-	}
-
-	public PageTab getMstPageTab() {
-		return this.mstPageTab;
-	}
-
-	public void setMstPageTab(PageTab mstPageTab) {
-		this.mstPageTab = mstPageTab;
+	public void setCardStep(CardStep cardStep) {
+		this.cardStep = cardStep;
 	}
 
 }

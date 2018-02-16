@@ -4,39 +4,41 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
-/**
- * The persistent class for the TSN_USER database table.
- * 
- */
 @Entity
-@Table(name="TSN_USER")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@Table(name = "TSN_USER")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "ID")
 	private String id;
 
-	@Column(name="background_img")
+	@Column(name = "BACKGROUND_IMG")
 	private String backgroundImg;
 
+	@Column(name = "GIVEN_NAME")
 	private String givenName;
 
+	@Column(name = "IMG")
 	private String img;
 
+	@Column(name = "NAME")
 	private String name;
 
-	private String nickname;
+	@Column(name = "NICK_NAME")
+	private String nickName;
 
-	//bi-directional many-to-one association to Cookie
-	@OneToMany(mappedBy="tsnUser")
-	private List<Cookie> tsnCookies;
+	@OneToMany(mappedBy = "user")
+	private List<Cookie> cookies;
 
-	//bi-directional many-to-one association to Group
-	@ManyToOne
-	@JoinColumn(name="groupidx")
-	private Group mstGroup;
+	@OneToOne
+	@JoinColumn(name = "GROUP_CODE")
+	private Group group;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "STATE")
+	private State state;
 
 	public User() {
 	}
@@ -81,42 +83,36 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	public String getNickname() {
-		return this.nickname;
+	public String getNickName() {
+		return this.nickName;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
-	public List<Cookie> getTsnCookies() {
-		return this.tsnCookies;
+	public List<Cookie> getCookies() {
+		return this.cookies;
 	}
 
-	public void setTsnCookies(List<Cookie> tsnCookies) {
-		this.tsnCookies = tsnCookies;
+	public void setCookies(List<Cookie> cookies) {
+		this.cookies = cookies;
 	}
 
-	public Cookie addTsnCooky(Cookie tsnCooky) {
-		getTsnCookies().add(tsnCooky);
-		tsnCooky.setTsnUser(this);
-
-		return tsnCooky;
+	public Group getGroup() {
+		return this.group;
 	}
 
-	public Cookie removeTsnCooky(Cookie tsnCooky) {
-		getTsnCookies().remove(tsnCooky);
-		tsnCooky.setTsnUser(null);
-
-		return tsnCooky;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 
-	public Group getMstGroup() {
-		return this.mstGroup;
+	public State getState() {
+		return this.state;
 	}
 
-	public void setMstGroup(Group mstGroup) {
-		this.mstGroup = mstGroup;
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }

@@ -12,9 +12,10 @@ public class CookiePK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(insertable=false, updatable=false)
+	@Column(name="ID", insertable=false, updatable=false)
 	private String id;
 
+	@Column(name="COOKIEKEY")
 	private String cookiekey;
 
 	public CookiePK() {

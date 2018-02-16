@@ -4,32 +4,33 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
-
 /**
  * The persistent class for the TSN_COOKIE database table.
  * 
  */
 @Entity
-@Table(name="TSN_COOKIE")
-@NamedQuery(name="Cookie.findAll", query="SELECT c FROM Cookie c")
+@Table(name = "TSN_COOKIE")
+@NamedQuery(name = "Cookie.findAll", query = "SELECT c FROM Cookie c")
 public class Cookie implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private CookiePK id;
 
-	@Temporal(TemporalType.DATE)
-	private Date createdate;
-
+	@Column(name = "IPADDRESS")
 	private String ipaddress;
 
 	@Temporal(TemporalType.DATE)
-	private Date lastconnecteddate;
+	@Column(name = "LAST_CONNECT_DATE")
+	private Date lastConnectDate;
 
-	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="id")
-	private User tsnUser;
+	@JoinColumn(name = "ID")
+	private User user;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "STATE")
+	private State state;
 
 	public Cookie() {
 	}
@@ -42,14 +43,6 @@ public class Cookie implements Serializable {
 		this.id = id;
 	}
 
-	public Date getCreatedate() {
-		return this.createdate;
-	}
-
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
-	}
-
 	public String getIpaddress() {
 		return this.ipaddress;
 	}
@@ -58,20 +51,28 @@ public class Cookie implements Serializable {
 		this.ipaddress = ipaddress;
 	}
 
-	public Date getLastconnecteddate() {
-		return this.lastconnecteddate;
+	public Date getLastConnectDate() {
+		return this.lastConnectDate;
 	}
 
-	public void setLastconnecteddate(Date lastconnecteddate) {
-		this.lastconnecteddate = lastconnecteddate;
+	public void setLastConnectDate(Date lastConnectDate) {
+		this.lastConnectDate = lastConnectDate;
 	}
 
-	public User getTsnUser() {
-		return this.tsnUser;
+	public User getUser() {
+		return this.user;
 	}
 
-	public void setTsnUser(User tsnUser) {
-		this.tsnUser = tsnUser;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public State getTsnState() {
+		return this.state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }
