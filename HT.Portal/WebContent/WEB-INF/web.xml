@@ -4,4 +4,9 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>startup</servlet-name>
+    <servlet-class>HT.Portal.common.Startup</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
 </web-app>

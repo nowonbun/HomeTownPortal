@@ -1,6 +1,10 @@
 package HT.Portal.common;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -10,10 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import HT.Portal.authentication.UserServer;
+import dao.CookieDao;
+import dao.FactoryDao;
+import model.CookiePK;
 
 public abstract class IServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	public static final String COOKIE_KEY = "HomePortalKey";
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
@@ -66,8 +74,61 @@ public abstract class IServlet extends HttpServlet {
 		return (UserServer) session.getAttribute(UserServer.SESSION_ID);
 	}
 
-	protected void Redirect(String url) throws IOException {
-		getResponse().sendRedirect(url);
+	protected void Redirect(String url) {
+		try {
+			getResponse().sendRedirect(url);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected String getStreamData() {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(getRequest().getInputStream()))) {
+			return br.readLine();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected PrintWriter getPrinter() {
+		try {
+			return getResponse().getWriter();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected void setStatus(int code) {
+		getResponse().setStatus(403);
+	}
+
+	public void setLoginSession(UserServer user) {
+
+		getSession().setAttribute(UserServer.SESSION_ID, user);
+		String key = Util.createCookieKey();
+		Cookie cookie = new Cookie(COOKIE_KEY, key);
+		cookie.setMaxAge(Util.getCookieExpire());
+		cookie.setPath(Util.getCookiePath());
+		getResponse().addCookie(cookie);
+
+		CookieDao dao = FactoryDao.getDao(CookieDao.class);
+		model.Cookie entity = dao.getEntityByCookiekey(key);
+		if (entity != null) {
+			// dao.delete(entity);
+			// entity.getStateInfo().setIsDelete(true);
+			// dao.update(entity);
+			entity.update(user.getId());
+		}else {
+			entity = new model.Cookie(user.getId());
+		}
+		CookiePK pk = new CookiePK();
+		pk.setId(user.getId());
+		pk.setCookiekey(key);
+		entity.setId(pk);
+		entity.setUser(user.getUser());
+		entity.setIpaddress(Util.getRemoteAddr(getRequest()));
+		entity.setLastConnectDate(new Date());
+		dao.create(entity);
 	}
 
 	protected abstract void doGet();

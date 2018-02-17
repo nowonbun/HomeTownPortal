@@ -22,7 +22,10 @@ public class Logout extends IServlet {
 			CookieDao dao = FactoryDao.getDao(CookieDao.class);
 			model.Cookie cookieitem = dao.getEntity(info.getUser().getId(), cookie.getValue());
 			if (cookieitem != null) {
-				dao.delete(cookieitem);
+				//dao.delete(cookieitem);
+				cookieitem.getStateInfo().setIsDelete(true);
+				cookieitem.update(info.getId());
+				dao.update(cookieitem);
 			}
 
 			getSession().invalidate();

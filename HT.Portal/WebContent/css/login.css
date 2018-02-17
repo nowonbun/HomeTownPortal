@@ -2,3 +2,15 @@
 .loginBtn {
 	width: 100%;
 }
+.location-link{
+	text-align: right;
+	margin-top:10px;
+}
+.login-input{
+	margin-bottom: 10px;
+}
+
+.login-error {
+	color: red;
+	margin-bottom: 10px;
+}

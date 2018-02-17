@@ -2,12 +2,15 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import common.TransactionModel;
+
 import java.util.List;
 
 @Entity
 @Table(name = "TSN_USER")
-@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
-public class User implements Serializable {
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u where u.stateInfo.isDelete = false")
+public class User extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -32,15 +35,23 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user")
 	private List<Cookie> cookies;
 
-	@OneToOne
+	@OneToMany(mappedBy = "user")
+	private List<Password> passwords;
+
+	@ManyToOne
 	@JoinColumn(name = "GROUP_CODE")
 	private Group group;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "STATE")
-	private State state;
+	private StateInfo stateInfo;
 
 	public User() {
+		
+	}
+
+	public User(String user) {
+		super.create(user);
 	}
 
 	public String getId() {
@@ -99,6 +110,20 @@ public class User implements Serializable {
 		this.cookies = cookies;
 	}
 
+	public Cookie addCookie(Cookie cookie) {
+		getCookies().add(cookie);
+		cookie.setUser(this);
+
+		return cookie;
+	}
+
+	public Cookie removeCookie(Cookie cookie) {
+		getCookies().remove(cookie);
+		cookie.setUser(null);
+
+		return cookie;
+	}
+
 	public Group getGroup() {
 		return this.group;
 	}
@@ -107,12 +132,33 @@ public class User implements Serializable {
 		this.group = group;
 	}
 
-	public State getState() {
-		return this.state;
+	public List<Password> getPasswords() {
+		return passwords;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setPasswords(List<Password> passwords) {
+		this.passwords = passwords;
 	}
 
+	public Password addPassword(Password password) {
+		getPasswords().add(password);
+		password.setUser(this);
+
+		return password;
+	}
+
+	public Password removePassword(Password password) {
+		getPasswords().remove(password);
+		password.setUser(null);
+
+		return password;
+	}
+
+	public StateInfo getStateInfo() {
+		return stateInfo;
+	}
+
+	public void setStateInfo(StateInfo stateInfo) {
+		this.stateInfo = stateInfo;
+	}
 }

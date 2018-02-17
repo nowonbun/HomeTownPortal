@@ -8,7 +8,7 @@ import common.Dao;
 public class FactoryDao {
 
 	private static FactoryDao instance = null;
-	private static Map<Class<?>, Dao<?>> flyweight = null;
+	private Map<Class<?>, Dao<?>> flyweight = null;
 
 	@SuppressWarnings("unchecked")
 	public static <T> T getDao(Class<T> clz) {
@@ -16,13 +16,13 @@ public class FactoryDao {
 			if (instance == null) {
 				instance = new FactoryDao();
 			}
-			if (flyweight == null) {
-				flyweight = new HashMap<Class<?>, Dao<?>>();
+			if (instance.flyweight == null) {
+				instance.flyweight = new HashMap<Class<?>, Dao<?>>();
 			}
-			if (!flyweight.containsKey(clz)) {
-				flyweight.put(clz, (Dao<?>) clz.newInstance());
+			if (!instance.flyweight.containsKey(clz)) {
+				instance.flyweight.put(clz, (Dao<?>) clz.newInstance());
 			}
-			return (T) flyweight.get(clz);
+			return (T) instance.flyweight.get(clz);
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}

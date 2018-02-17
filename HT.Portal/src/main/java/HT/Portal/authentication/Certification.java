@@ -10,21 +10,13 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpSession;
 
 import HT.Portal.common.IServlet;
 import HT.Portal.common.PropertyMap;
-import HT.Portal.common.Util;
-import common.DBUtil;
-import dao.CookieDao;
-import dao.FactoryDao;
-import model.CookiePK;
 
 @WebServlet("/Certification")
 public class Certification extends IServlet {
 	private static final long serialVersionUID = 1L;
-	public static final String COOKIE_KEY = "HomePortalKey";
 
 	public Certification() {
 		super();
@@ -80,30 +72,7 @@ public class Certification extends IServlet {
 				throw new RuntimeException(GetResponse(con.getErrorStream()));
 			}
 			user.setUser(con.getInputStream());
-
-			// TODO: The user session will change database
-			HttpSession session = getRequest().getSession();
-			session.setAttribute(UserServer.SESSION_ID, user);
-			String key = Util.createCookieKey();
-			Cookie cookie = new Cookie(COOKIE_KEY, key);
-			cookie.setMaxAge(Util.getCookieExpire());
-			cookie.setPath(Util.getCookiePath());
-			getResponse().addCookie(cookie);
-
-			CookieDao dao = FactoryDao.getDao(CookieDao.class);
-			model.Cookie entity = dao.getEntityByCookiekey(key);
-			if (entity != null) {
-				dao.delete(entity);
-			}
-			entity = new model.Cookie();
-			CookiePK pk = new CookiePK();
-			pk.setId(user.getId());
-			pk.setCookiekey(key);
-			entity.setId(pk);
-			entity.setUser(user.getUser());
-			entity.setIpaddress(Util.getRemoteAddr(getRequest()));
-			entity.setState(DBUtil.createState(user.getId()));
-			dao.create(entity);
+			setLoginSession(user);
 			Redirect("./index.jsp");
 		} catch (Throwable e) {
 			throw new RuntimeException(e);

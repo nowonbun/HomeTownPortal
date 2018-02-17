@@ -5,7 +5,6 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import common.DBUtil;
 import dao.FactoryDao;
 import dao.GroupDao;
 import dao.UserDao;
@@ -206,7 +205,7 @@ public class UserServer {
 		UserDao dao = FactoryDao.getDao(UserDao.class);
 		this.user = dao.getUser(this.id);
 		if (this.user == null) {
-			this.user = new User();
+			this.user = new User(this.id);
 		}
 		this.user.setId(this.id);
 		this.user.setGivenName(this.givenName);
@@ -214,8 +213,7 @@ public class UserServer {
 		this.user.setNickName(this.nickname);
 		this.user.setImg(this.image_url);
 		this.user.setBackgroundImg(this.coverPhoto_url);
-		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(DBUtil.GUEST));
-		this.user.setState(DBUtil.createState(this.id));
+		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup("GUEST"));
 		dao.create(this.user);
 	}
 

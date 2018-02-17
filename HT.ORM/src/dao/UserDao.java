@@ -25,7 +25,8 @@ public class UserDao extends Dao<User> {
 	public User getUser(String id) {
 		return Manager.transaction(() -> {
 			try {
-				Query query = Manager.get().createQuery("SELECT u FROM User u WHERE u.id = :id");
+				String qy = "SELECT u FROM User u WHERE u.id = :id and u.stateInfo.isDelete = false";
+				Query query = Manager.get().createQuery(qy);
 				query.setParameter("id", id);
 				return (User) query.getSingleResult();
 			} catch (NoResultException e) {

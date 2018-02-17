@@ -2,12 +2,15 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import common.TransactionModel;
+
 import java.util.Date;
 
 @Entity
 @Table(name = "TSN_COOKIE")
-@NamedQuery(name = "Cookie.findAll", query = "SELECT c FROM Cookie c")
-public class Cookie implements Serializable {
+@NamedQuery(name = "Cookie.findAll", query = "SELECT c FROM Cookie c where c.stateInfo.isDelete = false")
+public class Cookie extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
@@ -16,7 +19,8 @@ public class Cookie implements Serializable {
 	@Column(name = "IPADDRESS")
 	private String ipaddress;
 
-	@Temporal(TemporalType.DATE)
+	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "LAST_CONNECT_DATE")
 	private Date lastConnectDate;
 
@@ -26,11 +30,15 @@ public class Cookie implements Serializable {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "STATE")
-	private State state;
+	private StateInfo stateInfo;
 
 	public Cookie() {
+		
 	}
-
+	public Cookie(String user) {
+		super.create(user);
+	}
+	
 	public CookiePK getId() {
 		return this.id;
 	}
@@ -63,12 +71,12 @@ public class Cookie implements Serializable {
 		this.user = user;
 	}
 
-	public State getTsnState() {
-		return this.state;
+	public StateInfo getStateInfo() {
+		return this.stateInfo;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setStateInfo(StateInfo stateInfo) {
+		this.stateInfo = stateInfo;
 	}
 
 }

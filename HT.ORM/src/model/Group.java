@@ -17,11 +17,13 @@ public class Group implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	@ManyToMany(mappedBy = "groups")
+	@ManyToMany
+	@JoinTable(name = "MAP_CARD_GROUP", joinColumns = { @JoinColumn(name = "GROUP_CODE") }, inverseJoinColumns = {
+			@JoinColumn(name = "CARD_CODE") })
 	private List<Card> cards;
 
-	@OneToOne(mappedBy = "group")
-	private User user;
+	@OneToMany(mappedBy = "group")
+	private List<User> users;
 
 	public Group() {
 	}
@@ -46,15 +48,29 @@ public class Group implements Serializable {
 		return this.cards;
 	}
 
-	public void setMstCards(List<Card> cards) {
+	public void setCards(List<Card> cards) {
 		this.cards = cards;
 	}
 
-	public User getUser() {
-		return this.user;
+	public List<User> getUsers() {
+		return this.users;
 	}
 
-	public void setTsnUsers(User user) {
-		this.user = user;
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public User addUser(User user) {
+		getUsers().add(user);
+		user.setGroup(this);
+
+		return user;
+	}
+
+	public User removeUser(User user) {
+		getUsers().remove(user);
+		user.setGroup(null);
+
+		return user;
 	}
 }

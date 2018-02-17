@@ -8,8 +8,11 @@
 		<class>model.Group</class>
 		<class>model.Cookie</class>
 		<class>model.CookiePK</class>
+		<class>model.StateInfo</class>
 		<class>model.State</class>
 		<class>model.User</class>
+		<class>model.Password</class>
+		<class>model.PasswordPK</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.parameters" value="true" />

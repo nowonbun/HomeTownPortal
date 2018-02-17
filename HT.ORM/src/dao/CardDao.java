@@ -7,23 +7,23 @@ import javax.persistence.Query;
 
 import common.Dao;
 import common.Manager;
-import model.Group;
+import model.Card;
 
-public class GroupDao extends Dao<Group> {
+public class CardDao extends Dao<Card> {
 
-	private static List<Group> singleton = null;
+	private static List<Card> singleton = null;
 
-	protected GroupDao() {
-		super(Group.class);
+	protected CardDao() {
+		super(Card.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Group getGroup(String code) {
+	public Card getCard(String code) {
 		if (singleton == null) {
 			singleton = Manager.transaction(() -> {
 				try {
-					Query query = Manager.get().createNamedQuery("Group.findAll", Group.class);
-					return (List<Group>) query.getResultList();
+					Query query = Manager.get().createNamedQuery("Card.findAll", Card.class);
+					return (List<Card>) query.getResultList();
 				} catch (NoResultException e) {
 					return null;
 				}

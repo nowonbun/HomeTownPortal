@@ -35,7 +35,8 @@ public class CookieDao extends Dao<Cookie> {
 	public Cookie getEntityByCookiekey(String cookiekey) {
 		return Manager.transaction(() -> {
 			try {
-				Query query = Manager.get().createQuery("SELECT c FROM Cookie c WHERE c.id.cookiekey = :cookiekey");
+				String qy = "SELECT c FROM Cookie c WHERE c.id.cookiekey = :cookiekey and c.stateInfo.isDelete = false";
+				Query query = Manager.get().createQuery(qy);
 				query.setParameter("cookiekey", cookiekey);
 				return (Cookie) query.getSingleResult();
 			} catch (NoResultException e) {
