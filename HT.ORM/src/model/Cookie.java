@@ -4,10 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * The persistent class for the TSN_COOKIE database table.
- * 
- */
 @Entity
 @Table(name = "TSN_COOKIE")
 @NamedQuery(name = "Cookie.findAll", query = "SELECT c FROM Cookie c")

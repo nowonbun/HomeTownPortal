@@ -4,10 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The persistent class for the MST_CARD database table.
- * 
- */
 @Entity
 @Table(name = "MST_CARD")
 @NamedQuery(name = "Card.findAll", query = "SELECT c FROM Card c")
@@ -34,16 +30,11 @@ public class Card implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	// bi-directional many-to-many association to Group
 	@ManyToMany
-	@JoinTable(
-				name = "MAP_CARD_GROUP", 
-				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
-				inverseJoinColumns = { @JoinColumn(name = "GROUP_CODE") }
-			  )
+	@JoinTable(name = "MAP_CARD_GROUP", joinColumns = { @JoinColumn(name = "CARD_CODE") }, inverseJoinColumns = {
+			@JoinColumn(name = "GROUP_CODE") })
 	private List<Group> groups;
 
-	// bi-directional many-to-one association to CardStep
 	@ManyToOne
 	@JoinColumn(name = "STEP")
 	private CardStep cardStep;

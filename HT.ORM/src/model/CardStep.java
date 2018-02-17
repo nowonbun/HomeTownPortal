@@ -4,10 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The persistent class for the MST_CARD_STEP database table.
- * 
- */
 @Entity
 @Table(name = "MST_CARD_STEP")
 @NamedQuery(name = "CardStep.findAll", query = "SELECT c FROM CardStep c")
@@ -21,7 +17,6 @@ public class CardStep implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	// bi-directional many-to-one association to Card
 	@OneToMany(mappedBy = "cardStep")
 	private List<Card> cards;
 
@@ -52,18 +47,18 @@ public class CardStep implements Serializable {
 		this.cards = cards;
 	}
 
-	public Card addMstCard(Card mstCard) {
-		getCards().add(mstCard);
-		mstCard.setCardStep(this);
+	public Card addCard(Card card) {
+		getCards().add(card);
+		card.setCardStep(this);
 
-		return mstCard;
+		return card;
 	}
 
-	public Card removeMstCard(Card mstCard) {
-		getCards().remove(mstCard);
-		mstCard.setCardStep(null);
+	public Card removeCard(Card card) {
+		getCards().remove(card);
+		card.setCardStep(null);
 
-		return mstCard;
+		return card;
 	}
 
 }
