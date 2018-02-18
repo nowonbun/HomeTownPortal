@@ -17,9 +17,11 @@
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="./css/sb-admin.css" rel="stylesheet">	
+	<link href="./css/common.css" rel="stylesheet">
 	<link href="./css/login.css" rel="stylesheet">
 </head>
 <body class="bg-dark">
+	<div class="notification-zone"></div>
 	<div class="container">
 		<div class="card card-login mx-auto mt-5">
 			<div class="card-header">Login</div>

@@ -17,12 +17,29 @@ ctl = {
 			}
 		});
 		common.on("#plogin", "click", function() {
+			if ($.trim($("#pid").val()) === "") {
+				$(".login-error").text("Please input ID.");
+				$("#pid").addClass("border-foces");
+				setTimeout(function() {
+					$(".login-error").text("");
+					$("#pid").removeClass("border-foces");
+				}, 3000);
+				return;
+			}
+			if ($.trim($("#pwd").val()) === "") {
+				$(".login-error").text("Please input password.");
+				$("#pwd").addClass("border-foces");
+				setTimeout(function() {
+					$(".login-error").text("");
+					$("#pwd").removeClass("border-foces");
+				}, 3000);
+				return;
+			}
 			var data = JSON.stringify({
 				pid : $("#pid").val(),
 				pwd : $("#pwd").val()
 			});
 			common.ajax(common.hosturl + "/login", data, function(ret) {
-				console.log(ret);
 				if (ret === 1) {
 					$(".login-error").text(
 							"Login invalid. Please check ID or Password.");

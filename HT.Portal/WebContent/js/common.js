@@ -42,5 +42,23 @@ var common = (function(obj) {
 				final.call(this,ret);	
 			}
 		});
+	},
+	notification: function(type,msg){
+		// danger warning success
+		if(type !== "success" && type !== "warning"){
+			type = "danger";
+		}
+		var dom = $("<div></div>").addClass("notification-row").append(
+				$("<div></div>").addClass("alert alert-"+type).append(
+						$("<button></button>").addClass("close").append(
+								$("<span></span>").attr("aria-hidden","true").html("&times;"))
+				).append($("<span></span>").addClass("glyphicon glyphicon-exclamation-sign").text(msg)));
+		if($("div.notification-row").length > 5){
+			$("div.notification-row")[0].remove();
+		}
+		$(".notification-zone").append(dom);
+		setTimeout(function(){
+			dom.remove();
+		},3000);
 	}
 });

@@ -32,3 +32,23 @@ body.sticky-footer .content-wrapper {
 /*.card:hover {
 	border: 1px solid blue;
 }*/
+.notification-zone {
+	position: absolute;
+	right: 20px;
+	top: 10px;
+	z-index: 1009;
+}
+
+.notification-zone .alert {
+	max-width: 500px;
+	min-width: 300px;
+	word-wrap: BREAK-WORD;
+	display: inline-block;
+	float: right;
+}
+
+.notification-zone span.glyphicon {
+	/*margin-top: 20px;
+    display: block;*/
+	
+}
