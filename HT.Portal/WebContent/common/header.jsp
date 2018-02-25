@@ -8,11 +8,14 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<title>Hometown Portal</title>
-	<link rel="icon" href="./favicon.ico">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-	<link href="./css/sb-admin.css" rel="stylesheet">
+	<link href="./favicon.ico" rel="icon">
+	<!-- link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"-->
+	<link href="./css/mdb.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
+	<link href="./css/sb-admin.css" rel="stylesheet">	
 	<link href="./css/common.css" rel="stylesheet">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
