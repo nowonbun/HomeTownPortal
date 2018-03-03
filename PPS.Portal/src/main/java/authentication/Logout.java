@@ -19,16 +19,17 @@ public class Logout extends IServlet {
 	protected void doGet() {
 		try {
 			Cookie cookie = getCookie(Certification.COOKIE_KEY);
-			UserServer info = getUserinfo();
-			CookieDao dao = FactoryDao.getDao(CookieDao.class);
-			model.Cookie cookieitem = dao.getEntity(info.getUser().getId(), cookie.getValue());
-			if (cookieitem != null) {
-				//dao.delete(cookieitem);
-				cookieitem.getStateInfo().setIsDelete(true);
-				cookieitem.update(info.getId());
-				dao.update(cookieitem);
+			UserService info = getUserinfo();
+			if(info != null) {
+				CookieDao dao = FactoryDao.getDao(CookieDao.class);
+				model.Cookie cookieitem = dao.getEntity(info.getUser().getId(), cookie.getValue());
+				if (cookieitem != null) {
+					//dao.delete(cookieitem);
+					cookieitem.getStateInfo().setIsDelete(true);
+					cookieitem.update(info.getId());
+					dao.update(cookieitem);
+				}
 			}
-
 			getSession().invalidate();
 			if (cookie != null) {
 				cookie.setPath(Util.getCookiePath());

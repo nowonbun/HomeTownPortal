@@ -1,20 +1,19 @@
 package socket;
 
-import java.io.IOException;
-
-import javax.websocket.OnMessage;
-import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import common.HttpSessionConfigurator;
 import common.ISocket;
+import entity.WebSocketNode;
+import entity.WebSocketResult;
 
-@ServerEndpoint("/index")
+@ServerEndpoint(value = "/index", configurator = HttpSessionConfigurator.class)
 public class Index extends ISocket {
 
-	@OnMessage
-	public void handleMessage(String message, Session userSession) throws IOException {
-		System.out.println("message - " + message);
-		//WebSocketNode node = createNode(message);
-		userSession.getBasicRemote().sendText(createJson("test", "data"));
+	public WebSocketResult main(WebSocketNode node) {
+		if(!isAuth(node.getSession())) {
+			return createWebSocketResult("login", "NG");
+		}
+		return createWebSocketResult("index", "TEST");
 	}
 }

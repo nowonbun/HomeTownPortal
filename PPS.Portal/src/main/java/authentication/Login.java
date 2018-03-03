@@ -1,4 +1,4 @@
-package servlet;
+package authentication;
 
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -11,7 +11,6 @@ import javax.json.JsonReader;
 import javax.servlet.annotation.WebServlet;
 import javax.xml.bind.DatatypeConverter;
 
-import authentication.UserServer;
 import common.IServlet;
 import dao.FactoryDao;
 import dao.UserDao;
@@ -75,7 +74,7 @@ public class Login extends IServlet {
 			getPrinter().print(ret);
 			return;
 		}
-		UserServer userinfo = new UserServer();
+		UserService userinfo = new UserService();
 		userinfo.setUser(info);
 		setLoginSession(userinfo);
 		String ret = "0";

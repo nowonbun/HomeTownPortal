@@ -1,14 +1,16 @@
 package entity;
 
+import socket.SessionNode;
+
 public class WebSocketNode {
-	private String id;
-	private String url;
+	private String key;
 	private String data;
-	public String getId() {
-		return id;
+	private SessionNode session;
+	public String getKey() {
+		return key;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setKey(String key) {
+		this.key = key;
 	}
 	public String getData() {
 		return data;
@@ -16,10 +18,10 @@ public class WebSocketNode {
 	public void setData(String data) {
 		this.data = data;
 	}
-	public String getUrl() {
-		return url;
+	public SessionNode getSession() {
+		return session;
 	}
-	public void setUrl(String url) {
-		this.url = url;
+	public void setSession(SessionNode session) {
+		this.session = session;
 	}
 }

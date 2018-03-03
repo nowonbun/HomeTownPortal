@@ -3,15 +3,53 @@ var common = (function(obj) {
 	$(obj.onLoad);
 	return obj;
 })({
+	logger: function(message){
+		//console.log(message);
+	},
 	hosturl: "/Portal",
+	websocketurl: "ws://localhost:8080/Portal/",
+	ws: null,
 	onLoad : function() {
 		if (ctl === null || ctl === undefined || typeof ctl !== "object") {
 			console.error("declare abstract controller");
 			return;
 		}
+		if(ctl.wslocation !== undefined){
+			common.ws = new WebSocket(common.websocketurl +  ctl.wslocation);
+			common.ws.onopen = function(message){
+				common.logger(message);
+			};
+			common.ws.onclose = function(message){
+				common.logger(message);
+			};
+			common.ws.onerror = function(message){
+				common.error(message);
+			};
+			common.ws.onmessage = function(message){
+				common.logger(message);
+				if(ctl.message !== undefined && typeof ctl.message === "function"){
+					var node = JSON.parse(message.data)
+					ctl.message.call(this,node);
+				}
+			};
+		}
 		if (ctl.onLoad !== undefined && typeof ctl.onLoad === "function") {
 			ctl.onLoad.call(this);
 		}
+	},
+	socketSend: function(key, data){
+		var node = {
+			key: key, 
+			data:data
+		};
+		var json = JSON.stringify(node);
+		if (common.ws.readyState === 1) {
+			common.ws.send(json);
+	    } else {
+	        setTimeout(function () {
+	        	common.ws.send(json);
+	        }, 1000);
+	    }
 	},
 	on : function(element, eventname, callback, isadd) {
 		if (callback !== undefined && typeof callback === "function") {

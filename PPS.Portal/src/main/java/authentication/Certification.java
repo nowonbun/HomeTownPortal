@@ -58,7 +58,7 @@ public class Certification extends IServlet {
 			if (responseCode != 200) {
 				throw new RuntimeException(GetResponse(con.getErrorStream()));
 			}
-			UserServer user = new UserServer();
+			UserService user = new UserService();
 			user.setToken(con.getInputStream());
 
 			sb.append("https://www.googleapis.com/plus/v1/people/me?");

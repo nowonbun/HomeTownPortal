@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import authentication.UserServer;
+import authentication.UserService;
 import dao.CookieDao;
 import dao.FactoryDao;
 import model.CookiePK;
@@ -21,13 +21,13 @@ import model.CookiePK;
 public abstract class IServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	public static final String COOKIE_KEY = "HomePortalKey";
+	public static final String COOKIE_KEY = "PublicPortalKey";
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 
 	protected boolean checkAuthorization() {
 		HttpSession session = request.getSession();
-		if (session.getAttribute(UserServer.SESSION_ID) != null) {
+		if (session.getAttribute(UserService.SESSION_ID) != null) {
 			return true;
 		}
 		return false;
@@ -69,9 +69,9 @@ public abstract class IServlet extends HttpServlet {
 		});
 	}
 
-	protected UserServer getUserinfo() {
+	protected UserService getUserinfo() {
 		HttpSession session = request.getSession();
-		return (UserServer) session.getAttribute(UserServer.SESSION_ID);
+		return (UserService) session.getAttribute(UserService.SESSION_ID);
 	}
 
 	protected void Redirect(String url) {
@@ -102,9 +102,9 @@ public abstract class IServlet extends HttpServlet {
 		getResponse().setStatus(403);
 	}
 
-	public void setLoginSession(UserServer user) {
+	public void setLoginSession(UserService user) {
 
-		getSession().setAttribute(UserServer.SESSION_ID, user);
+		getSession().setAttribute(UserService.SESSION_ID, user);
 		String key = Util.createCookieKey();
 		Cookie cookie = new Cookie(COOKIE_KEY, key);
 		cookie.setMaxAge(Util.getCookieExpire());

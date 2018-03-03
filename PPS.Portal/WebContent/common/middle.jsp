@@ -9,6 +9,7 @@
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
 <script src="//code.getmdl.io/1.3.0/material.min.js" type="text/javascript"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="./js/sb-admin.js" type="text/javascript"></script>
 <script src="./js/sb-admin-datatables.js" type="text/javascript"></script>
 <script src="./js/common.js" type="text/javascript"></script>

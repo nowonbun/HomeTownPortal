@@ -1,5 +1,7 @@
 ctl = {
+	wslocation : "login",
 	onLoad : function() {
+		common.socketSend("init","");
 		common.on(".view-link", "click", function() {
 			var tab = $(this).parent().data("state");
 			if (tab === 0) {
@@ -49,5 +51,13 @@ ctl = {
 				}
 			});
 		});
+	},
+	message : function(node) {
+		if (node.key === "login") {
+			if (node.data === "OK") {
+				location.href = "./";
+			}
+		}
+		console.log(node);
 	}
 };

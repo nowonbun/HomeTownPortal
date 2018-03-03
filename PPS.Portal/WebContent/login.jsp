@@ -1,10 +1,10 @@
-<%@page import="servlet.InstanceServlet"%>
+<%@page import="authentication.AuthServlet"%>
 <%@page import="common.PropertyMap"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-//https://mdbootstrap.com/
-//https://getmdl.io/
-	InstanceServlet.get().login(request, response);
+	//https://mdbootstrap.com/
+	//https://getmdl.io/
+	AuthServlet.login(request, response);
 %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +14,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>Hometown Portal</title>
+	<title>Public Portal</title>
 	<link href="./favicon.ico" rel="icon" >
 	<!-- link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"-->
 	<link href="./css/mdb.min.css" rel="stylesheet">

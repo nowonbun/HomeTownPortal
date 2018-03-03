@@ -10,7 +10,7 @@ import dao.GroupDao;
 import dao.UserDao;
 import model.User;
 
-public class UserServer {
+public class UserService {
 	public static final String SESSION_ID = "user";
 	private String access_token;
 	private int expires_in;
