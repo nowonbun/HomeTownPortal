@@ -14,7 +14,7 @@ public class Manager {
 	private EntityManager entityManager;
 
 	private Manager() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hometown");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("portal");
 		entityManager = emf.createEntityManager();
 	}
 
