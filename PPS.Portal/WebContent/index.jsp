@@ -3,6 +3,7 @@
 <%
 	AuthServlet.auth(request, response);
 %>
+<jsp:include page="./common/header.jsp"></jsp:include>
 <style>
 .demo-card-image.mdl-card {
   width: 256px;
@@ -47,9 +48,8 @@
   color: #fff;
 }
 </style>
-<jsp:include page="./common/header.jsp"></jsp:include>
 <link href="./css/index.css" rel="stylesheet">
-<div class="content-wrapper">
+<div class="content-wrapper" ng-controller="main">
 	<div class="container-fluid">
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
@@ -112,6 +112,4 @@
 		</div>
 	</div>
 </div>
-<jsp:include page="./common/middle.jsp"></jsp:include>
-<script type="text/javascript" src="./js/index.js"></script>
 <jsp:include page="./common/footer.jsp"></jsp:include>

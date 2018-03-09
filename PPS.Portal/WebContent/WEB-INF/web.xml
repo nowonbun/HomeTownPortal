@@ -6,7 +6,7 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>startup</servlet-name>
-    <servlet-class>Portal.common.Startup</servlet-class>
+    <servlet-class>common.Startup</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
 </web-app>

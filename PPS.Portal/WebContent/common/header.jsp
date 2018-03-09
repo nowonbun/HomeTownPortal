@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +17,12 @@
 	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
 	<link href="./css/sb-admin.css" rel="stylesheet">	
 	<link href="./css/common.css" rel="stylesheet">
+	
+	<script src="//code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+	
+	
+	
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<!-- Navigation-->
