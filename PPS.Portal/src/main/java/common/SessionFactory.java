@@ -1,4 +1,4 @@
-package socket;
+package common;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+
+import entity.SessionNode;
 
 public class SessionFactory {
 	private Map<Class<?>, List<SessionNode>> sessionUsers = Collections.synchronizedMap(new HashMap<>());
@@ -27,7 +29,7 @@ public class SessionFactory {
 	}
 
 	public static SessionNode addSession(Class<?> clz, Session socketSession, HttpSession webSession) {
-		SessionNode node = createSessionNode(socketSession, webSession);
+		SessionNode node = createSessionNode(clz, socketSession, webSession);
 		getSessionList(clz).add(node);
 		return node;
 	}
@@ -49,10 +51,11 @@ public class SessionFactory {
 		}).findFirst().get();
 	}
 
-	public static SessionNode createSessionNode(Session socketSession, HttpSession webSession) {
+	public static SessionNode createSessionNode(Class<?> sessionClz, Session socketSession, HttpSession webSession) {
 		SessionNode node = new SessionNode();
 		node.setSocketSession(socketSession);
 		node.setWebSession(webSession);
+		node.setSessionClz(sessionClz);
 		return node;
 	}
 }

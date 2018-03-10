@@ -72,6 +72,5 @@
 <script src="./js/mdb.min.js" type="text/javascript"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" type="text/javascript"></script>
 <script src="//code.getmdl.io/1.3.0/material.min.js" type="text/javascript"></script>
-<script src="./js/common.js" type="text/javascript"></script>
 <script src="./js/login.js" type="text/javascript"></script>
 </html>

@@ -17,40 +17,13 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
-import authentication.UserService;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
-import socket.SessionFactory;
-import socket.SessionNode;
 
-public abstract class ISocket {
+public abstract class ISocket extends ICommon {
 
-	protected HttpSession getSession(SessionNode session) {
-		return session.getWebSession();
-	}
-
-	protected HttpSession getSession(Session socketSession) {
-		return SessionFactory.getSession(this.getClass(), socketSession).getWebSession();
-	}
-
-	protected UserService getUserinfo(SessionNode session) {
-		return getUserinfo(session.getSocketSession());
-	}
-
-	protected UserService getUserinfo(Session socketSession) {
-		return (UserService) getSession(socketSession).getAttribute(UserService.SESSION_ID);
-	}
-
-	protected boolean isAuth(SessionNode session) {
-		return isAuth(session.getSocketSession());
-	}
-
-	protected boolean isAuth(Session socketSession) {
-		if(getSession(socketSession) == null) {
-			return false;
-		}
-		return getSession(socketSession).getAttribute(UserService.SESSION_ID) != null;
-	}
+	public static String key = "key";
+	public static String data = "data";
 
 	@OnOpen
 	public void handleOpen(Session socketSession, EndpointConfig config) {
@@ -72,12 +45,15 @@ public abstract class ISocket {
 			sendMessage(PropertyMap.getInstance().getProperty("message", "socket_error"), socketSession);
 			return;
 		}
-		WebSocketResult ret = main(node);
-		String json = createJson(ret.getKey(), ret.getData());
-		if (ret.getType() == WebSocketResultType.Broadcast) {
+		main(node);
+	}
+
+	protected void sendMessage(WebSocketResult node) throws IOException {
+		String json = createJson(node.getKey(), node.getData());
+		if (node.getType() == WebSocketResultType.Broadcast) {
 			sendMessage(json);
 		} else {
-			sendMessage(json, socketSession);
+			sendMessage(json, node.getNode().getSession().getSocketSession());
 		}
 	}
 
@@ -95,12 +71,12 @@ public abstract class ISocket {
 		socketSession.getBasicRemote().sendText(message);
 	}
 
-	protected abstract WebSocketResult main(WebSocketNode node);
+	protected abstract void main(WebSocketNode node);
 
 	protected String createJson(String key, String data) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
-		builder.add("key", key);
-		builder.add("data", data);
+		builder.add(ISocket.key, key);
+		builder.add(ISocket.data, data);
 		JsonObject jsonObject = builder.build();
 		StringWriter stringwriter = new StringWriter();
 		try (JsonWriter jsonWriter = Json.createWriter(stringwriter)) {
@@ -113,11 +89,11 @@ public abstract class ISocket {
 		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
 			JsonObject object = jsonReader.readObject();
 			WebSocketNode node = new WebSocketNode();
-			node.setKey(object.getString("key"));
+			node.setKey(object.getString(ISocket.key));
 			if (node.getKey() == null) {
 				return null;
 			}
-			node.setData(object.getString("data"));
+			node.setData(object.getString(ISocket.data));
 			if (node.getData() == null) {
 				return null;
 			}
@@ -131,15 +107,7 @@ public abstract class ISocket {
 		}
 	}
 
-	protected WebSocketResult createWebSocketResult(String key, String data) {
-		return createWebSocketResult(WebSocketResultType.Single, key, data);
-	}
-
-	protected WebSocketResult createWebSocketResult(WebSocketResultType type, String key, String data) {
-		WebSocketResult ret = new WebSocketResult();
-		ret.setType(type);
-		ret.setKey(key);
-		ret.setData(data);
-		return ret;
+	protected String getClassName(Class<?> clz) {
+		return clz.getAnnotation(Workflow.class).name();
 	}
 }

@@ -118,7 +118,7 @@ public abstract class IServlet extends HttpServlet {
 			// entity.getStateInfo().setIsDelete(true);
 			// dao.update(entity);
 			entity.update(user.getId());
-		}else {
+		} else {
 			entity = new model.Cookie(user.getId());
 		}
 		CookiePK pk = new CookiePK();
