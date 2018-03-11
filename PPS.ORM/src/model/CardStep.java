@@ -59,7 +59,7 @@ public class CardStep implements Serializable {
 		return card;
 	}
 
-	public Card removeMstCard(Card card) {
+	public Card removeCard(Card card) {
 		getCards().remove(card);
 		card.setCardStep(null);
 
