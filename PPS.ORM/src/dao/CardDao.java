@@ -15,10 +15,11 @@ public class CardDao extends Dao<Card> {
 
 	protected CardDao() {
 		super(Card.class);
+		initialize();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Card getCard(String code) {
+	private void initialize() {
 		if (singleton == null) {
 			singleton = Manager.transaction(() -> {
 				try {
@@ -29,6 +30,10 @@ public class CardDao extends Dao<Card> {
 				}
 			});
 		}
+	}
+
+	public Card getCard(String code) {
+		initialize();
 		return singleton.stream().filter(x -> x.getCode().equals(code)).findFirst().get();
 	}
 

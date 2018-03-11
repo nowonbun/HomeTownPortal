@@ -17,6 +17,11 @@
 	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
 	<link href="./css/sb-admin.css" rel="stylesheet">	
 	<link href="./css/common.css" rel="stylesheet">
+	<link href="./css/extrasmall.css" rel="stylesheet">
+	<link href="./css/small.css" rel="stylesheet">
+	<link href="./css/medium.css" rel="stylesheet">
+	<link href="./css/large.css" rel="stylesheet">
+	<link href="./css/extralarge.css" rel="stylesheet">
 	
 	<script src="//code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>

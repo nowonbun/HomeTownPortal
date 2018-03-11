@@ -15,10 +15,11 @@ public class CardStepDao extends Dao<CardStep> {
 
 	protected CardStepDao() {
 		super(CardStep.class);
+		initialize();
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public CardStep getCardStep(String step) {
+	private void initialize() {
 		if (singleton == null) {
 			singleton = Manager.transaction(() -> {
 				try {
@@ -29,6 +30,10 @@ public class CardStepDao extends Dao<CardStep> {
 				}
 			});
 		}
+	}
+
+	public CardStep getCardStep(String step) {
+		initialize();
 		return singleton.stream().filter(x -> x.getStep().equals(step)).findFirst().get();
 	}
 

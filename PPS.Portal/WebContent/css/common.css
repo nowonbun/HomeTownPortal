@@ -52,3 +52,69 @@ body.sticky-footer .content-wrapper {
     display: block;*/
 	
 }
+
+/*card part*/
+.card-grid {
+	
+}
+
+.card-item {
+	display: inline-block;
+}
+
+.card-body {
+	position: absolute;
+	bottom: 0px;
+}
+/*card image*/
+.card-image.mdl-card {
+	width: 256px;
+	height: 256px;
+}
+
+.card-image>.mdl-card__actions {
+	height: 52px;
+	padding: 16px;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.card-image__body {
+	color: #fff;
+	font-size: 14px;
+	font-weight: 500;
+}
+/*card image*/
+/*card event*/
+.card-event.mdl-card {
+	width: 256px;
+	height: 256px;
+}
+
+.card-event>.mdl-card__actions {
+	border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-event>.mdl-card__title {
+	align-items: flex-start;
+}
+
+.card-event>.mdl-card__title>h4 {
+	margin-top: 0;
+}
+
+.card-event>.mdl-card__actions {
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+}
+
+.card-event>.mdl-card__actions>.material-icons {
+	padding-right: 10px;
+}
+
+.card-event>.mdl-card__title, 
+.card-event>.mdl-card__actions,
+.card-event>.mdl-card__actions>.mdl-button {
+	color: #fff;
+}
+/*card event*/

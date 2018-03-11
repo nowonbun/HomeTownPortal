@@ -15,10 +15,11 @@ public class StateDao extends Dao<State> {
 
 	protected StateDao() {
 		super(State.class);
+		initialize();
 	}
 
 	@SuppressWarnings("unchecked")
-	public State getState(int state) {
+	private void initialize() {
 		if (singleton == null) {
 			singleton = Manager.transaction(() -> {
 				try {
@@ -29,6 +30,10 @@ public class StateDao extends Dao<State> {
 				}
 			});
 		}
+	}
+
+	public State getState(int state) {
+		initialize();
 		return singleton.stream().filter(x -> x.getState() == state).findFirst().get();
 	}
 }

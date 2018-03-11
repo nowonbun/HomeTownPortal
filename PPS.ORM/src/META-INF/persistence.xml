@@ -13,6 +13,7 @@
 		<class>model.User</class>
 		<class>model.Password</class>
 		<class>model.PasswordPK</class>
+		<class>model.CardType</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.parameters" value="true" />

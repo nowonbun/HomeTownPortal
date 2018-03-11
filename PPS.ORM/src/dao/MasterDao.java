@@ -16,6 +16,7 @@ public class MasterDao {
 		instance.flyweight.put(CardDao.class, FactoryDao.getDao(CardDao.class));
 		instance.flyweight.put(CardStepDao.class, FactoryDao.getDao(CardStepDao.class));
 		instance.flyweight.put(StateDao.class, FactoryDao.getDao(StateDao.class));
+		instance.flyweight.put(CardTypeDao.class, FactoryDao.getDao(CardTypeDao.class));
 	}
 
 	@SuppressWarnings("unchecked")

@@ -5,35 +5,35 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * The persistent class for the MST_CARD_STEP database table.
+ * The persistent class for the MST_CARD_TYPE database table.
  * 
  */
 @Entity
-@Table(name = "MST_CARD_STEP")
-@NamedQuery(name = "CardStep.findAll", query = "SELECT c FROM CardStep c")
-public class CardStep implements Serializable {
+@Table(name = "MST_CARD_TYPE")
+@NamedQuery(name = "CardType.findAll", query = "SELECT c FROM CardType c")
+public class CardType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "STEP")
-	private String step;
+	@Column(name = "CARD_TYPE")
+	private String cardType;
 
 	@Column(name = "NAME")
 	private String name;
 
 	// bi-directional many-to-one association to Card
-	@OneToMany(mappedBy = "cardStep")
+	@OneToMany(mappedBy = "cardType")
 	private List<Card> cards;
 
-	public CardStep() {
+	public CardType() {
 	}
 
-	public String getStep() {
-		return this.step;
+	public String getCardType() {
+		return this.cardType;
 	}
 
-	public void setStep(String step) {
-		this.step = step;
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
 	}
 
 	public String getName() {
@@ -54,14 +54,14 @@ public class CardStep implements Serializable {
 
 	public Card addCard(Card card) {
 		getCards().add(card);
-		card.setCardStep(this);
+		card.setCardType(this);
 
 		return card;
 	}
 
-	public Card removeMstCard(Card card) {
+	public Card removeCard(Card card) {
 		getCards().remove(card);
-		card.setCardStep(null);
+		card.setCardType(null);
 
 		return card;
 	}

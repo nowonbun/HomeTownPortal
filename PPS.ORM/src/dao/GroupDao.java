@@ -15,10 +15,11 @@ public class GroupDao extends Dao<Group> {
 
 	protected GroupDao() {
 		super(Group.class);
+		initialize();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Group getGroup(String code) {
+	private void initialize() {
 		if (singleton == null) {
 			singleton = Manager.transaction(() -> {
 				try {
@@ -29,6 +30,10 @@ public class GroupDao extends Dao<Group> {
 				}
 			});
 		}
+	}
+
+	public Group getGroup(String code) {
+		initialize();
 		return singleton.stream().filter(x -> x.getCode().equals(code)).findFirst().get();
 	}
 
