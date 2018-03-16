@@ -14,6 +14,7 @@ var common = (function(obj) {
 			console.error("declare abstract controller");
 			return;
 		}
+		/*
 		if(ctl.wslocation !== undefined){
 			common.ws = new WebSocket(common.websocketurl +  ctl.wslocation);
 			common.ws.onopen = function(message){
@@ -32,7 +33,7 @@ var common = (function(obj) {
 					ctl.message.call(this,node);
 				}
 			};
-		}
+		}*/
 		if (ctl.onLoad !== undefined && typeof ctl.onLoad === "function") {
 			ctl.onLoad.call(this);
 		}
@@ -101,9 +102,9 @@ var common = (function(obj) {
 	}
 });
 ctl = {
-	wslocation : "login",
+	//wslocation : "login",
 	onLoad : function() {
-		common.socketSend("init","");
+		//common.socketSend("init","");
 		common.on(".view-link", "click", function() {
 			var tab = $(this).parent().data("state");
 			if (tab === 0) {

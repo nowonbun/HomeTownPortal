@@ -1,5 +1,8 @@
 package test.console;
 
+import dao.CardDao;
+import dao.FactoryDao;
+
 public class Test {
 	public static void main(String... arg) {
 		byte[] data = new byte[1024];
@@ -9,5 +12,7 @@ public class Test {
 		}
 		String buffer = new String(data);
 		System.out.println(buffer);
+		CardDao dao = FactoryDao.getDao(CardDao.class);
+		System.out.println(dao.getCard("ADMN"));
 	}
 }

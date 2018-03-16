@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -36,5 +38,9 @@ public class CardDao extends Dao<Card> {
 		initialize();
 		return singleton.stream().filter(x -> x.getCode().equals(code)).findFirst().get();
 	}
-
+	
+	public List<Card> getCardAll(){
+		initialize();
+		return singleton;
+	}
 }

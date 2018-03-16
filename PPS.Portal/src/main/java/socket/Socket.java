@@ -26,14 +26,14 @@ public class Socket extends ISocket {
 			if (Util.StringEquals(ret.getData(), Login.NG)) {
 				return;
 			}
-			sendMessage(getClass(Main.class, node));
+			sendMessage(getClass(node.getKey(), node));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private WebSocketResult getClass(Class<?> clz, WebSocketNode node) {
-		return getClass(getClassName(Main.class), node);
+		return getClass(getClassName(clz), node);
 	}
 
 	private WebSocketResult getClass(String key, WebSocketNode node) {
@@ -50,7 +50,7 @@ public class Socket extends ISocket {
 				Class<?> clz = classes.stream().filter(x -> {
 					try {
 						Workflow anno = x.getAnnotation(Workflow.class);
-						if (key.equals(anno.name())) {
+						if (anno != null && key.equals(anno.name())) {
 							return true;
 						}
 					} catch (Throwable e) {

@@ -60,11 +60,19 @@ body.sticky-footer .content-wrapper {
 
 .card-item {
 	display: inline-block;
+	margin: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.card-item:hover{
+	border: 1px solid rgba(0, 0, 0, 0.5);
+	cursor: pointer;
 }
 
 .card-body {
 	position: absolute;
 	bottom: 0px;
+	text-align: right;
 }
 /*card image*/
 .card-image.mdl-card {
