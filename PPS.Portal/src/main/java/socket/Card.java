@@ -12,6 +12,7 @@ import dao.CardDao;
 import dao.MasterDao;
 import entity.WebSocketNode;
 import model.CardType;
+import model.Group;
 
 @Workflow(name = "card")
 public class Card extends IWorkflow {
@@ -24,12 +25,23 @@ public class Card extends IWorkflow {
 		String body;
 		String href;
 	}
-
+	private boolean containGroup(model.Card card, String code) {
+		for(Group g : card.getGroups()) {
+			if(Util.StringEquals(g.getCode(), code)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	@Override
 	public String main(WebSocketNode node) {
 		List<model.Card> cards = MasterDao.getDao(CardDao.class).getCardAll();
 		List<Node> data = new ArrayList<>();
+		Group group = super.getUserinfo(node.getSession()).getUser().getGroup();
 		for (model.Card card : cards) {
+			if(!containGroup(card, group.getCode())) {
+				continue;
+			}
 			Node entity = new Node();
 			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMG)) {
 				entity.typeHeaderClass = "card-image";

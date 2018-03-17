@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+@media screen and (min-width: 1200px) {
+	#breadcrumb {
+		display: block;
+	}
+	#mainNav .navbar-brand {
+    	display: block;
+	    font-weight: 400px;
+	    height: 40px;
+	    line-height: 35px;
+	    background: #00000050;
+	    text-align: center;
+	    border-radius: 5px;
+	    box-shadow:2px 2px 4px #ffffff20;
+	    width:150px;
+	}
+}

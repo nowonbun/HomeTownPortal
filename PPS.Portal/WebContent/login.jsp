@@ -12,12 +12,11 @@
 	<meta name="author" content="">
 	<title>Public Portal</title>
 	<link href="./favicon.ico" rel="icon" >
-	<link href="./css/mdb.min.css" rel="stylesheet">
+	<link href="./css/vendor/mdb.min.css" rel="stylesheet">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
-	<link href="./css/sb-admin.css" rel="stylesheet">	
-	<link href="./css/common.css" rel="stylesheet">
+	<link href="./css/vendor/sb-admin.css" rel="stylesheet">	
 	<link href="./css/login.css" rel="stylesheet">
 </head>
 <body class="bg-dark">

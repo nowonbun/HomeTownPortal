@@ -12,23 +12,33 @@
 	<title>Portal</title>
 	<link href="./favicon.ico" rel="icon">
 	<!-- link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"-->
-	<link href="./css/mdb.min.css" rel="stylesheet">
+	<link href="./css/vendor/mdb.min.css" rel="stylesheet">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	
 	<link href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
-	<link href="./css/sb-admin.css" rel="stylesheet">	
+	<link href="./css/vendor/sb-admin.css" rel="stylesheet">	
 	<link href="./css/common.css" rel="stylesheet">
-	<link href="./css/extrasmall.css" rel="stylesheet">
-	<link href="./css/small.css" rel="stylesheet">
-	<link href="./css/medium.css" rel="stylesheet">
-	<link href="./css/large.css" rel="stylesheet">
-	<link href="./css/extralarge.css" rel="stylesheet">
+	<link href="./css/size/1extrasmall.css" rel="stylesheet">
+	<link href="./css/size/2small.css" rel="stylesheet">
+	<link href="./css/size/3medium.css" rel="stylesheet">
+	<link href="./css/size/4large.css" rel="stylesheet">
+	<link href="./css/size/5extralarge.css" rel="stylesheet">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top" ng-controller="main">
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     	<a class="navbar-brand" href="index.html">Home Portal</a>
+    	<!-- Breadcrumbs-->
+		<ul id="breadcrumb">
+			<li><a href="#"><span class="icon icon-home"> </span></a></li>
+			<li><a href="#"><span class="icon icon-beaker"> </span> Projects</a></li>
+			<li><a href="#"><span class="icon icon-double-angle-right"></span> Breadcrumb</a></li>
+			<li><a href="#"><span class="icon icon-rocket"> </span> Getting started</a></li>
+			<li><a href="#"><span class="icon icon-arrow-down"> </span> Download</a></li>
+		</ul>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -116,7 +126,7 @@
 			</ul>
 		</div>
 	</nav>
-	<div ng-view></div>
+	<div class="content-wrapper" ng-view></div>
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">

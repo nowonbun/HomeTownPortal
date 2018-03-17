@@ -1,4 +1,7 @@
 @charset "UTF-8";
 
 @media screen and (max-width: 575px) {
+	#breadcrumb {
+		display: none;
+	}
 }

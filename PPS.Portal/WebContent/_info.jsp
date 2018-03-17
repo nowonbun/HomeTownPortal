@@ -12,5 +12,6 @@ cron job - http://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/cr
 JPA - https://github.com/nowonbun/nowonbunstore/tree/master/source/Java/HouseholdData<br />
 MDBootstrap - https://mdbootstrap.com/
 google mdl - https://getmdl.io/
+breadcrumb - https://365webresources.com/creating-flat-style-breadcrumb-pure-css3/
 </body>
 </html>
