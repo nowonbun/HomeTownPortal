@@ -14,35 +14,9 @@ app.config(function($routeProvider) {
     	redirectTo: "/"
     });
 });
-
-
-
-/*
-app.controller('main', [ '$scope', '_ws', function($scope, _ws) {
-	$scope.datatest = "hello world";
-
-	_ws.message(function(msg) {
-		$scope.datatest = msg.data;
-		$scope.$apply();
-	});
-
-	_ws.send("index", "hello world");
-
-	$scope.clickTest = function() {
-		$scope.datatest = $scope.datatest;
-	}
-} ]);
-
-
-app.controller('aaabbbccc', [ '$scope', function($scope) {
-
-} ]);
-app.directive("testaaa", function() {
-	return {
-		restrict : "C",
-		// templateUrl : "test.html"
-		template : "I was made in a directive constructor!"
-	};
+app.directive("navigation", function() {
+    return {
+    	restrict : "E",
+        template : "<li ng-repeat='n in navi'><a href='{{n.url}}'>{{n.name}}</a></li>"
+    };
 });
-*/
-

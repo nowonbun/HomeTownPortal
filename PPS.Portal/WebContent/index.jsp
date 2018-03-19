@@ -33,7 +33,7 @@
     	<a class="navbar-brand" href="./#!/">Home Portal</a>
     	<!-- Breadcrumbs-->
 		<ul id="breadcrumb" ng-controller="navigate">
-			<li ng-repeat="n in navi"><a href="{{n.url}}">{{n.name}}</a></li>
+			<navigation></navigation>
 		</ul>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>

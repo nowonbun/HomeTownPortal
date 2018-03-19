@@ -2,7 +2,6 @@ app.controller("navigate",[ '$scope', '_ws', function($scope, _ws) {
 	_ws.message(function(msg) {
 		var node = JSON.parse(msg.data);
 		if (node.key === "navigate") {
-			console.log(node.data);
 			$scope.navi = JSON.parse(node.data);
 			$scope.$apply();
 		}

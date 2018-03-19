@@ -58,6 +58,20 @@ body.sticky-footer .content-wrapper {
 	
 }
 
+/*title*/
+#mainNav .navbar-brand {
+	display: block;
+	font-weight: 400;
+	height: 40px;
+	line-height: 35px;
+	background: #00000050;
+	text-align: center;
+	border-radius: 5px;
+	box-shadow: 2px 2px 4px #ffffff20;
+	width: 150px;
+}
+/*title*/
+
 /*card part*/
 .card-grid {
 	
