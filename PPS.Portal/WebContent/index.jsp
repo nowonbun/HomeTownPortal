@@ -30,14 +30,10 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top" ng-controller="main">
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    	<a class="navbar-brand" href="index.html">Home Portal</a>
+    	<a class="navbar-brand" href="./#!/">Home Portal</a>
     	<!-- Breadcrumbs-->
-		<ul id="breadcrumb">
-			<li><a href="#"><span class="icon icon-home"> </span></a></li>
-			<li><a href="#"><span class="icon icon-beaker"> </span> Projects</a></li>
-			<li><a href="#"><span class="icon icon-double-angle-right"></span> Breadcrumb</a></li>
-			<li><a href="#"><span class="icon icon-rocket"> </span> Getting started</a></li>
-			<li><a href="#"><span class="icon icon-arrow-down"> </span> Download</a></li>
+		<ul id="breadcrumb" ng-controller="navigate">
+			<li ng-repeat="n in navi"><a href="{{n.url}}">{{n.name}}</a></li>
 		</ul>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -54,7 +50,7 @@
 							<i class="fa fa-fw fa-circle"></i>
 						</span>
 					</a>
-					<div class="dropdown-menu" aria-labelledby="messagesDropdown">
+					<div class="dropdown-menu dropdown-menu-right-position" aria-labelledby="messagesDropdown">
 						<h6 class="dropdown-header">New Messages:</h6>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#">
@@ -88,7 +84,7 @@
 							<i class="fa fa-fw fa-circle"></i>
 						</span>
 					</a>
-					<div class="dropdown-menu" aria-labelledby="alertsDropdown">
+					<div class="dropdown-menu dropdown-menu-right-position" aria-labelledby="alertsDropdown">
 						<h6 class="dropdown-header">New Alerts:</h6>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#">

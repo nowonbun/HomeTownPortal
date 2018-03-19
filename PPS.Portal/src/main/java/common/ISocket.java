@@ -17,6 +17,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 
+import entity.SessionNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 
@@ -46,6 +47,16 @@ public abstract class ISocket extends ICommon {
 			return;
 		}
 		main(node);
+	}
+
+	protected void sendMessage(String key, String data) throws IOException {
+		String json = createJson(key, data);
+		sendMessage(json);
+	}
+
+	protected void sendMessage(String key, String data, SessionNode socketSession) throws IOException {
+		String json = createJson(key, data);
+		sendMessage(json, socketSession.getSocketSession());
 	}
 
 	protected void sendMessage(WebSocketResult node) throws IOException {

@@ -29,6 +29,11 @@ body.sticky-footer .content-wrapper {
 	color: black;
 }
 
+.dropdown-menu-right-position {
+	left: auto;
+	right: 0px;
+}
+
 /*.card:hover {
 	border: 1px solid blue;
 }*/
@@ -126,7 +131,6 @@ body.sticky-footer .content-wrapper {
 }
 /*card event*/
 /*Breadcrumb*/
-
 #breadcrumb {
 	list-style: none;
 	display: inline-block;

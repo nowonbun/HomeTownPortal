@@ -10,6 +10,7 @@ import common.Util;
 import common.Workflow;
 import dao.CardDao;
 import dao.MasterDao;
+import entity.NavigateNode;
 import entity.WebSocketNode;
 import model.CardType;
 import model.Group;
@@ -25,28 +26,34 @@ public class Card extends IWorkflow {
 		String body;
 		String href;
 	}
+
 	private boolean containGroup(model.Card card, String code) {
-		for(Group g : card.getGroups()) {
-			if(Util.StringEquals(g.getCode(), code)) {
+		for (Group g : card.getGroups()) {
+			if (Util.StringEquals(g.getCode(), code)) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	@Override
 	public String main(WebSocketNode node) {
 		List<model.Card> cards = MasterDao.getDao(CardDao.class).getCardAll();
 		List<Node> data = new ArrayList<>();
 		Group group = super.getUserinfo(node.getSession()).getUser().getGroup();
 		for (model.Card card : cards) {
-			if(!containGroup(card, group.getCode())) {
+			if (!containGroup(card, group.getCode())) {
 				continue;
 			}
 			Node entity = new Node();
 			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMG)) {
 				entity.typeHeaderClass = "card-image";
-				entity.background = "url('data:image/jpg;base64," + Base64.getEncoder().encodeToString(card.getImg())
-						+ "') center / cover";
+				if (card.getImg() != null) {
+					entity.background = "url('data:image/jpg;base64,"
+							+ Base64.getEncoder().encodeToString(card.getImg()) + "') center / cover";
+				} else {
+					entity.background = "url('./contents/no_card.jpg') center / cover";
+				}
 				entity.header = "";
 				entity.border = "";
 				entity.body = "<span class='card-image__body'>" + card.getDescription() + "</span>";
@@ -66,6 +73,11 @@ public class Card extends IWorkflow {
 			data.add(entity);
 		}
 		return JsonConverter.create(data);
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return null;
 	}
 
 }

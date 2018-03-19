@@ -10,8 +10,10 @@ import javax.websocket.server.ServerEndpoint;
 import common.HttpSessionConfigurator;
 import common.ISocket;
 import common.IWorkflow;
+import common.JsonConverter;
 import common.Util;
 import common.Workflow;
+import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 
@@ -26,7 +28,10 @@ public class Socket extends ISocket {
 			if (Util.StringEquals(ret.getData(), Login.NG)) {
 				return;
 			}
-			sendMessage(getClass(node.getKey(), node));
+			ret = getClass(node.getKey(), node);
+			List<NavigateNode> navi = ret.getNavigate();
+			sendMessage("navigate", JsonConverter.create(navi), node.getSession());
+			sendMessage(ret);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

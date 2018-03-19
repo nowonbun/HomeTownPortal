@@ -7,7 +7,8 @@ app.config(function($routeProvider) {
         templateUrl : "./views/card.jsp"
     })
     .when("/admin",{
-    	templateUrl : "./views/test.jsp"
+    	controller: "admin",
+    	templateUrl : "./views/admin.jsp"
     })
     .otherwise({
     	redirectTo: "/"
