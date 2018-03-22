@@ -37,7 +37,11 @@ app.controller("admin", [ '$scope', '$sanitize', '$sce', '_ws',
 			_ws.message(function(msg) {
 				var node = JSON.parse(msg.data);
 				if (node.key === "admin") {
-					console.log(node.data)
+					//TODO: This program is if the internet is connected, we can not work it.
+					console.log(node.data);
+					$scope.cards = JSON.parse(node.data);
+					//console.log("TEST");
+					$scope.$apply();
 				}
 			});
 

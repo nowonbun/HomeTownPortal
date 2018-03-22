@@ -12,6 +12,7 @@ import dao.CardDao;
 import dao.MasterDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
+import model.CardStep;
 import model.CardType;
 import model.Group;
 
@@ -43,6 +44,9 @@ public class Card extends IWorkflow {
 		Group group = super.getUserinfo(node.getSession()).getUser().getGroup();
 		for (model.Card card : cards) {
 			if (!containGroup(card, group.getCode())) {
+				continue;
+			}
+			if (!Util.StringEquals(CardStep.HOME, card.getCardStep().getStep())) {
 				continue;
 			}
 			Node entity = new Node();
