@@ -5,10 +5,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-/**
- * The persistent class for the MST_CARD database table.
- * 
- */
 @Entity
 @Table(name = "MST_CARD")
 @NamedQuery(name = "Card.findAll", query = "SELECT c FROM Card c")
@@ -41,6 +37,9 @@ public class Card implements Serializable {
 	@Column(name = "TITLE")
 	private String title;
 
+	@Column(name = "ORDER_SEQ")
+	private int orderSeq;
+
 	@ManyToMany
 	@JoinTable(name = "MAP_CARD_GROUP", joinColumns = { @JoinColumn(name = "CARD_CODE") }, inverseJoinColumns = {
 			@JoinColumn(name = "GROUP_CODE") })
@@ -55,6 +54,10 @@ public class Card implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "CARD_TYPE")
 	private CardType cardType;
+
+	@ManyToOne
+	@JoinColumn(name = "CARD_GROUP")
+	private CardGroup cardGroup;
 
 	public Card() {
 	}
@@ -123,6 +126,14 @@ public class Card implements Serializable {
 		this.title = title;
 	}
 
+	public int getOrderSeq() {
+		return this.orderSeq;
+	}
+
+	public void setOrderSeq(int orderSeq) {
+		this.orderSeq = orderSeq;
+	}
+
 	public CardStep getCardStep() {
 		return this.cardStep;
 	}
@@ -137,6 +148,14 @@ public class Card implements Serializable {
 
 	public void setCardType(CardType cardType) {
 		this.cardType = cardType;
+	}
+
+	public CardGroup getCardGroup() {
+		return this.getCardGroup();
+	}
+
+	public void setCardGroup(CardGroup cardGroup) {
+		this.cardGroup = cardGroup;
 	}
 
 	public List<Group> getGroups() {

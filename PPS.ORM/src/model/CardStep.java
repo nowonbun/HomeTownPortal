@@ -4,10 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The persistent class for the MST_CARD_STEP database table.
- * 
- */
 @Entity
 @Table(name = "MST_CARD_STEP")
 @NamedQuery(name = "CardStep.findAll", query = "SELECT c FROM CardStep c")

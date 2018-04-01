@@ -32,9 +32,9 @@ public class CardTypeDao extends Dao<CardType> {
 		}
 	}
 
-	public CardType getCardType(String step) {
+	public CardType getCardType(String type) {
 		initialize();
-		return singleton.stream().filter(x -> x.getCardType().equals(step)).findFirst().get();
+		return singleton.stream().filter(x -> x.getCardType().equals(type)).findFirst().get();
 	}
 
 }

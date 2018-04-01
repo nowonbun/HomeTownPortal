@@ -10,9 +10,12 @@ INSERT INTO MST_CARD_STEP(STEP, NAME) VALUES ('ADMN', 'Admin tile');
 INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES('IMG','Image Card');
 INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES('EVT','Default Card');
 
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE) VALUES('ADMN','Admin card','./#!/admin','HOME',null,'Admin',LOAD_FILE('/home/sy/git/Public_Portal_System/PPS.Portal/WebContent/contents/admin.jpg'),null,null,'IMG');
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE) VALUES('APPL','Application card','./#!/application','HOME',null,'Application',LOAD_FILE('/home/sy/git/Public_Portal_System/PPS.Portal/WebContent/contents/application.jpg'),null,null,'IMG');
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE) VALUES('USAM','User Application management','./#!/applymanagement','ADMN',null,'Application User Management',null,null,null,'IMG');
+INSERT INTO MST_CARD_GROUP(CARD_GROUP,NAME,ORDER_SEQ) VALUES('MNGM', 'Management',1);
+INSERT INTO MST_CARD_GROUP(CARD_GROUP,NAME,ORDER_SEQ) VALUES('GTAP','Guest Application',1);
+
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CARD_GROUP,ORDER_SEQ) VALUES('ADMN','Admin card','./#!/admin','HOME',null,'Admin',LOAD_FILE('/home/sy/git/Public_Portal_System/PPS.Portal/WebContent/contents/admin.jpg'),null,null,'IMG','MNGM',1);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CARD_GROUP,ORDER_SEQ) VALUES('APPL','Application card','./#!/application','HOME',null,'Application',LOAD_FILE('/home/sy/git/Public_Portal_System/PPS.Portal/WebContent/contents/application.jpg'),null,null,'IMG','GTAP',1);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CARD_GROUP,ORDER_SEQ) VALUES('USAM','User Application management','./#!/applymanagement','ADMN',null,'Application User Management',null,null,null,'IMG','MNGM',1);
 
 INSERT INTO MAP_CARD_GROUP (GROUP_CODE,CARD_CODE) VALUES('ADMIN','ADMN');
 INSERT INTO MAP_CARD_GROUP (GROUP_CODE,CARD_CODE) VALUES('GUEST','APPL');

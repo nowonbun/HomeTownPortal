@@ -50,7 +50,7 @@ public class Card extends IWorkflow {
 				continue;
 			}
 			Node entity = new Node();
-			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMG)) {
+			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
 				entity.typeHeaderClass = "card-image";
 				if (card.getImg() != null) {
 					entity.background = "url('data:image/jpg;base64,"
@@ -62,7 +62,7 @@ public class Card extends IWorkflow {
 				entity.border = "";
 				entity.body = "<span class='card-image__body'>" + card.getDescription() + "</span>";
 				entity.href = card.getHref();
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMG)) {
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
 				entity.typeHeaderClass = "card-event";
 				entity.background = card.getColor();
 				entity.header = card.getTitle();

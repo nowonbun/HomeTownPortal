@@ -29,6 +29,7 @@ public class Admin extends IWorkflow {
 		String border;
 		String body;
 		String href;
+		String group;
 	}
 
 	private boolean containGroup(model.Card card, String code) {
@@ -53,7 +54,7 @@ public class Admin extends IWorkflow {
 				continue;
 			}
 			Node entity = new Node();
-			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMG)) {
+			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
 				entity.typeHeaderClass = "card-image";
 				if (card.getImg() != null) {
 					entity.background = "url('data:image/jpg;base64,"
@@ -65,7 +66,8 @@ public class Admin extends IWorkflow {
 				entity.border = "";
 				entity.body = "<span class='card-image__body'>" + card.getDescription() + "</span>";
 				entity.href = card.getHref();
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMG)) {
+				entity.group = card.getCardGroup().getName();
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.EVENT)) {
 				entity.typeHeaderClass = "card-event";
 				entity.background = card.getColor();
 				entity.header = card.getTitle();
@@ -74,6 +76,7 @@ public class Admin extends IWorkflow {
 						+ card.getDescription() + "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon()
 						+ "'></i>";
 				entity.href = card.getHref();
+				entity.group = card.getCardGroup().getName();
 			} else {
 				continue;
 			}

@@ -4,18 +4,14 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The persistent class for the MST_CARD_TYPE database table.
- * 
- */
 @Entity
 @Table(name = "MST_CARD_TYPE")
 @NamedQuery(name = "CardType.findAll", query = "SELECT c FROM CardType c")
 public class CardType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final String IMG = "IMG";
-	public static final String EVT = "EVT";
+	public static final String IMAGE = "IMG";
+	public static final String EVENT = "EVT";
 
 	@Id
 	@Column(name = "CARD_TYPE")
