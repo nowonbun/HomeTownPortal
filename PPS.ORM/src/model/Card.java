@@ -151,7 +151,7 @@ public class Card implements Serializable {
 	}
 
 	public CardGroup getCardGroup() {
-		return this.getCardGroup();
+		return this.cardGroup;
 	}
 
 	public void setCardGroup(CardGroup cardGroup) {

@@ -95,8 +95,12 @@ body.sticky-footer .content-wrapper {
 }
 /*card image*/
 .card-image.mdl-card {
-	width: 256px;
-	height: 256px;
+	width: 128px;
+	height: 128px;
+}
+
+.card-image.mdl-card.fix128 {
+	min-height: 128px;
 }
 
 .card-image>.mdl-card__actions {

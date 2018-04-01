@@ -32,9 +32,7 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     	<a class="navbar-brand" href="./#!/">Home Portal</a>
     	<!-- Breadcrumbs-->
-		<ul id="breadcrumb" ng-controller="navigate">
-			<navigation></navigation>
-		</ul>
+		<ul id="breadcrumb" navigation ng-controller="navigate"></ul>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -115,6 +113,11 @@
 					</div>
 				</li>
 				<li class="nav-item">
+					<a class="nav-link" href="./#!/profile">
+						<i class="fa fa-fw  fa-user"></i>Profile
+					</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
 						<i class="fa fa-fw fa-sign-out"></i>Logout
 					</a>
@@ -122,7 +125,9 @@
 			</ul>
 		</div>
 	</nav>
-	<div class="content-wrapper" ng-view></div>
+	<div class="content-wrapper">
+		<div class="container-fluid" ng-view></div>
+	</div>
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
