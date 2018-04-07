@@ -27,7 +27,9 @@
 	<link href="./css/size/4large.css" rel="stylesheet">
 	<link href="./css/size/5extralarge.css" rel="stylesheet">
 </head>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top" ng-controller="main">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+	<!-- loading -->
+	<div class="loader-loc" loader ng-show="isLoader"></div>
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     	<a class="navbar-brand" href="./#!/">Home Portal</a>

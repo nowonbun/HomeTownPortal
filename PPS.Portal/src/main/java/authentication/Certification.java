@@ -71,7 +71,7 @@ public class Certification extends IServlet {
 			if (responseCode != 200) {
 				throw new RuntimeException(GetResponse(con.getErrorStream()));
 			}
-			user.setUser(con.getInputStream());
+			user.createUser(con.getInputStream());
 			setLoginSession(user);
 			Redirect("./index.jsp");
 		} catch (Throwable e) {

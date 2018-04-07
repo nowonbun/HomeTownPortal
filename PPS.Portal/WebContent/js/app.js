@@ -22,9 +22,18 @@ app.config(function($routeProvider) {
     	redirectTo: "/"
     });
 });
+
 app.directive("navigation", function() {
     return {
     	restrict : "A",
         template : "<li ng-repeat='n in navi'><a href='{{n.url}}'>{{n.name}}</a></li>"
     };
 });
+
+app.directive("loader", function() {
+    return {
+    	restrict : "A",
+        template : "<div class='loader'></div>"
+    };
+});
+
