@@ -20,13 +20,13 @@ public class Logout extends IServlet {
 		try {
 			Cookie cookie = getCookie(Certification.COOKIE_KEY);
 			UserService info = getUserinfo();
-			if(info != null) {
+			if (info != null) {
 				CookieDao dao = FactoryDao.getDao(CookieDao.class);
 				model.Cookie cookieitem = dao.getEntity(info.getUser().getId(), cookie.getValue());
 				if (cookieitem != null) {
-					//dao.delete(cookieitem);
+					// dao.delete(cookieitem);
 					cookieitem.getStateInfo().setIsDelete(true);
-					cookieitem.update(info.getId());
+					cookieitem.updateTransation(info.getId());
 					dao.update(cookieitem);
 				}
 			}

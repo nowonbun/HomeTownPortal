@@ -15,6 +15,9 @@
 		<class>model.State</class>
 		<class>model.StateInfo</class>
 		<class>model.User</class>
+		<class>model.Application</class>
+		<class>model.ApplicationPK</class>
+		<class>model.Comment</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.parameters" value="true" />

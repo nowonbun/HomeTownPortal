@@ -1,0 +1,7 @@
+1. When the table of transaction is added, the class must need is inherited from the "TransactionModel".
+2. When the class is created with used the generator, it is not completely that the relation of class is. So, need have to modify the class as coding.
+   for reference class - Password, Application...
+3. If the new class is added with the relation, the related class need have to add the relation, too.
+   for reference class - User
+   
+for referce commit url - 

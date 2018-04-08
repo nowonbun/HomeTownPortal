@@ -38,6 +38,9 @@ public class User extends TransactionModel implements Serializable {
 	@OneToMany(mappedBy = "user")
 	private List<Password> passwords;
 
+	@OneToMany(mappedBy = "user")
+	private List<Application> applications;
+
 	@ManyToOne
 	@JoinColumn(name = "GROUP_CODE")
 	private Group group;
@@ -46,12 +49,12 @@ public class User extends TransactionModel implements Serializable {
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	public User() {
-		
+	private User() {
+
 	}
 
 	public User(String user) {
-		super.create(user);
+		super.createTransation(user);
 	}
 
 	public String getId() {
@@ -152,6 +155,28 @@ public class User extends TransactionModel implements Serializable {
 		password.setUser(null);
 
 		return password;
+	}
+
+	public List<Application> getApplications() {
+		return this.applications;
+	}
+
+	public void setApplications(List<Application> applications) {
+		this.applications = applications;
+	}
+
+	public Application addApplication(Application application) {
+		getApplications().add(application);
+		application.setUser(this);
+
+		return application;
+	}
+
+	public Application removeApplication(Application application) {
+		getApplications().remove(application);
+		application.setUser(null);
+
+		return application;
 	}
 
 	public StateInfo getStateInfo() {

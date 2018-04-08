@@ -19,7 +19,7 @@ public class Cookie extends TransactionModel implements Serializable {
 	@Column(name = "IPADDRESS")
 	private String ipaddress;
 
-	//@Temporal(TemporalType.DATE)
+	// @Temporal(TemporalType.DATE)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "LAST_CONNECT_DATE")
 	private Date lastConnectDate;
@@ -32,13 +32,19 @@ public class Cookie extends TransactionModel implements Serializable {
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	public Cookie() {
-		
+	private Cookie() {
+
 	}
-	public Cookie(String user) {
-		super.create(user);
+
+	public Cookie(User user, String cookiekey, String createUser) {
+		CookiePK pk = new CookiePK();
+		pk.setId(user.getId());
+		pk.setCookiekey(cookiekey);
+		this.setId(pk);
+		this.setUser(user);
+		super.createTransation(createUser);
 	}
-	
+
 	public CookiePK getId() {
 		return this.id;
 	}

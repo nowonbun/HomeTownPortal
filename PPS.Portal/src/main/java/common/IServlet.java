@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import authentication.UserService;
 import dao.CookieDao;
 import dao.FactoryDao;
-import model.CookiePK;
 
 public abstract class IServlet extends HttpServlet {
 
@@ -114,18 +113,10 @@ public abstract class IServlet extends HttpServlet {
 		CookieDao dao = FactoryDao.getDao(CookieDao.class);
 		model.Cookie entity = dao.getEntityByCookiekey(key);
 		if (entity != null) {
-			// dao.delete(entity);
-			// entity.getStateInfo().setIsDelete(true);
-			// dao.update(entity);
-			entity.update(user.getId());
+			entity.updateTransation(user.getId());
 		} else {
-			entity = new model.Cookie(user.getId());
+			entity = new model.Cookie(user.getUser(), key, user.getId());
 		}
-		CookiePK pk = new CookiePK();
-		pk.setId(user.getId());
-		pk.setCookiekey(key);
-		entity.setId(pk);
-		entity.setUser(user.getUser());
 		entity.setIpaddress(Util.getRemoteAddr(getRequest()));
 		entity.setLastConnectDate(new Date());
 		dao.create(entity);

@@ -5,7 +5,7 @@ import java.util.Date;
 import model.StateInfo;
 
 public abstract class TransactionModel {
-	public void create(String user) {
+	public void createTransation(String user) {
 		StateInfo state = new StateInfo();
 		state.setCreater(user);
 		state.setCreateDate(new Date());
@@ -14,12 +14,12 @@ public abstract class TransactionModel {
 		this.setStateInfo(state);
 	}
 
-	public void update(String user) {
+	public void updateTransation(String user) {
 		this.getStateInfo().setLastUpdater(user);
 		this.getStateInfo().setLastUpdate(new Date());
 	}
 
-	public abstract void setStateInfo(StateInfo info);
+	public abstract void setStateInfo(StateInfo stateInfo);
 
 	public abstract StateInfo getStateInfo();
 }

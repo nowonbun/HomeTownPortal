@@ -25,11 +25,16 @@ public class Password extends TransactionModel implements Serializable {
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	public Password() {
+	private Password() {
 
 	}
-	public Password(String user) {
-		super.create(user);
+
+	public Password(User user, String createUser) {
+		PasswordPK pk = new PasswordPK();
+		pk.setId(user.getId());
+		this.setId(pk);
+		this.setUser(user);
+		super.createTransation(createUser);
 	}
 
 	public PasswordPK getId() {
