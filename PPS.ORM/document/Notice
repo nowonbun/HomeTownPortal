@@ -3,5 +3,6 @@
    for reference class - Password, Application...
 3. If the new class is added with the relation, the related class need have to add the relation, too.
    for reference class - User
+4. The constructor of transaction is the type of private. 
    
-for referce commit url - 
+for referce commit url - https://github.com/nowonbun/Public_Portal_System/commit/6fd72325e4f0b3e1b3f6088f040fed18d4522f5e

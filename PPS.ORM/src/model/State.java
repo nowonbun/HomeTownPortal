@@ -10,12 +10,6 @@ import java.util.List;
 public class State implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static int GOOGLE_ID = 100;
-	public static int PRIVATE_ID = 101;
-	public static int APPLYING = 200;
-	public static int APPLICATION_REFUSED = 201;
-	public static int APPLICATION_APPROVED = 202;
-
 	@Id
 	@Column(name = "STATE")
 	private int state;
