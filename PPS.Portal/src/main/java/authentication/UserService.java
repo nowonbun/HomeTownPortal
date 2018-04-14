@@ -212,7 +212,7 @@ public class UserService {
 		this.user.setGivenName(this.givenName);
 		this.user.setName(this.displayName);
 		this.user.setNickName(this.nickname);
-		this.user.setImg(this.image_url);
+		this.user.setImgUrl(this.image_url);
 		this.user.setBackgroundImg(this.coverPhoto_url);
 		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup("GUEST"));
 		dao.create(this.user);
@@ -224,7 +224,7 @@ public class UserService {
 		this.givenName = this.user.getGivenName();
 		this.displayName = this.user.getName();
 		this.nickname = this.user.getNickName();
-		this.image_url = this.user.getImg();
+		this.image_url = this.user.getImgUrl();
 		this.coverPhoto_url = this.user.getBackgroundImg();
 	}
 }

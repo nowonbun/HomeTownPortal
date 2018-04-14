@@ -23,8 +23,12 @@ public class User extends TransactionModel implements Serializable {
 	@Column(name = "GIVEN_NAME")
 	private String givenName;
 
-	@Column(name = "IMG")
-	private String img;
+	@Column(name = "IMG_URL")
+	private String imgUrl;
+
+	@Lob
+	@Column(name = "IMG_BLOB")
+	private byte[] imgBlob;
 
 	@Column(name = "NAME")
 	private String name;
@@ -81,12 +85,20 @@ public class User extends TransactionModel implements Serializable {
 		this.givenName = givenName;
 	}
 
-	public String getImg() {
-		return this.img;
+	public String getImgUrl() {
+		return this.imgUrl;
 	}
 
-	public void setImg(String img) {
-		this.img = img;
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public byte[] getImgBlob() {
+		return this.imgBlob;
+	}
+
+	public void setImgBlob(byte[] imgBlob) {
+		this.imgBlob = imgBlob;
 	}
 
 	public String getName() {

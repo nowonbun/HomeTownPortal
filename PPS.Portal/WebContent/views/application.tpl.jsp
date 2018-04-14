@@ -13,7 +13,7 @@
     					<div class="col-12">
     						<div class="md-form form-group pps-group">
 				                <input type="text" class="form-control pps-input" id="given_name" ng-model="given_name">
-				                <label for="given_name" class="pps-label">Given name</label>
+				                <label for="given_name" class="pps-label" id="given_name_label">Given name</label>
 				            </div>
 						</div>
 					</div>
@@ -21,7 +21,7 @@
 						<div class="col-12">
 				            <div class="md-form form-group pps-group">
 				                <input type="text" class="form-control pps-input" id="name" ng-model="name">
-				                <label for="name" class="pps-label">Name</label>
+				                <label for="name" class="pps-label" id="name_label">Name</label>
 				            </div>
     					</div>
     				</div>
@@ -29,7 +29,7 @@
 						<div class="col-12">
 				            <div class="md-form form-group pps-group">
 				                <input type="text" class="form-control pps-input" id="nick_name" ng-model="nick_name">
-				                <label for="name" class="nick_name">Nick name</label>
+				                <label for="name" class="nick_name" id="nick_name_label">Nick name</label>
 				            </div>
     					</div>
     				</div>
@@ -37,7 +37,7 @@
     					<div class="col-12">
     						<div class="pps-group">
     							<div class="pps-image">
-    								<img src="./contents/no_photo.png" class="img-thumbnail">
+    								<img ng-src="{{img_url}}" class="img-thumbnail">
     							</div>
     							<form>
 								    <div class="md-form pps-group-nomargin">
@@ -56,13 +56,21 @@
     					</div>
     				</div>
     				<div class="row">
+    					<div class="col-12">
+    						<div class="md-form">
+							    <textarea id="commenct" class="md-textarea md-textarea-auto form-control" rows="1" ng-model="comment"></textarea>
+							    <label for="commenct" class="pps-label" id="comment_label">Comment</label>
+							</div>
+    					</div>
+    				</div>
+    				<div class="row">
 						<div class="col-12">
 				            <label class="pps-notice-label"> NOTICE : Please allow me a permission for will use this system.</label>
     					</div>
     				</div>
     				<div class="row" style="margin-top: 20px;">
 						<div class="col-12">
-				            <button type="button" class="btn btn-success float-right">Apply</button>
+				            <button type="button" class="btn btn-success float-right" ng-click="apply();">Apply</button>
     					</div>
     				</div>
     			</div>
