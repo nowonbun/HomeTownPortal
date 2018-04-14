@@ -4,6 +4,7 @@ import common.IWorkflow;
 import common.Workflow;
 import entity.NavigateNode;
 import entity.WebSocketNode;
+import entity.WebSocketResult;
 
 @Workflow(name = "login")
 public class Login extends IWorkflow {
@@ -12,11 +13,11 @@ public class Login extends IWorkflow {
 	public static String NG = "NG";
 
 	@Override
-	public String main(WebSocketNode node) {
+	public WebSocketResult init(WebSocketNode node) {
 		if (!isAuth(node.getSession())) {
-			return Login.NG;
+			return createWebSocketResult(Login.NG, node);
 		}
-		return Login.OK;
+		return createWebSocketResult(Login.OK, node);
 	}
 
 	@Override

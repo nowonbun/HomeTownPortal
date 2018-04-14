@@ -9,7 +9,8 @@ public class WebSocketResult {
 	private List<NavigateNode> navigate = new ArrayList<>();
 	private WebSocketNode node;
 	private WebSocketResultType type;
-	private String key;
+	private String control;
+	private String action;
 	private String data;
 
 	public WebSocketResult() {
@@ -24,12 +25,20 @@ public class WebSocketResult {
 		this.type = type;
 	}
 
-	public String getKey() {
-		return key;
+	public String getControl() {
+		return control;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setControl(String control) {
+		this.control = control;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 	public String getData() {

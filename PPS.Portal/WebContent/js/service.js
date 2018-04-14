@@ -34,7 +34,7 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 			_loader.show();
 			var node = JSON.parse(msg.data);
 			for ( var i in delegate.error) {
-				if (node.key === delegate.message[i].key) {
+				if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
 					delegate.error[i].func.call(this, node.data);
 				}
 			}
@@ -46,7 +46,7 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 			_loader.show();
 			var node = JSON.parse(msg.data);
 			for ( var i in delegate.message) {
-				if (node.key === delegate.message[i].key) {
+				if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
 					delegate.message[i].func.call(this, node.data);
 				}
 			}
@@ -69,10 +69,11 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 		}
 		console.error("It's not defined because not function method.");
 	}
-	function define2(type, key, func) {
+	function define2(type, control, action, func) {
 		if (func !== null && func !== undefined && typeof func === "function") {
 			delegate[type].push({
-				key : key,
+				control : control,
+				action : action,
 				func : func
 			});
 			return;
@@ -85,15 +86,19 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 	this.close = function(func) {
 		define("close", func);
 	};
-	this.error = function(key, func) {
-		define2("error", key, func);
+	this.error = function(control, action, func) {
+		define2("error", control, action, func);
 	}
-	this.message = function(key, func) {
-		define2("message", key, func);
+	this.message = function(control, action, func) {
+		define2("message", control, action, func);
 	};
-	this.send = function(key, data) {
+	this.send = function(control, action, data) {
+		if (data === undefined) {
+			data = "";
+		}
 		sendNode(JSON.stringify({
-			key : key,
+			control : control,
+			action : action,
 			data : data
 		}));
 	}

@@ -1,48 +1,5 @@
 @charset "UTF-8";
 
-.pps-page {
-	padding: 20px;
-}
-
-.pps-page .pps-title {
-	padding: 10px;
-	border: 1px solid #AAA;
-	border-radius: 5px;
-	font-size: 15pt;
-	font-weight: bold;
-	margin: 5px;
-	margin-bottom: 20px;
-	/*box-shadow: 5px 5px 7px 3px rgba(0,0,0,0.1);*/
-	text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
-}
-
-.pps-page .pps-contents {
-	padding: 10px;
-	border: 1px solid #AAA;
-	border-radius: 5px;
-	margin: 5px;;
-	/*box-shadow: 5px 5px 7px 3px rgba(0,0,0,0.1);*/
-}
-
-.pps-page .pps-header {
-	margin: 2px;
-	padding: 5px;
-	padding-left: 10px;
-	/*border-bottom: 1px solid #AAA;*/
-	border-left: 5px solid #343a40;
-	font-size: 13pt;
-	/*box-shadow: 3px 3px 0px #EEE;*/
-	/*border-radius: 5px;*/
-	text-shadow: 2px 2px 2px #BBB
-}
-
-.pps-page .pps-body {
-	margin-top: 15px;
-	margin-left: 10px;
-	margin-bottom: 15px;
-	margin-right: 10px;
-}
-
 .pps-group {
 	margin-top: 1.0rem;
 	margin-bottom: 0rem;
@@ -74,6 +31,10 @@
     font-size: 11pt;
     margin-top: 30px;
     color: #b3b3b3;
+}
+
+input.form-control{
+	box-sizing: border-box!important;
 }
 
 /*

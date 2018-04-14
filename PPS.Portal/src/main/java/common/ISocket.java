@@ -23,7 +23,8 @@ import entity.WebSocketResult;
 
 public abstract class ISocket extends ICommon {
 
-	public static String key = "key";
+	public static String control = "control";
+	public static String action = "action";
 	public static String data = "data";
 
 	@OnOpen
@@ -49,18 +50,19 @@ public abstract class ISocket extends ICommon {
 		main(node);
 	}
 
-	protected void sendMessage(String key, String data) throws IOException {
-		String json = createJson(key, data);
+	protected void sendMessage(String control, String action, String data) throws IOException {
+		String json = createJson(control, action, data);
 		sendMessage(json);
 	}
 
-	protected void sendMessage(String key, String data, SessionNode socketSession) throws IOException {
-		String json = createJson(key, data);
+	protected void sendMessage(String control, String action, String data, SessionNode socketSession)
+			throws IOException {
+		String json = createJson(control, action, data);
 		sendMessage(json, socketSession.getSocketSession());
 	}
 
 	protected void sendMessage(WebSocketResult node) throws IOException {
-		String json = createJson(node.getKey(), node.getData());
+		String json = createJson(node.getControl(), node.getAction(), node.getData());
 		if (node.getType() == WebSocketResultType.Broadcast) {
 			sendMessage(json);
 		} else {
@@ -84,9 +86,10 @@ public abstract class ISocket extends ICommon {
 
 	protected abstract void main(WebSocketNode node);
 
-	protected String createJson(String key, String data) {
+	protected String createJson(String control, String action, String data) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
-		builder.add(ISocket.key, key);
+		builder.add(ISocket.control, control);
+		builder.add(ISocket.action, action);
 		builder.add(ISocket.data, data);
 		JsonObject jsonObject = builder.build();
 		StringWriter stringwriter = new StringWriter();
@@ -100,14 +103,15 @@ public abstract class ISocket extends ICommon {
 		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
 			JsonObject object = jsonReader.readObject();
 			WebSocketNode node = new WebSocketNode();
-			node.setKey(object.getString(ISocket.key));
-			if (node.getKey() == null) {
+			node.setControl(object.getString(ISocket.control));
+			if (node.getControl() == null) {
+				return null;
+			}
+			node.setAction(object.getString(ISocket.action));
+			if (node.getAction() == null) {
 				return null;
 			}
 			node.setData(object.getString(ISocket.data));
-			if (node.getData() == null) {
-				return null;
-			}
 			node.setSession(SessionFactory.getSession(this.getClass(), socketSession));
 			if (node.getSession() == null) {
 				return null;

@@ -13,6 +13,5 @@ public class ApplicationDaoTest {
 		Application app = new Application(userdao.getUser("admin"), "TEST");
 		app.getStateInfo().setState(StateMaster.getApplying());
 		dao.create(app);
-
 	}
 }

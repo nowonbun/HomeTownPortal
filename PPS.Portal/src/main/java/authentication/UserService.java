@@ -174,11 +174,6 @@ public class UserService {
 	}
 
 	public void createUser(InputStream stream) {
-		UserDao dao = FactoryDao.getDao(UserDao.class);
-		this.user = dao.getUser(this.id);
-		if(this.user != null) {
-			return;
-		}
 		try (JsonReader reader = Json.createReader(stream)) {
 			JsonObject obj = reader.readObject();
 			this.kind = obj.getString("kind");
@@ -207,7 +202,11 @@ public class UserService {
 			this.coverInfo_leftImageOffset = obj.getJsonObject("cover").getJsonObject("coverInfo")
 					.getInt("leftImageOffset");
 		}
-		
+		UserDao dao = FactoryDao.getDao(UserDao.class);
+		this.user = dao.getUser(this.id);
+		if(this.user != null) {
+			return;
+		}
 		this.user = new User(this.id);
 		this.user.setId(this.id);
 		this.user.setGivenName(this.givenName);

@@ -4,13 +4,14 @@ import common.IWorkflow;
 import common.Workflow;
 import entity.NavigateNode;
 import entity.WebSocketNode;
+import entity.WebSocketResult;
 
 @Workflow(name = "main")
 public class Main extends IWorkflow {
 
 	@Override
-	public String main(WebSocketNode node) {
-		return "test";
+	public WebSocketResult init(WebSocketNode node) {
+		return createWebSocketResult("TEST", node);
 	}
 
 	@Override

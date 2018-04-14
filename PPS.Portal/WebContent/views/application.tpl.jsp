@@ -3,8 +3,8 @@
 <%AuthServlet.auth(request, response);%>
 <link href="./css/views/application.css" rel="stylesheet">
 <div class="row">
-    <div class="col-12">
-    	<div class="mdl-shadow--2dp pps-page">
+    <div class="col-12 text-center">
+    	<div class="mdl-shadow--2dp pps-page max-page-1200">
     		<div class="pps-title z-depth-2">Application</div>
     		<div class="pps-contents z-depth-2">
     			<div class="pps-header">Infomation</div>

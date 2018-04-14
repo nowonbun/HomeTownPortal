@@ -12,6 +12,7 @@ import dao.CardDao;
 import dao.MasterDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
+import entity.WebSocketResult;
 import model.CardStep;
 import model.CardType;
 import model.Group;
@@ -38,7 +39,7 @@ public class Card extends IWorkflow {
 	}
 
 	@Override
-	public String main(WebSocketNode node) {
+	public WebSocketResult init(WebSocketNode node) {
 		List<model.Card> cards = MasterDao.getDao(CardDao.class).getCardAll();
 		List<Node> data = new ArrayList<>();
 		Group group = super.getUserinfo(node.getSession()).getUser().getGroup();
@@ -76,7 +77,7 @@ public class Card extends IWorkflow {
 			}
 			data.add(entity);
 		}
-		return JsonConverter.create(data);
+		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 
 	@Override

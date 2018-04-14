@@ -4,6 +4,7 @@ import common.IWorkflow;
 import common.Workflow;
 import entity.NavigateNode;
 import entity.WebSocketNode;
+import entity.WebSocketResult;
 
 @Workflow(name = "application")
 public class Application extends IWorkflow {
@@ -11,8 +12,8 @@ public class Application extends IWorkflow {
 	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/Application", "Application") };
 
 	@Override
-	protected String main(WebSocketNode node) {
-		return "Hello world";
+	public WebSocketResult init(WebSocketNode node) {
+		return createWebSocketResult("TEST", node);
 	}
 
 	@Override
