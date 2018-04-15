@@ -1,13 +1,59 @@
 app.service('_loader', [ '$rootScope', function($rootScope) {
-	this.show = function() {
-		$rootScope.isLoader = true;
-	}
-	this.hide = function() {
-		$rootScope.isLoader = false;
+	return {
+		show : function() {
+			$rootScope.isLoader = true;
+		},
+		hide : function() {
+			$rootScope.isLoader = false;
+		}
 	}
 } ]);
+app.service('_scopeService', [ '$rootScope', function($rootScope) {
+	return {
+		safeApply : function(fn) {
+			// var phase = $scope.$root.$$phase;
+			var phase = $rootScope.$$phase;
+			if (phase == '$apply' || phase == '$digest') {
+				if (fn && typeof fn === 'function') {
+					fn();
+				}
+			} else {
+				$rootScope.$apply(fn);
+			}
+		},
+	};
+} ]);
+app.service('_notification', [
+		'$rootScope',
+		'$timeout',
+		'_scopeService',
+		function($rootScope, $timeout, _scopeService) {
+			return {
+				setMessage : function(type, msg, cb) {
+					_scopeService.safeApply(function() {
+						if (type !== "success" && type !== "warning") {
+							type = "danger";
+						}
+						var dom = $("<div></div>").addClass("notification-row").append(
+								$("<div></div>").addClass("alert alert-" + type)
+										.append($("<button></button>").addClass("close").append($("<span></span>").attr("aria-hidden", "true").html("&times;"))).append(
+												$("<span></span>").addClass("glyphicon glyphicon-exclamation-sign").text(msg)));
+						if ($("div.notification-row").length > 5) {
+							$("div.notification-row")[0].remove();
+						}
+						$(".notification-zone").append(dom);
+						$timeout(function() {
+							dom.remove();
+							if (cb !== undefined) {
+								cb.call(this);
+							}
+						}, 5000);
+					});
+				}
+			}
+		} ]);
 
-app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
+app.service('_ws', [ '$rootScope', '_loader', '_scopeService', function($rootScope, _loader, _scopeService) {
 	var socket = new WebSocket("ws://localhost:8080/Portal/socket");
 	var delegate = {
 		open : [],
@@ -16,21 +62,21 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 		message : []
 	};
 	socket.onopen = function(msg) {
-		$rootScope.$apply(function() {
+		_scopeService.safeApply(function() {
 			for ( var i in delegate.open) {
 				delegate.open[i].call(this, msg);
 			}
 		});
 	};
 	socket.onclose = function(msg) {
-		$rootScope.$apply(function() {
+		_scopeService.safeApply(function() {
 			for ( var i in delegate.close) {
 				delegate.close[i].call(this, msg);
 			}
 		});
 	};
 	socket.onerror = function(msg) {
-		$rootScope.$apply(function() {
+		_scopeService.safeApply(function() {
 			_loader.show();
 			var node = JSON.parse(msg.data);
 			for ( var i in delegate.error) {
@@ -42,7 +88,7 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 		});
 	};
 	socket.onmessage = function(msg) {
-		$rootScope.$apply(function() {
+		_scopeService.safeApply(function() {
 			_loader.show();
 			var node = JSON.parse(msg.data);
 			for ( var i in delegate.message) {
@@ -80,26 +126,28 @@ app.service('_ws', [ '$rootScope', '_loader', function($rootScope, _loader) {
 		}
 		console.error("It's not defined because not function method.");
 	}
-	this.open = function(func) {
-		define("open", func);
-	};
-	this.close = function(func) {
-		define("close", func);
-	};
-	this.error = function(control, action, func) {
-		define2("error", control, action, func);
-	}
-	this.message = function(control, action, func) {
-		define2("message", control, action, func);
-	};
-	this.send = function(control, action, data) {
-		if (data === undefined) {
-			data = "";
+	return {
+		open : function(func) {
+			define("open", func);
+		},
+		close : function(func) {
+			define("close", func);
+		},
+		error : function(control, action, func) {
+			define2("error", control, action, func);
+		},
+		message : function(control, action, func) {
+			define2("message", control, action, func);
+		},
+		send : function(control, action, data) {
+			if (data === undefined) {
+				data = "";
+			}
+			sendNode(JSON.stringify({
+				control : control,
+				action : action,
+				data : data
+			}));
 		}
-		sendNode(JSON.stringify({
-			control : control,
-			action : action,
-			data : data
-		}));
 	}
 } ]);

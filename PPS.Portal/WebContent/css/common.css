@@ -38,9 +38,9 @@ body.sticky-footer .content-wrapper {
 	border: 1px solid blue;
 }*/
 .notification-zone {
-	position: absolute;
+	position: fixed;
 	right: 20px;
-	top: 10px;
+	top: 100px;
 	z-index: 1009;
 }
 

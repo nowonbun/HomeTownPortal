@@ -19,7 +19,7 @@ app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _load
 	_ws.send("card", "init");
 } ]);
 
-app.controller("application", [ '$scope', '_ws', function($scope, _ws) {
+app.controller("application", [ '$scope', '_ws', '_notification', function($scope, _ws, _notification) {
 	_ws.message("application", "init", function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
@@ -45,9 +45,13 @@ app.controller("application", [ '$scope', '_ws', function($scope, _ws) {
 			$("#comment_label").addClass("active");
 		}
 	});
-	
+
 	$scope.apply = function() {
-		if($.trim($scope.given_name) === ""){
+		if ($.trim($scope.given_name) === "") {
+			_notification.setMessage("danger","Please input the text of 'Given name'",function(){
+				$("#given_name").removeClass('error-focus');
+			});
+			$("#given_name").addClass('error-focus');
 			return;
 		}
 	}

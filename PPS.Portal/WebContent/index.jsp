@@ -30,6 +30,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<!-- loading -->
 	<div class="loader-loc" loader ng-show="isLoader"></div>
+	<div class="notification-zone"></div>
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     	<a class="navbar-brand" href="./#!/">Home Portal</a>

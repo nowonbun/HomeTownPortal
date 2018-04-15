@@ -37,6 +37,10 @@ input.form-control{
 	box-sizing: border-box!important;
 }
 
+.error-focus{
+	border-bottom-color: red!important;
+}
+
 /*
 .pps-margin {
 	margin-top: 10px;
