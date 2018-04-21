@@ -19,7 +19,7 @@ app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _load
 	_ws.send("card", "init");
 } ]);
 
-app.controller("application", [ '$scope', '_ws', '_notification', function($scope, _ws, _notification) {
+app.controller("application", [ '$scope', '_ws', '_notification', '_filereader', function($scope, _ws, _notification, _filereader) {
 	_ws.message("application", "init", function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
@@ -46,9 +46,16 @@ app.controller("application", [ '$scope', '_ws', '_notification', function($scop
 		}
 	});
 
+	$scope.fileupload = function() {
+		var file = _filereader.getFile($("#img_file"));
+		_filereader.readFile(file, function(node) {
+			$scope.img_url = node.binary;
+		});
+	}
+
 	$scope.apply = function() {
 		if ($.trim($scope.given_name) === "") {
-			_notification.setMessage("danger","Please input the text of 'Given name'",function(){
+			_notification.setMessage("danger", "Please input the text of 'Given name'", function() {
 				$("#given_name").removeClass('error-focus');
 			});
 			$("#given_name").addClass('error-focus');
@@ -71,5 +78,6 @@ app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
 app.controller("profile", [ '$scope', '_ws', function($scope, _ws) {
 	_ws.message("profile", "init", function(data) {
 	});
+
 	_ws.send("profile", "init");
 } ]);

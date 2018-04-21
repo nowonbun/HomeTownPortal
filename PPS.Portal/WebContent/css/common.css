@@ -95,12 +95,13 @@ body.sticky-footer .content-wrapper {
 }
 /*card image*/
 .card-image.mdl-card {
-	width: 128px;
-	height: 128px;
+	/*width: 128px;*/
+	/*height: 128px;*/
 }
 
-.card-image.mdl-card.fix128 {
-	min-height: 128px;
+.card-image.mdl-card.fixcard {
+	/*min-height: 128px;*/
+	/*min-width: 128px;*/
 }
 
 .card-image>.mdl-card__actions {

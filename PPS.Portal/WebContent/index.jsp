@@ -169,5 +169,6 @@
 	<script src="./js/common.js"></script>
 	<script src="./js/app.js"></script>
 	<script src="./js/service.js"></script>
+	<script src="./js/factory.js"></script>
 	<script src="./js/controller.js"></script>
 </html>
