@@ -11,13 +11,18 @@ public abstract class IWorkflow extends ICommon {
 
 	protected abstract NavigateNode[] navigation();
 
+	protected WebSocketResult createWebSocketResult(WebSocketNode node) {
+		return createWebSocketResult(WebSocketResultType.Single, node, node.getControl(), node.getAction(), "",
+				navigation());
+	}
+
 	protected WebSocketResult createWebSocketResult(String ret, WebSocketNode node) {
 		return createWebSocketResult(WebSocketResultType.Single, node, node.getControl(), node.getAction(), ret,
 				navigation());
 	}
 
-	protected WebSocketResult createWebSocketResult(WebSocketResultType type,String ret, WebSocketNode node) {
-		return createWebSocketResult(type,node, node.getControl(), node.getAction(), ret, navigation());
+	protected WebSocketResult createWebSocketResult(WebSocketResultType type, String ret, WebSocketNode node) {
+		return createWebSocketResult(type, node, node.getControl(), node.getAction(), ret, navigation());
 	}
 
 	protected WebSocketResult createWebSocketResult(WebSocketNode node, String control, String action, String data,

@@ -19,7 +19,8 @@ app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _load
 	_ws.send("card", "init");
 } ]);
 
-app.controller("application", [ '$scope', '_ws', '_notification', '_filereader', function($scope, _ws, _notification, _filereader) {
+app.controller("application", [ '$scope', '_ws', '_notification', '_filereader', '_loader', function($scope, _ws, _notification, _filereader, _loader) {
+	_loader.controller.hide();
 	_ws.message("application", "init", function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
@@ -36,31 +37,47 @@ app.controller("application", [ '$scope', '_ws', '_notification', '_filereader',
 		}
 		// ./contents/no_photo.png
 		if (node.is_img_blob) {
-
+			$scope.is_img_blob = true;
 		} else {
 			$scope.img_url = node.img_url;
+			$scope.is_img_blob = false;
 		}
 		$scope.comment = node.comment;
 		if ($scope.comment !== null) {
 			$("#comment_label").addClass("active");
 		}
+		_loader.controller.show();
+	});
+	_ws.message("application", "apply", function(data) {
+		debugger;
 	});
 
 	$scope.fileupload = function() {
 		var file = _filereader.getFile($("#img_file"));
 		_filereader.readFile(file, function(node) {
 			$scope.img_url = node.binary;
+			$scope.is_img_blob = true;
 		});
 	}
 
 	$scope.apply = function() {
+		debugger;
 		if ($.trim($scope.given_name) === "") {
 			_notification.setMessage("danger", "Please input the text of 'Given name'", function() {
 				$("#given_name").removeClass('error-focus');
 			});
 			$("#given_name").addClass('error-focus');
-			return;
 		}
+		var data = {
+			given_name : $scope.given_name,
+			name : $scope.name,
+			nick_name : $scope.nick_name,
+			comment : $scope.comment,
+			img_url : $scope.img_url,
+			is_img_blob : $scope.is_img_blob
+		};
+		_ws.send("application", "apply", JSON.stringify(data));
+		return;
 	}
 	_ws.send("application", "init");
 } ]);

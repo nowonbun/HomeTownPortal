@@ -1,5 +1,6 @@
 package common;
 
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -11,7 +12,12 @@ import java.util.Vector;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.stream.JsonParsingException;
+
+import common.interfaces.ActionExpression;
 
 public class JsonConverter {
 	public static String create(Object obj) {
@@ -21,6 +27,14 @@ public class JsonConverter {
 			}
 			return instance.createJson(obj);
 		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void parse(String json, ActionExpression<JsonObject> func) {
+		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
+			func.run(jsonReader.readObject());
+		} catch (JsonParsingException e) {
 			throw new RuntimeException(e);
 		}
 	}

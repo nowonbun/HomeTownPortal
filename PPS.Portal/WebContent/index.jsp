@@ -129,7 +129,7 @@
 		</div>
 	</nav>
 	<div class="content-wrapper">
-		<div class="container-fluid" ng-view></div>
+		<div class="container-fluid" ng-view ng-show="isController"></div>
 	</div>
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">

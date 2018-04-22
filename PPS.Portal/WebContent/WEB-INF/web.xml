@@ -9,4 +9,12 @@
     <servlet-class>common.Startup</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <context-param>
+    <param-name>org.apache.tomcat.websocket.textBufferSize</param-name>
+    <param-value>10240000</param-value>
+  </context-param>
+  <context-param>
+    <param-name>org.apache.tomcat.websocket.binaryBufferSize</param-name>
+    <param-value>10240000</param-value>
+  </context-param>
 </web-app>

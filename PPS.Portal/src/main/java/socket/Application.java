@@ -5,9 +5,11 @@ import common.JsonConverter;
 import common.Workflow;
 import dao.ApplicationDao;
 import dao.FactoryDao;
+import dao.UserDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import model.Comment;
 import model.User;
 
 @Workflow(name = "application")
@@ -46,6 +48,35 @@ public class Application extends IWorkflow {
 		}
 
 		return createWebSocketResult(JsonConverter.create(data), node);
+	}
+
+	public WebSocketResult apply(WebSocketNode node) {
+		JsonConverter.parse(node.getData(), (data) -> {
+			User user = getUserinfo(node.getSession()).getUser();
+			model.Application app = FactoryDao.getDao(ApplicationDao.class).getEntiryApplyingRecently(user.getId());
+			user.setGivenName(data.getString("given_name"));
+			user.setName(data.getString("name"));
+			user.setNickName(data.getString("nick_name"));
+			if (data.getBoolean("is_img_blob")) {
+				byte[] blob = data.getString("img_url").getBytes();
+				user.setImgBlob(blob);
+			} else {
+				user.setImgUrl(data.getString("img_url"));
+			}
+			if (app == null) {
+				app = new model.Application(user, user.getId());
+				app.setComment(new Comment(user.getId()));
+				app.getComment().setComment(data.getString("comment"));
+				FactoryDao.getDao(ApplicationDao.class).create(app);
+			} else {
+				app.getComment().setComment(data.getString("comment"));
+				app.updateTransation(user.getId());
+				app.getComment().updateTransation(user.getId());
+				FactoryDao.getDao(ApplicationDao.class).update(app);
+			}
+			FactoryDao.getDao(UserDao.class).update(user);
+		});
+		return createWebSocketResult(node);
 	}
 
 	@Override

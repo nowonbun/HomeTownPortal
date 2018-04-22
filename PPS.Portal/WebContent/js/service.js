@@ -1,13 +1,34 @@
-app.service('_loader', [ '$rootScope', function($rootScope) {
+app.service('_loader', [ '$rootScope', '_scopeService', function($rootScope, _scopeService) {
+	$rootScope.isController = true;
+	$rootScope.isLoader = false;
 	return {
 		show : function() {
-			$rootScope.isLoader = true;
+			_scopeService.safeApply(function() {
+				$rootScope.isLoader = true;
+			});
 		},
 		hide : function() {
-			$rootScope.isLoader = false;
+			_scopeService.safeApply(function() {
+				$rootScope.isLoader = false;
+			});
+		},
+		controller : {
+			show : function() {
+				_scopeService.safeApply(function() {
+					$rootScope.isController = true;
+					$rootScope.isLoader = false;
+				});
+			},
+			hide : function() {
+				_scopeService.safeApply(function() {
+					$rootScope.isController = false;
+					$rootScope.isLoader = true;
+				});
+			}
 		}
 	}
 } ]);
+
 app.service('_scopeService', [ '$rootScope', function($rootScope) {
 	return {
 		safeApply : function(fn) {
@@ -23,6 +44,7 @@ app.service('_scopeService', [ '$rootScope', function($rootScope) {
 		},
 	};
 } ]);
+
 app.service('_notification', [
 		'$rootScope',
 		'$timeout',
@@ -53,7 +75,7 @@ app.service('_notification', [
 			}
 		} ]);
 
-app.service('_ws', [ '$rootScope', '_loader', '_scopeService', function($rootScope, _loader, _scopeService) {
+app.service('_ws', [ '$rootScope', '_scopeService', function($rootScope, _scopeService) {
 	var socket = new WebSocket("ws://localhost:8080/Portal/socket");
 	var delegate = {
 		open : [],
@@ -77,31 +99,31 @@ app.service('_ws', [ '$rootScope', '_loader', '_scopeService', function($rootSco
 	};
 	socket.onerror = function(msg) {
 		_scopeService.safeApply(function() {
-			_loader.show();
 			var node = JSON.parse(msg.data);
 			for ( var i in delegate.error) {
 				if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
 					delegate.error[i].func.call(this, node.data);
 				}
 			}
-			_loader.hide();
 		});
 	};
 	socket.onmessage = function(msg) {
 		_scopeService.safeApply(function() {
-			_loader.show();
 			var node = JSON.parse(msg.data);
 			for ( var i in delegate.message) {
 				if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
 					delegate.message[i].func.call(this, node.data);
 				}
 			}
-			_loader.hide();
 		});
 	};
 	sendNode = function(node) {
 		if (socket.readyState === 1) {
-			socket.send(node);
+			try {
+				socket.send(node);
+			} catch (err) {
+				console.log(err);
+			}
 		} else {
 			setTimeout(function() {
 				sendNode(node);
