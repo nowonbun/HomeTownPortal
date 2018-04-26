@@ -13,12 +13,12 @@
 	<link href="./favicon.ico" rel="icon">
 	<!-- link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"-->
 	<link href="./css/vendor/mdb.min.css" rel="stylesheet">
-	<link href="./local/css/font-awesome.min.css" rel="stylesheet">
-	<link href="./local/css/font-awesome.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 	
-	<link href="./local/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-	<link href="./local/css/icon?family=Material+Icons" rel="stylesheet">
-	<link href="./local/css/material.indigo-pink.min.css" rel="stylesheet">
+	<link href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
 	<link href="./css/vendor/sb-admin.css" rel="stylesheet">	
 	<link href="./css/common.css" rel="stylesheet">
 	<link href="./css/size/1extrasmall.css" rel="stylesheet">
@@ -149,20 +149,20 @@
 		</div>
 	</div>
 	</body>
-	<script src="./local/js/jquery-3.2.1.min.js" type="text/javascript"></script>
-	<script src="./local/js/angular.min.js" type="text/javascript"></script>
-	<script src="./local/js/angular-route.min.js" type="text/javascript"></script>
-	<script src="./local/js/angular-sanitize.min.js" type="text/javascript"></script>
+	<script src="//code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-sanitize.min.js" type="text/javascript"></script>
 	
-	<script src="./local/js/popper.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" type="text/javascript"></script>
 	<script src="./js/vendor/mdb.min.js" type="text/javascript"></script>
 	<!-- script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" type="text/javascript"></script-->
-	<script src="./local/js/jquery.easing.min.js" type="text/javascript"></script>
-	<script src="./local/js/Chart.min.js" type="text/javascript"></script>
-	<script src="./local/js/jquery.dataTables.min.js" type="text/javascript"></script>
-	<script src="./local/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-	<script src="./local/js/material.min.js" type="text/javascript"></script>
-	<script src="./local/js/jquery.cookie.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+	<script src="//code.getmdl.io/1.3.0/material.min.js" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 	<script src="./js/vendor/sb-admin.js" type="text/javascript"></script>
 	<script src="./js/vendor/sb-admin-datatables.js" type="text/javascript"></script>
 	
