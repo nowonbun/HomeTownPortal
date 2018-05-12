@@ -1,52 +1,54 @@
-package model;
+package map;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 import common.TransactionModel;
+import model.*;
+
 
 @Entity
-@Table(name="TSN_GROUP")
-@NamedQuery(name="Group.findAll", query="SELECT g FROM Group g")
-public class Group extends TransactionModel implements Serializable {
+@Table(name="MAP_VIEW_ROLE_COMPANY")
+@NamedQuery(name="MapViewRoleCompany.findAll", query="SELECT m FROM MapViewRoleCompany m")
+public class MapViewRoleCompany extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="ID")
-	private int id;
+	@EmbeddedId
+	private MapViewRoleCompanyPK id;
 
-	@Column(name="NAME")
-	private String name;
+	@ManyToOne
+	@JoinColumn(name="CARD_CODE")
+	private Card card;
 
 	@ManyToOne
 	@JoinColumn(name="COMPANY_ID")
 	private Company company;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
-
+	
 	@SuppressWarnings("unused")
-	private Group() { }
+	private MapViewRoleCompany() { }
 
-	public Group(String user) {
+	public MapViewRoleCompany(String user) {
 		super.createTransation(user);
 	}
 
-	public int getId() {
+	public MapViewRoleCompanyPK getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(MapViewRoleCompanyPK id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return this.name;
+	public Card getCard() {
+		return this.card;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCard(Card card) {
+		this.card = card;
 	}
 
 	public Company getCompany() {

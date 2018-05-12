@@ -45,7 +45,10 @@ public class Manager {
 			}
 			return ret;
 		} catch (Throwable e) {
-			transaction.rollback();
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			//transaction.rollback();
 			throw new RuntimeException(e);
 		}
 	}

@@ -28,8 +28,8 @@ public class Comment extends TransactionModel implements Serializable {
 	@OneToMany(mappedBy = "comment")
 	private List<Application> applications;
 
-	private Comment() {
-	}
+	@SuppressWarnings("unused")
+	private Comment() {	}
 
 	public Comment(String createUser) {
 		super.createTransation(createUser);
@@ -66,7 +66,7 @@ public class Comment extends TransactionModel implements Serializable {
 		return application;
 	}
 
-	public Application removeTsnApplication(Application application) {
+	public Application removeApplication(Application application) {
 		getApplications().remove(application);
 		application.setComment(null);
 

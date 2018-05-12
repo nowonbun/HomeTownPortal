@@ -3,6 +3,8 @@ package dao;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.management.relation.Role;
+
 import common.Dao;
 
 public class MasterDao {
@@ -12,12 +14,11 @@ public class MasterDao {
 	public static void initialize() {
 		instance = new MasterDao();
 		instance.flyweight = new HashMap<Class<?>, Dao<?>>();
-		instance.flyweight.put(GroupDao.class, FactoryDao.getDao(GroupDao.class));
 		instance.flyweight.put(CardDao.class, FactoryDao.getDao(CardDao.class));
 		instance.flyweight.put(CardStepDao.class, FactoryDao.getDao(CardStepDao.class));
 		instance.flyweight.put(StateDao.class, FactoryDao.getDao(StateDao.class));
 		instance.flyweight.put(CardTypeDao.class, FactoryDao.getDao(CardTypeDao.class));
-		instance.flyweight.put(CardGroupDao.class, FactoryDao.getDao(CardGroupDao.class));
+		instance.flyweight.put(RoleDao.class, FactoryDao.getDao(RoleDao.class));
 	}
 
 	@SuppressWarnings("unchecked")

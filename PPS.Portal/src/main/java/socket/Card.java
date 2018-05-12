@@ -30,11 +30,11 @@ public class Card extends IWorkflow {
 	}
 
 	private boolean containGroup(model.Card card, String code) {
-		for (Group g : card.getGroups()) {
+		/*for (Group g : card.getGroups()) {
 			if (Util.StringEquals(g.getCode(), code)) {
 				return true;
 			}
-		}
+		}*/
 		return false;
 	}
 
@@ -43,7 +43,7 @@ public class Card extends IWorkflow {
 		List<model.Card> cards = MasterDao.getDao(CardDao.class).getCardAll();
 		List<Node> data = new ArrayList<>();
 		Group group = super.getUserinfo(node.getSession()).getUser().getGroup();
-		for (model.Card card : cards) {
+		/*for (model.Card card : cards) {
 			if (!containGroup(card, group.getCode())) {
 				continue;
 			}
@@ -76,7 +76,7 @@ public class Card extends IWorkflow {
 				continue;
 			}
 			data.add(entity);
-		}
+		}*/
 		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 

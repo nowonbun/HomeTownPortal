@@ -1,52 +1,53 @@
-package model;
+package map;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 import common.TransactionModel;
+import model.*;
 
 @Entity
-@Table(name="TSN_GROUP")
-@NamedQuery(name="Group.findAll", query="SELECT g FROM Group g")
-public class Group extends TransactionModel implements Serializable {
+@Table(name = "MAP_ACTION_ROLE_COMPANY")
+@NamedQuery(name = "MapActionRoleCompany.findAll", query = "SELECT m FROM MapActionRoleCompany m")
+public class MapActionRoleCompany extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="ID")
-	private int id;
-
-	@Column(name="NAME")
-	private String name;
+	@EmbeddedId
+	private MapActionRoleCompanyPK id;
 
 	@ManyToOne
-	@JoinColumn(name="COMPANY_ID")
+	@JoinColumn(name = "ROLE_CODE")
+	private Role role;
+
+	@ManyToOne
+	@JoinColumn(name = "COMPANY_ID")
 	private Company company;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
 	@SuppressWarnings("unused")
-	private Group() { }
+	private MapActionRoleCompany() { }
 
-	public Group(String user) {
+	public MapActionRoleCompany(String user) {
 		super.createTransation(user);
 	}
 
-	public int getId() {
+	public MapActionRoleCompanyPK getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(MapActionRoleCompanyPK id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return this.name;
+	public Role getRole() {
+		return this.role;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public Company getCompany() {

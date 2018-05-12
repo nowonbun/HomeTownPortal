@@ -26,8 +26,8 @@ public class Application extends TransactionModel implements Serializable {
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	private Application() {
-	}
+	@SuppressWarnings("unused")
+	private Application() {	}
 
 	public Application(User user, String createUser) {
 		ApplicationPK pk = new ApplicationPK();

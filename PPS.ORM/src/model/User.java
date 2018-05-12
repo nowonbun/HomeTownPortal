@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import common.TransactionModel;
-
 import java.util.List;
 
 @Entity
@@ -46,16 +45,22 @@ public class User extends TransactionModel implements Serializable {
 	private List<Application> applications;
 
 	@ManyToOne
-	@JoinColumn(name = "GROUP_CODE")
+	@JoinColumn(name = "COMPANY_ID")
+	private Company company;
+
+	@ManyToOne
+	@JoinColumn(name = "GROUP_ID")
 	private Group group;
+	
+	@ManyToMany(mappedBy="users")
+	private List<Card> cards;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	private User() {
-
-	}
+	@SuppressWarnings("unused")
+	private User() { }
 
 	public User(String user) {
 		super.createTransation(user);
@@ -139,6 +144,14 @@ public class User extends TransactionModel implements Serializable {
 		return cookie;
 	}
 
+	public Company getCompany() {
+		return this.company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	public Group getGroup() {
 		return this.group;
 	}
@@ -197,5 +210,13 @@ public class User extends TransactionModel implements Serializable {
 
 	public void setStateInfo(StateInfo stateInfo) {
 		this.stateInfo = stateInfo;
+	}
+	
+	public List<Card> getCards() {
+		return cards;
+	}
+
+	public void setCards(List<Card> cards) {
+		this.cards = cards;
 	}
 }

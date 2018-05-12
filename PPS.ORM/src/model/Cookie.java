@@ -32,9 +32,8 @@ public class Cookie extends TransactionModel implements Serializable {
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	private Cookie() {
-
-	}
+	@SuppressWarnings("unused")
+	private Cookie() { }
 
 	public Cookie(User user, String cookiekey, String createUser) {
 		CookiePK pk = new CookiePK();

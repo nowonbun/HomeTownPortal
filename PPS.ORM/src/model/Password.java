@@ -25,9 +25,8 @@ public class Password extends TransactionModel implements Serializable {
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	private Password() {
-
-	}
+	@SuppressWarnings("unused")
+	private Password() { }
 
 	public Password(User user, String createUser) {
 		PasswordPK pk = new PasswordPK();

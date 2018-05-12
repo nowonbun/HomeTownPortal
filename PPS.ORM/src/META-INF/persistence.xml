@@ -4,12 +4,10 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="portal">
 		<class>model.Card</class>
-		<class>model.CardGroup</class>
 		<class>model.CardStep</class>
 		<class>model.CardType</class>
 		<class>model.Cookie</class>
 		<class>model.CookiePK</class>
-		<class>model.Group</class>
 		<class>model.Password</class>
 		<class>model.PasswordPK</class>
 		<class>model.State</class>
@@ -18,6 +16,21 @@
 		<class>model.Application</class>
 		<class>model.ApplicationPK</class>
 		<class>model.Comment</class>
+		<class>model.Role</class>
+		<class>model.Company</class>
+		<class>model.Group</class>
+		<class>map.MapViewRoleCompany</class>
+		<class>map.MapViewRoleCompanyPK</class>
+		<class>map.MapViewRoleGroup</class>
+		<class>map.MapViewRoleGroupPK</class>
+		<class>map.MapViewRoleUser</class>
+		<class>map.MapViewRoleUserPK</class>
+		<class>map.MapActionRoleCompany</class>
+		<class>map.MapActionRoleCompanyPK</class>
+		<class>map.MapActionRoleGroup</class>
+		<class>map.MapActionRoleGroupPK</class>
+		<class>map.MapActionRoleUser</class>
+		<class>map.MapActionRoleUserPK</class>
 		<properties>
 			<property name="eclipselink.logging.level" value="INFO" />
 			<property name="eclipselink.logging.parameters" value="true" />

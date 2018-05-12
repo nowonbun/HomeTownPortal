@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import map.*;
+
 import java.util.Date;
 
 @Entity
@@ -43,7 +45,98 @@ public class StateInfo implements Serializable {
 	private User user;
 
 	@OneToOne(mappedBy = "stateInfo")
+	private Company company;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private Group group;
+	
+	@OneToOne(mappedBy = "stateInfo")
 	private Password password;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private Comment comment;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private MapActionRoleCompany mapActionRoleCompany;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private MapActionRoleGroup mapActionRoleGroup;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private MapActionRoleUser mapActionRoleUser;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private MapViewRoleCompany mapViewRoleCompany;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private MapViewRoleGroup mapViewRoleGroup;
+	
+	@OneToOne(mappedBy = "stateInfo")
+	private MapViewRoleUser mapViewRoleUser;
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public MapActionRoleCompany getMapActionRoleCompany() {
+		return mapActionRoleCompany;
+	}
+
+	public void setMapActionRoleCompany(MapActionRoleCompany mapActionRoleCompany) {
+		this.mapActionRoleCompany = mapActionRoleCompany;
+	}
+
+	public MapActionRoleGroup getMapActionRoleGroup() {
+		return mapActionRoleGroup;
+	}
+
+	public void setMapActionRoleGroup(MapActionRoleGroup mapActionRoleGroup) {
+		this.mapActionRoleGroup = mapActionRoleGroup;
+	}
+
+	public MapActionRoleUser getMapActionRoleUser() {
+		return mapActionRoleUser;
+	}
+
+	public void setMapActionRoleUser(MapActionRoleUser mapActionRoleUser) {
+		this.mapActionRoleUser = mapActionRoleUser;
+	}
+
+	public MapViewRoleCompany getMapViewRoleCompany() {
+		return mapViewRoleCompany;
+	}
+
+	public void setMapViewRoleCompany(MapViewRoleCompany mapViewRoleCompany) {
+		this.mapViewRoleCompany = mapViewRoleCompany;
+	}
+
+	public MapViewRoleGroup getMapViewRoleGroup() {
+		return mapViewRoleGroup;
+	}
+
+	public void setMapViewRoleGroup(MapViewRoleGroup mapViewRoleGroup) {
+		this.mapViewRoleGroup = mapViewRoleGroup;
+	}
+
+	public MapViewRoleUser getMapViewRoleUser() {
+		return mapViewRoleUser;
+	}
+
+	public void setMapViewRoleUser(MapViewRoleUser mapViewRoleUser) {
+		this.mapViewRoleUser = mapViewRoleUser;
+	}
 
 	public Password getPassword() {
 		return password;
@@ -126,6 +219,18 @@ public class StateInfo implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public Comment getComment() {
+		return comment;
+	}
+
+	public void setComment(Comment comment) {
+		this.comment = comment;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
 	}
 
 }

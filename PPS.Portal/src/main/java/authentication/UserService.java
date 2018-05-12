@@ -214,7 +214,9 @@ public class UserService {
 		this.user.setNickName(this.nickname);
 		this.user.setImgUrl(this.image_url);
 		this.user.setBackgroundImg(this.coverPhoto_url);
-		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup("GUEST"));
+		//TODO: We need the table of Lookup.
+		this.user.setGroup(FactoryDao.getDao(GroupDao.class).findOne("2"));
+		//this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup("GUEST"));
 		dao.create(this.user);
 	}
 

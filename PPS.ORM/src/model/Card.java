@@ -41,26 +41,32 @@ public class Card implements Serializable {
 	private int orderSeq;
 
 	@ManyToMany
-	@JoinTable(name = "MAP_CARD_GROUP", joinColumns = { @JoinColumn(name = "CARD_CODE") }, inverseJoinColumns = {
-			@JoinColumn(name = "GROUP_CODE") })
+	@JoinTable(	name = "MAP_VIEW_ROLE_COMPANY", 
+				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
+				inverseJoinColumns = { @JoinColumn(name = "COMPANY_ID") })
+	private List<Company> companies;
+
+	@ManyToMany
+	@JoinTable(	name = "MAP_VIEW_ROLE_GROUP", 
+				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
+				inverseJoinColumns = {	@JoinColumn(name = "GROUP_ID") })
 	private List<Group> groups;
 
-	// bi-directional many-to-one association to CardStep
+	@ManyToMany
+	@JoinTable(	name = "MAP_VIEW_ROLE_USER", 
+				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
+				inverseJoinColumns = {	@JoinColumn(name = "USER_ID") })
+	private List<User> users;
+
 	@ManyToOne
 	@JoinColumn(name = "STEP")
 	private CardStep cardStep;
 
-	// bi-directional many-to-one association to CardType
 	@ManyToOne
 	@JoinColumn(name = "CARD_TYPE")
 	private CardType cardType;
 
-	@ManyToOne
-	@JoinColumn(name = "CARD_GROUP")
-	private CardGroup cardGroup;
-
-	public Card() {
-	}
+	public Card() { }
 
 	public String getCode() {
 		return this.code;
@@ -150,12 +156,12 @@ public class Card implements Serializable {
 		this.cardType = cardType;
 	}
 
-	public CardGroup getCardGroup() {
-		return this.cardGroup;
+	public List<Company> getCompanies() {
+		return this.companies;
 	}
 
-	public void setCardGroup(CardGroup cardGroup) {
-		this.cardGroup = cardGroup;
+	public void setCompanies(List<Company> companies) {
+		this.companies = companies;
 	}
 
 	public List<Group> getGroups() {
@@ -164,6 +170,14 @@ public class Card implements Serializable {
 
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
+	}
+
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }
