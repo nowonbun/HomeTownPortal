@@ -3,7 +3,7 @@ package ORM;
 
 import org.junit.Test;
 
-import dao.MasterDao;
+import common.MasterDao;
 
 public class InitTest {
 	@Test

@@ -1,18 +1,20 @@
 package dao;
 
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-
-import common.Dao;
-import common.Manager;
+import common.FactoryDao;
+import common.TransactionDao;
 import model.Group;
-import model.User;
 
-public class GroupDao extends Dao<Group> {
+public class GroupDao extends TransactionDao<Group> {
 
 	protected GroupDao() {
 		super(Group.class);
+	}
+
+	public Group getGroup(int id) {
+		return super.findOne(id);
+	}
+
+	public Group getDefaultGroup() {
+		return getGroup(FactoryDao.getDao(LookUpDao.class).getValueInt("DefaultGroup"));
 	}
 }

@@ -1,9 +1,9 @@
 package dao;
 
-import common.Dao;
+import common.TransactionDao;
 import model.Comment;
 
-public class CommentDao extends Dao<Comment> {
+public class CommentDao extends TransactionDao<Comment> {
 
 	protected CommentDao() {
 		super(Comment.class);

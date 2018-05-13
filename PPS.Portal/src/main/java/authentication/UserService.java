@@ -5,7 +5,8 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import dao.FactoryDao;
+import common.FactoryDao;
+import dao.CompanyDao;
 import dao.GroupDao;
 import dao.UserDao;
 import model.User;
@@ -204,7 +205,7 @@ public class UserService {
 		}
 		UserDao dao = FactoryDao.getDao(UserDao.class);
 		this.user = dao.getUser(this.id);
-		if(this.user != null) {
+		if (this.user != null) {
 			return;
 		}
 		this.user = new User(this.id);
@@ -214,9 +215,8 @@ public class UserService {
 		this.user.setNickName(this.nickname);
 		this.user.setImgUrl(this.image_url);
 		this.user.setBackgroundImg(this.coverPhoto_url);
-		//TODO: We need the table of Lookup.
-		this.user.setGroup(FactoryDao.getDao(GroupDao.class).findOne("2"));
-		//this.user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup("GUEST"));
+		this.user.setCompany(FactoryDao.getDao(CompanyDao.class).getDefaultCompany());
+		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getDefaultGroup());
 		dao.create(this.user);
 	}
 

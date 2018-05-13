@@ -10,10 +10,6 @@ app.config(function($routeProvider) {
     	controller: "admin",
     	templateUrl: "./views/admin.tpl.jsp"
     })
-    .when("/application",{
-    	controller: "application",
-    	templateUrl: "./views/application.tpl.jsp"
-    })
     .when("/profile",{
     	controller: "profile",
     	templateUrl: "./views/profile.tpl.jsp"

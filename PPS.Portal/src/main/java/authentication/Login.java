@@ -11,8 +11,8 @@ import javax.json.JsonReader;
 import javax.servlet.annotation.WebServlet;
 import javax.xml.bind.DatatypeConverter;
 
+import common.FactoryDao;
 import common.IServlet;
-import dao.FactoryDao;
 import dao.UserDao;
 import model.Password;
 import model.User;

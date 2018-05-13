@@ -3,54 +3,15 @@ var common = (function(obj) {
 	$(obj.onLoad);
 	return obj;
 })({
-	logger: function(message){
-		//console.log(message);
-	},
 	hosturl: "/Portal",
-	websocketurl: "ws://localhost:8080/Portal/",
-	ws: null,
 	onLoad : function() {
 		if (ctl === null || ctl === undefined || typeof ctl !== "object") {
 			console.error("declare abstract controller");
 			return;
 		}
-		/*
-		if(ctl.wslocation !== undefined){
-			common.ws = new WebSocket(common.websocketurl +  ctl.wslocation);
-			common.ws.onopen = function(message){
-				common.logger(message);
-			};
-			common.ws.onclose = function(message){
-				common.logger(message);
-			};
-			common.ws.onerror = function(message){
-				common.error(message);
-			};
-			common.ws.onmessage = function(message){
-				common.logger(message);
-				if(ctl.message !== undefined && typeof ctl.message === "function"){
-					var node = JSON.parse(message.data)
-					ctl.message.call(this,node);
-				}
-			};
-		}*/
 		if (ctl.onLoad !== undefined && typeof ctl.onLoad === "function") {
 			ctl.onLoad.call(this);
 		}
-	},
-	socketSend: function(key, data){
-		var node = {
-			key: key, 
-			data:data
-		};
-		var json = JSON.stringify(node);
-		if (common.ws.readyState === 1) {
-			common.ws.send(json);
-	    } else {
-	        setTimeout(function () {
-	        	common.ws.send(json);
-	        }, 1000);
-	    }
 	},
 	on : function(element, eventname, callback, isadd) {
 		if (callback !== undefined && typeof callback === "function") {
@@ -66,8 +27,6 @@ var common = (function(obj) {
 			type : 'POST',
 			data : data,
 			dataType : 'json'
-		// contentType : 'application/x-www-form-urlencoded; charset=UTF-8'
-		// timeout:1000,
 		}).done(function(ret, textStatus, jqXHR) {
 			if(success !== null && success !== undefined && typeof success === "function"){
 				success.call(this,ret);	
@@ -102,9 +61,7 @@ var common = (function(obj) {
 	}
 });
 ctl = {
-	//wslocation : "login",
 	onLoad : function() {
-		//common.socketSend("init","");
 		common.on(".view-link", "click", function() {
 			var tab = $(this).parent().data("state");
 			if (tab === 0) {
@@ -121,38 +78,45 @@ ctl = {
 				$(this).parent().data("state", 0);
 			}
 		});
+		common.on("#pid, #pwd","keyup", function(){
+			if(event.keyCode === 13){
+				ctl.login();	
+			}
+		});
 		common.on("#plogin", "click", function() {
-			if ($.trim($("#pid").val()) === "") {
-				$(".login-error").text("Please input ID.");
-				$("#pid").addClass("border-foces");
-				setTimeout(function() {
-					$(".login-error").text("");
-					$("#pid").removeClass("border-foces");
-				}, 3000);
-				return;
+			ctl.login();
+		});
+	},
+	login : function() {
+		if ($.trim($("#pid").val()) === "") {
+			$(".login-error").text("Please input ID.");
+			$("#pid").addClass("border-foces");
+			setTimeout(function() {
+				$(".login-error").text("");
+				$("#pid").removeClass("border-foces");
+			}, 3000);
+			return;
+		}
+		if ($.trim($("#pwd").val()) === "") {
+			$(".login-error").text("Please input password.");
+			$("#pwd").addClass("border-foces");
+			setTimeout(function() {
+				$(".login-error").text("");
+				$("#pwd").removeClass("border-foces");
+			}, 3000);
+			return;
+		}
+		var data = JSON.stringify({
+			pid : $("#pid").val(),
+			pwd : $("#pwd").val()
+		});
+		common.ajax(common.hosturl + "/login", data, function(ret) {
+			if (ret === 1) {
+				$(".login-error").text("Login invalid. Please check ID or Password.");
+				$("#pwd").val("");
+			} else {
+				location.href = common.hosturl;
 			}
-			if ($.trim($("#pwd").val()) === "") {
-				$(".login-error").text("Please input password.");
-				$("#pwd").addClass("border-foces");
-				setTimeout(function() {
-					$(".login-error").text("");
-					$("#pwd").removeClass("border-foces");
-				}, 3000);
-				return;
-			}
-			var data = JSON.stringify({
-				pid : $("#pid").val(),
-				pwd : $("#pwd").val()
-			});
-			common.ajax(common.hosturl + "/login", data, function(ret) {
-				if (ret === 1) {
-					$(".login-error").text(
-							"Login invalid. Please check ID or Password.");
-					$("#pwd").val("");
-				} else {
-					location.href = common.hosturl;
-				}
-			});
 		});
 	},
 	message : function(node) {

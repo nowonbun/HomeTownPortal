@@ -1,7 +1,7 @@
 package test.console;
 
+import common.FactoryDao;
 import dao.CardDao;
-import dao.FactoryDao;
 
 public class Test {
 	public static void main(String... arg) {

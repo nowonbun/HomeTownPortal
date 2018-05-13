@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import dao.FactoryDao;
+import common.FactoryDao;
 import dao.UserDao;
 import model.User;
 

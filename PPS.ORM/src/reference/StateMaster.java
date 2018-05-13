@@ -1,6 +1,6 @@
 package reference;
 
-import dao.MasterDao;
+import common.FactoryDao;
 import dao.StateDao;
 import model.State;
 
@@ -13,7 +13,7 @@ public final class StateMaster {
 	public static int APPLICATION_APPROVED = 202;
 
 	public static StateDao getDao() {
-		return MasterDao.getDao(StateDao.class);
+		return FactoryDao.getDao(StateDao.class);
 	}
 
 	public static State getGoogleId() {

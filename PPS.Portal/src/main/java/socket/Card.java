@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
 import common.Util;
 import common.Workflow;
 import dao.CardDao;
-import dao.MasterDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import model.CardStep;
 import model.CardType;
-import model.Group;
+import model.User;
 
 @Workflow(name = "card")
 public class Card extends IWorkflow {
@@ -29,24 +29,12 @@ public class Card extends IWorkflow {
 		String href;
 	}
 
-	private boolean containGroup(model.Card card, String code) {
-		/*for (Group g : card.getGroups()) {
-			if (Util.StringEquals(g.getCode(), code)) {
-				return true;
-			}
-		}*/
-		return false;
-	}
-
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
-		List<model.Card> cards = MasterDao.getDao(CardDao.class).getCardAll();
+		User user =  super.getUserinfo(node.getSession()).getUser();
+		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
 		List<Node> data = new ArrayList<>();
-		Group group = super.getUserinfo(node.getSession()).getUser().getGroup();
-		/*for (model.Card card : cards) {
-			if (!containGroup(card, group.getCode())) {
-				continue;
-			}
+		for (model.Card card : cards) {
 			if (!Util.StringEquals(CardStep.HOME, card.getCardStep().getStep())) {
 				continue;
 			}
@@ -61,7 +49,7 @@ public class Card extends IWorkflow {
 				}
 				entity.header = "";
 				entity.border = "";
-				entity.body = "<span class='card-image__body'>" + card.getDescription() + "</span>";
+				entity.body = "<span class='card-image__body'>" + card.getName() + "</span>";
 				entity.href = card.getHref();
 			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
 				entity.typeHeaderClass = "card-event";
@@ -69,14 +57,14 @@ public class Card extends IWorkflow {
 				entity.header = card.getTitle();
 				entity.border = "mdl-card--border";
 				entity.body = "<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>"
-						+ card.getDescription() + "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon()
+						+ card.getName() + "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon()
 						+ "'></i>";
 				entity.href = card.getHref();
 			} else {
 				continue;
 			}
 			data.add(entity);
-		}*/
+		}
 		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 

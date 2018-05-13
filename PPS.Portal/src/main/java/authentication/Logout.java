@@ -3,10 +3,10 @@ package authentication;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 
+import common.FactoryDao;
 import common.IServlet;
 import common.Util;
 import dao.CookieDao;
-import dao.FactoryDao;
 
 @WebServlet("/Logout")
 public class Logout extends IServlet {

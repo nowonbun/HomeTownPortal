@@ -19,9 +19,9 @@ app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _load
 	_ws.send("card", "init");
 } ]);
 
-app.controller("application", [ '$scope', '_ws', '_notification', '_filereader', '_loader', function($scope, _ws, _notification, _filereader, _loader) {
+app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', function($scope, _ws, _notification, _filereader, _loader) {
 	_loader.controller.hide();
-	_ws.message("application", "init", function(data) {
+	_ws.message("profile", "init", function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
 		if ($scope.given_name !== null) {
@@ -48,7 +48,7 @@ app.controller("application", [ '$scope', '_ws', '_notification', '_filereader',
 		}
 		_loader.controller.show();
 	});
-	_ws.message("application", "apply", function(data) {
+	_ws.message("profile", "apply", function(data) {
 		debugger;
 	});
 
@@ -76,10 +76,10 @@ app.controller("application", [ '$scope', '_ws', '_notification', '_filereader',
 			img_url : $scope.img_url,
 			is_img_blob : $scope.is_img_blob
 		};
-		_ws.send("application", "apply", JSON.stringify(data));
+		_ws.send("profile", "apply", JSON.stringify(data));
 		return;
 	}
-	_ws.send("application", "init");
+	_ws.send("profile", "init");
 } ]);
 
 app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
@@ -90,11 +90,4 @@ app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
 		$scope.cards = JSON.parse(data);
 	});
 	_ws.send("admin", "init");
-} ]);
-
-app.controller("profile", [ '$scope', '_ws', function($scope, _ws) {
-	_ws.message("profile", "init", function(data) {
-	});
-
-	_ws.send("profile", "init");
 } ]);

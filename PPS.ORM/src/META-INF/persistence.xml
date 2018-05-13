@@ -13,12 +13,11 @@
 		<class>model.State</class>
 		<class>model.StateInfo</class>
 		<class>model.User</class>
-		<class>model.Application</class>
-		<class>model.ApplicationPK</class>
 		<class>model.Comment</class>
 		<class>model.Role</class>
 		<class>model.Company</class>
 		<class>model.Group</class>
+		<class>model.LookUp</class>
 		<class>map.MapViewRoleCompany</class>
 		<class>map.MapViewRoleCompanyPK</class>
 		<class>map.MapViewRoleGroup</class>

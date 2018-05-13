@@ -41,9 +41,6 @@ public class User extends TransactionModel implements Serializable {
 	@OneToMany(mappedBy = "user")
 	private List<Password> passwords;
 
-	@OneToMany(mappedBy = "user")
-	private List<Application> applications;
-
 	@ManyToOne
 	@JoinColumn(name = "COMPANY_ID")
 	private Company company;
@@ -180,28 +177,6 @@ public class User extends TransactionModel implements Serializable {
 		password.setUser(null);
 
 		return password;
-	}
-
-	public List<Application> getApplications() {
-		return this.applications;
-	}
-
-	public void setApplications(List<Application> applications) {
-		this.applications = applications;
-	}
-
-	public Application addApplication(Application application) {
-		getApplications().add(application);
-		application.setUser(this);
-
-		return application;
-	}
-
-	public Application removeApplication(Application application) {
-		getApplications().remove(application);
-		application.setUser(null);
-
-		return application;
 	}
 
 	public StateInfo getStateInfo() {

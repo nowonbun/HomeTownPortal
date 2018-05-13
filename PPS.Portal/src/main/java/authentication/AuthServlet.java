@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import common.FactoryDao;
 import common.Util;
 import dao.CookieDao;
-import dao.FactoryDao;
 import dao.UserDao;
 import model.User;
 

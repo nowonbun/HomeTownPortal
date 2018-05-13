@@ -2,13 +2,12 @@ package dao;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
-import common.Dao;
 import common.Manager;
+import common.TransactionDao;
 import model.Cookie;
 import model.CookiePK;
 
-public class CookieDao extends Dao<Cookie> {
+public class CookieDao extends TransactionDao<Cookie> {
 
 	protected CookieDao() {
 		super(Cookie.class);

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import authentication.UserService;
 import dao.CookieDao;
-import dao.FactoryDao;
 
 public abstract class IServlet extends HttpServlet {
 

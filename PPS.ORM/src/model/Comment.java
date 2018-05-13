@@ -2,10 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import common.TransactionModel;
-
-import java.util.List;
 
 @Entity
 @Table(name = "TSN_COMMENT")
@@ -24,9 +21,6 @@ public class Comment extends TransactionModel implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
-
-	@OneToMany(mappedBy = "comment")
-	private List<Application> applications;
 
 	@SuppressWarnings("unused")
 	private Comment() {	}
@@ -51,32 +45,9 @@ public class Comment extends TransactionModel implements Serializable {
 		this.comment = comment;
 	}
 
-	public List<Application> getApplications() {
-		return this.applications;
-	}
-
-	public void setApplications(List<Application> applications) {
-		this.applications = applications;
-	}
-
-	public Application addApplication(Application application) {
-		getApplications().add(application);
-		application.setComment(this);
-
-		return application;
-	}
-
-	public Application removeApplication(Application application) {
-		getApplications().remove(application);
-		application.setComment(null);
-
-		return application;
-	}
-
 	@Override
 	public void setStateInfo(StateInfo stateInfo) {
 		this.stateInfo = stateInfo;
-
 	}
 
 	@Override
