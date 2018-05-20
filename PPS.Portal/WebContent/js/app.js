@@ -8,7 +8,7 @@ app.config(function($routeProvider) {
     })
     .when("/admin",{
     	controller: "admin",
-    	templateUrl: "./views/admin.tpl.jsp"
+    	templateUrl: "./views/card.tpl.jsp"
     })
     .when("/profile",{
     	controller: "profile",

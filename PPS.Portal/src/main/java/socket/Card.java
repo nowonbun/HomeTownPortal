@@ -51,7 +51,7 @@ public class Card extends IWorkflow {
 				entity.border = "";
 				entity.body = "<span class='card-image__body'>" + card.getName() + "</span>";
 				entity.href = card.getHref();
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.EVENT)) {
 				entity.typeHeaderClass = "card-event";
 				entity.background = card.getColor();
 				entity.header = card.getTitle();

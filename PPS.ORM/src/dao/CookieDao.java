@@ -20,8 +20,7 @@ public class CookieDao extends TransactionDao<Cookie> {
 	public Cookie getEntity(String id, String cookiekey) {
 		return Manager.transaction(() -> {
 			try {
-				Query query = Manager.get()
-						.createQuery("SELECT c FROM Cookie c WHERE c.id.id = :id and c.id.cookiekey = :cookiekey");
+				Query query = Manager.get().createQuery("SELECT c FROM Cookie c WHERE c.id.id = :id and c.id.cookiekey = :cookiekey");
 				query.setParameter("id", id);
 				query.setParameter("cookiekey", cookiekey);
 				return (Cookie) query.getSingleResult();

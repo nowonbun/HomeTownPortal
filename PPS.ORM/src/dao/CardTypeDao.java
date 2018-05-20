@@ -1,14 +1,10 @@
 package dao;
 
 import java.util.List;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
-import common.Dao;
 import common.Manager;
 import common.MasterDao;
-import model.CardStep;
 import model.CardType;
 
 public class CardTypeDao extends MasterDao<CardType> {

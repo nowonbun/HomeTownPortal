@@ -2,8 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import common.TransactionModel;
+import reference.StateMaster;
+
 import java.util.List;
 
 @Entity
@@ -61,6 +62,7 @@ public class User extends TransactionModel implements Serializable {
 
 	public User(String user) {
 		super.createTransation(user);
+		this.stateInfo.setState(StateMaster.getGoogleId());
 	}
 
 	public String getId() {

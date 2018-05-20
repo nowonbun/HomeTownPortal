@@ -37,15 +37,33 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		}
 		// ./contents/no_photo.png
 		if (node.is_img_blob) {
-			$scope.is_img_blob = true;
+			if ($scope.is_img_blob == null) {
+				node.is_img_blob = false;
+				$scope.img_url = CONTENTS + "no_photo.png";
+			} else {
+				$scope.is_img_blob = true;
+			}
 		} else {
-			$scope.img_url = node.img_url;
 			$scope.is_img_blob = false;
+			if ($scope.img_url == null) {
+				$scope.img_url = CONTENTS + "no_photo.png";
+			} else {
+				$scope.img_url = node.img_url;
+			}
 		}
-		$scope.comment = node.comment;
-		if ($scope.comment !== null) {
-			$("#comment_label").addClass("active");
+		//console.log(node);
+		$scope.canModifyPassword = node.canModifyPassword;
+		$scope.canModifyCompany = node.canModifyCompany;
+		$scope.companyList = node.companyList;
+		$scope.company = node.company;
+		$scope.company_change = function() {
+			console.log($scope.company);
 		}
+
+		_loader.ready(function() {
+			$('.mdb-select').material_select();
+		});
+
 		_loader.controller.show();
 	});
 	_ws.message("profile", "apply", function(data) {
@@ -61,7 +79,6 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 	}
 
 	$scope.apply = function() {
-		debugger;
 		if ($.trim($scope.given_name) === "") {
 			_notification.setMessage("danger", "Please input the text of 'Given name'", function() {
 				$("#given_name").removeClass('error-focus');
@@ -86,7 +103,6 @@ app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
 	_ws.message("admin", "init", function(data) {
 		// TODO: This program is if the internet is connected,
 		// we can not work it.
-		console.log(data);
 		$scope.cards = JSON.parse(data);
 	});
 	_ws.send("admin", "init");

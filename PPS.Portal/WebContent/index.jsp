@@ -21,6 +21,7 @@
 	<link href="//code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet">
 	<link href="./css/vendor/sb-admin.css" rel="stylesheet">	
 	<link href="./css/common.css" rel="stylesheet">
+	<link href="./css/shadow.css" rel="stylesheet">
 	<link href="./css/size/1extrasmall.css" rel="stylesheet">
 	<link href="./css/size/2small.css" rel="stylesheet">
 	<link href="./css/size/3medium.css" rel="stylesheet">

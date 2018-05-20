@@ -8,6 +8,6 @@ import common.MasterDao;
 public class InitTest {
 	@Test
 	public void InitTest() {
-		MasterDao.initialize();
+		
 	}
 }

@@ -25,6 +25,11 @@ app.service('_loader', [ '$rootScope', '_scopeService', function($rootScope, _sc
 					$rootScope.isLoader = true;
 				});
 			}
+		},
+		ready : function(fn) {
+			if (fn && typeof fn === 'function') {
+				$(fn);
+			}
 		}
 	}
 } ]);
@@ -76,7 +81,7 @@ app.service('_notification', [
 		} ]);
 
 app.service('_ws', [ '$rootScope', '_scopeService', function($rootScope, _scopeService) {
-	var socket = new WebSocket("ws://localhost:8080/Portal/socket");
+	var socket = new WebSocket(WS_HOST + "/socket");
 	var delegate = {
 		open : [],
 		close : [],
