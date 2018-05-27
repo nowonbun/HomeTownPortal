@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import common.interfaces.LambdaExpression;
 
 public class Util {
-	// private static DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd
-	// HH:mm:ss");
 	private static DateFormat dateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	public static String createCookieKey() {
@@ -30,7 +28,7 @@ public class Util {
 	}
 
 	public static String getCookiePath() {
-		return "/Portal/";
+		return PropertyMap.getInstance().getProperty("config", "cookie_path");
 	}
 
 	public static <T> T searchArray(T[] array, LambdaExpression<T, Boolean> condition) {
