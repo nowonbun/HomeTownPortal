@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.FactoryDao;
+import common.LoggerManager;
 import common.Util;
 import dao.CookieDao;
 import dao.UserDao;
@@ -28,6 +29,8 @@ public class AuthServlet {
 	private boolean getAuthorization(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		if (session.getAttribute(UserService.SESSION_ID) != null) {
+			UserService service = (UserService) session.getAttribute(UserService.SESSION_ID);
+			LoggerManager.getLogger(AuthServlet.class).debug("Session - " + service.getUser().getId());
 			return true;
 		}
 		Cookie cookie = Util.searchArray(request.getCookies(), (node) -> {
@@ -44,6 +47,7 @@ public class AuthServlet {
 			return false;
 		}
 		String id = entity.getId().getId();
+		LoggerManager.getLogger(AuthServlet.class).debug("Authorization - " + id);
 		UserDao user_dao = FactoryDao.getDao(UserDao.class);
 		User user = user_dao.getUser(id);
 		UserService info = new UserService();

@@ -3,7 +3,6 @@ package common;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -16,7 +15,6 @@ import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-
 import entity.SessionNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
@@ -31,22 +29,26 @@ public abstract class ISocket extends ICommon {
 	public void handleOpen(Session socketSession, EndpointConfig config) {
 		HttpSession session = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
 		SessionFactory.addSession(this.getClass(), socketSession, session);
-		System.out.println("connection");
+		LoggerManager.getLogger(ISocket.class).debug("connection");
 	}
 
 	@OnClose
 	public void handleClose(Session socketSession) {
 		SessionFactory.removeSession(this.getClass(), socketSession);
-		System.out.println("disconnection");
+		LoggerManager.getLogger(ISocket.class).debug("disconnection");
 	}
 
 	@OnMessage
 	public void handleMessage(String message, Session socketSession) throws IOException {
 		WebSocketNode node = createNode(message, socketSession);
 		if (node == null) {
+			LoggerManager.getLogger(ISocket.class).error("socket_error");
 			sendMessage(PropertyMap.getInstance().getProperty("message", "socket_error"), socketSession);
 			return;
 		}
+		LoggerManager.getLogger(ISocket.class).debug("control - " + node.getControl());
+		LoggerManager.getLogger(ISocket.class).debug("action - " + node.getAction());
+		LoggerManager.getLogger(ISocket.class).debug("data - " + node.getData());
 		main(node);
 	}
 
@@ -55,8 +57,7 @@ public abstract class ISocket extends ICommon {
 		sendMessage(json);
 	}
 
-	protected void sendMessage(String control, String action, String data, SessionNode socketSession)
-			throws IOException {
+	protected void sendMessage(String control, String action, String data, SessionNode socketSession) throws IOException {
 		String json = createJson(control, action, data);
 		sendMessage(json, socketSession.getSocketSession());
 	}

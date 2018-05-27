@@ -10,9 +10,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
-
 import common.interfaces.LambdaExpression;
 
 public class Util {
@@ -82,10 +80,12 @@ public class Util {
 		return ip;
 	}
 
+	@Deprecated
 	public static List<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		assert classLoader != null;
 		String path = packageName.replace('.', '/');
+		LoggerManager.getLogger(Util.class).debug("package path - " + path);
 		Enumeration<URL> resources = classLoader.getResources(path);
 		List<File> dirs = new ArrayList<>();
 		while (resources.hasMoreElements()) {
@@ -94,6 +94,7 @@ public class Util {
 		}
 		List<Class<?>> classes = new ArrayList<>();
 		for (File directory : dirs) {
+			LoggerManager.getLogger(Util.class).debug("directory - " + directory.getName());
 			classes.addAll(findClasses(directory, packageName));
 		}
 		return classes;
@@ -110,8 +111,7 @@ public class Util {
 				assert !file.getName().contains(".");
 				classes.addAll(findClasses(file, packageName + "." + file.getName()));
 			} else if (file.getName().endsWith(".class")) {
-				classes.add(
-						Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
 			}
 		}
 		return classes;

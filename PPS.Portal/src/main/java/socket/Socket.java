@@ -1,6 +1,7 @@
 package socket;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import common.HttpSessionConfigurator;
 import common.ISocket;
 import common.IWorkflow;
 import common.JsonConverter;
+import common.LoggerManager;
 import common.Util;
 import common.Workflow;
 import entity.NavigateNode;
@@ -34,7 +36,7 @@ public class Socket extends ISocket {
 			sendMessage("navigate", IWorkflow.Init, JsonConverter.create(navi), node.getSession());
 			sendMessage(ret);
 		} catch (Throwable e) {
-			e.printStackTrace();
+			LoggerManager.getLogger(Socket.class).error(e.toString());
 		}
 	}
 
@@ -63,8 +65,7 @@ public class Socket extends ISocket {
 			return null;
 		}
 		if (!flyweight.containsKey(control)) {
-			List<Class<?>> classes = Util.getClasses(this.getClass().getPackage().getName());
-			Class<?> clz = classes.stream().filter(x -> {
+			Class<?> clz = getClassBundle().stream().filter(x -> {
 				Workflow anno = x.getAnnotation(Workflow.class);
 				if (anno != null && control.equals(anno.name())) {
 					return true;
@@ -77,6 +78,16 @@ public class Socket extends ISocket {
 			flyweight.put(control, (IWorkflow) clz.newInstance());
 		}
 		return flyweight.get(control);
+	}
+
+	private List<Class<?>> getClassBundle() {
+		List<Class<?>> ret = new ArrayList<>();
+		ret.add(Admin.class);
+		ret.add(Card.class);
+		ret.add(Login.class);
+		ret.add(Main.class);
+		ret.add(Profile.class);
+		return ret;
 	}
 
 }
