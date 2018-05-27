@@ -3,7 +3,7 @@ var common = (function(obj) {
 	$(obj.onLoad);
 	return obj;
 })({
-	hosturl: "/Portal",
+
 	onLoad : function() {
 		if (ctl === null || ctl === undefined || typeof ctl !== "object") {
 			console.error("declare abstract controller");
@@ -110,12 +110,12 @@ ctl = {
 			pid : $("#pid").val(),
 			pwd : $("#pwd").val()
 		});
-		common.ajax(common.hosturl + "/login", data, function(ret) {
+		common.ajax("login", data, function(ret) {
 			if (ret === 1) {
 				$(".login-error").text("Login invalid. Please check ID or Password.");
 				$("#pwd").val("");
 			} else {
-				location.href = common.hosturl;
+				location.href = ".";
 			}
 		});
 	},
