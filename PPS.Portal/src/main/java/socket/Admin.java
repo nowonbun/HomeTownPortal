@@ -45,9 +45,9 @@ public class Admin extends IWorkflow {
 				entity.typeHeaderClass = "card-image";
 				if (card.getImg() != null) {
 					entity.background = "url('data:image/jpg;base64,"
-							+ Base64.getEncoder().encodeToString(card.getImg()) + "') center / cover";
+							+ Base64.getEncoder().encodeToString(card.getImg()) + "') center";
 				} else {
-					entity.background = "url('./contents/no_card.jpg') center / cover";
+					entity.background = "url('./contents/no_card.jpg') center";
 				}
 				entity.header = "";
 				entity.border = "";
