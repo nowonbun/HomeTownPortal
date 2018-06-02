@@ -8,6 +8,7 @@ import common.IWorkflow;
 import common.JsonConverter;
 import common.Workflow;
 import dao.CompanyDao;
+import dao.GroupDao;
 import dao.RoleDao;
 import entity.NavigateNode;
 import entity.SelectNode;
@@ -35,6 +36,7 @@ public class Profile extends IWorkflow {
 		boolean canModifyCompany;
 		boolean canModifyGroup;
 		int company;
+		int group;
 		List<SelectNode> companyList;
 		List<SelectNode> groupList;
 	}
@@ -69,14 +71,15 @@ public class Profile extends IWorkflow {
 			data.company = user.getCompany().getId();
 		}
 		data.canModifyGroup = RoleMaster.has(rolelist, RoleMaster.getCompanyChange());
-		//ajax
-//		if(data.canModifyGroup) {
-//			FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
-//				SelectNode select = new SelectNode();
-//				data.groupList.add(select);
-//				select.setValue(value);
-//			});
-//		}
+		if (data.canModifyGroup) {
+			FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
+				SelectNode select = new SelectNode();
+				data.groupList.add(select);
+				select.setValue(String.valueOf(x.getId()));
+				select.setName(x.getName());
+			});
+			data.group = user.getGroup().getId();
+		}
 
 		return createWebSocketResult(JsonConverter.create(data), node);
 	}

@@ -19,7 +19,7 @@ app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _load
 	_ws.send("card", "init");
 } ]);
 
-app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', function($scope, _ws, _notification, _filereader, _loader) {
+app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_scopeService', function($scope, _ws, _notification, _filereader, _loader, _scopeService) {
 	_loader.controller.hide();
 	_ws.message("profile", "init", function(data) {
 		var node = JSON.parse(data);
@@ -51,13 +51,28 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				$scope.img_url = node.img_url;
 			}
 		}
-		//console.log(node);
 		$scope.canModifyPassword = node.canModifyPassword;
 		$scope.canModifyCompany = node.canModifyCompany;
-		$scope.companyList = node.companyList;
-		$scope.company = node.company;
-		$scope.company_change = function() {
-			console.log($scope.company);
+		if (node.canModifyCompany) {
+			$scope.companyList = node.companyList;
+			$("#company").val(node.company);
+			$scope.company = node.company;
+			$(document).off("change", "#company").on("change", "#company", function() {
+				_scopeService.safeApply(function() {
+					$scope.company = $("#company").val();
+				});
+			});
+		}
+		$scope.canModifyGroup = node.canModifyGroup;
+		if (node.canModifyGroup) {
+			$scope.groupList = node.groupList;
+			$("#group").val(node.group);
+			$scope.group = node.group;
+			$(document).off("change", "#group").on("change", "#group", function() {
+				_scopeService.safeApply(function() {
+					$scope.group = $("#group").val();
+				});
+			});
 		}
 
 		_loader.ready(function() {
@@ -85,13 +100,15 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			});
 			$("#given_name").addClass('error-focus');
 		}
+		debugger;
 		var data = {
 			given_name : $scope.given_name,
 			name : $scope.name,
 			nick_name : $scope.nick_name,
-			comment : $scope.comment,
 			img_url : $scope.img_url,
-			is_img_blob : $scope.is_img_blob
+			is_img_blob : $scope.is_img_blob,
+			company : $scope.company,
+			group : $scope.group
 		};
 		_ws.send("profile", "apply", JSON.stringify(data));
 		return;

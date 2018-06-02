@@ -12,7 +12,7 @@
 				<div class="pps-header text-shadow-0">Information</div>
 				<div class="pps-body">
 					<div class="row">
-						<div class="col-2">
+						<div class="col-md-3 col-sm-4">
 							<div class="row">
 								<div class="col-12 pps-group">
 									<div class="pps-image">
@@ -30,7 +30,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-10">
+						<div class="col-md-9 col-sm-8">
 							<div class="row">
 								<div class="col-12 pps-group">
 									<div class="md-form form-group pps-group">
@@ -69,10 +69,19 @@
 						</div>
 					</div>
 					<div class="row" ng-show="canModifyCompany">
-						<div class="offset-1 col-10">
-							<select class="mdb-select" ng-model="company" ng-options="x.value as x.name for x in companyList" ng-change="company_change()">
+						<div class="offset-sm-1 col-sm-10">
+							<select class="mdb-select" id="company">
 								<option value="" disabled selected>Choose your option</option>
+								<option ng-repeat="option in companyList" value="{{option.value}}">{{option.name}}</option>
 							</select> <label>Company</label>
+						</div>
+					</div>
+					<div class="row" ng-show="canModifyGroup">
+						<div class="offset-sm-1 col-sm-10">
+							<select class="mdb-select" id="group">
+								<option value="" disabled selected>Choose your option</option>
+								<option ng-repeat="option in groupList" value="{{option.value}}">{{option.name}}</option>
+							</select> <label>Group</label>
 						</div>
 					</div>
 					<div class="row" style="margin-top: 20px;">
