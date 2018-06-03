@@ -13,6 +13,7 @@ import javax.xml.bind.DatatypeConverter;
 
 import common.FactoryDao;
 import common.IServlet;
+import common.Util;
 import dao.UserDao;
 import model.Password;
 import model.User;
@@ -52,12 +53,7 @@ public class Login extends IServlet {
 			getPrinter().print(ret);
 			return;
 		}
-		try {
-			pw = convertMD5(pw);
-		} catch (NoSuchAlgorithmException e) {
-			getResponse().setStatus(403);
-			return;
-		}
+		pw = Util.convertMD5(pw);
 		boolean check = true;
 		for (Password item : info.getPasswords()) {
 			if (item.getStateInfo().getIsDelete()) {
@@ -79,12 +75,6 @@ public class Login extends IServlet {
 		setLoginSession(userinfo);
 		String ret = "0";
 		getPrinter().print(ret);
-	}
-
-	private String convertMD5(String val) throws NoSuchAlgorithmException {
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		byte[] bytes = md5.digest(val.getBytes(StandardCharsets.UTF_8));
-		return DatatypeConverter.printHexBinary(bytes);
 	}
 
 }

@@ -46,6 +46,11 @@ input.form-control {
 	border-bottom-color: red !important;
 }
 
+.error-label {
+	color: red;
+    font-size: 8pt;
+}
+
 .pps-thumnail {
 	width: 100%;
 }

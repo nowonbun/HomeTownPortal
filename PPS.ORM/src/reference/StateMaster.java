@@ -37,6 +37,12 @@ public final class StateMaster {
 	}
 
 	public static boolean equals(State val1, State val2) {
+		if(val1 == null) {
+			return false;
+		}
+		if(val2 == null) {
+			return false;
+		}
 		return val1.getState() == val2.getState();
 	}
 }

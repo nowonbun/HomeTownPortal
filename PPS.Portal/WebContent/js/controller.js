@@ -82,6 +82,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		_loader.controller.show();
 	});
 	_ws.message("profile", "apply", function(data) {
+		console.log(data);
 		debugger;
 	});
 
@@ -93,20 +94,110 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		});
 	}
 
+	$scope.checkPassword = function() {
+		if ($.trim($scope.password) !== $.trim($scope.password_confirm)) {
+			$scope.isPasswordError = true;
+			$("#password").addClass('error-focus');
+			$("#password_confirm").addClass('error-focus');
+			return;
+		}
+		$scope.isPasswordError = false;
+		$("#password").removeClass('error-focus');
+		$("#password_confirm").removeClass('error-focus');
+	}
+
 	$scope.apply = function() {
 		if ($.trim($scope.given_name) === "") {
 			_notification.setMessage("danger", "Please input the text of 'Given name'", function() {
 				$("#given_name").removeClass('error-focus');
 			});
 			$("#given_name").addClass('error-focus');
+			return;
 		}
-		debugger;
+		$("#given_name").removeClass('error-focus');
+
+		if ($.trim($scope.name) === "") {
+			_notification.setMessage("danger", "Please input the text of 'name'", function() {
+				$("#name").removeClass('error-focus');
+			});
+			$("#name").addClass('error-focus');
+			return;
+		}
+		$("#name").removeClass('error-focus');
+
+		if ($.trim($scope.nick_name) === "") {
+			_notification.setMessage("danger", "Please input the text of 'Nick name'", function() {
+				$("#nick_name").removeClass('error-focus');
+			});
+			$("#nick_name").addClass('error-focus');
+			return;
+		}
+		$("#nick_name").removeClass('error-focus');
+
+		if ($scope.canModifyPassword) {
+			var noChangePassword = true;
+			if ($.trim($scope.current_password) === "") {
+				noChangePassword = false;
+			}
+			if ($.trim($scope.password) === "" && noChangePassword) {
+				_notification.setMessage("danger", "Please input the text of 'Password'", function() {
+					$("#password").removeClass('error-focus');
+				});
+				$("#password").addClass('error-focus');
+				return;
+			}
+			$("#password").removeClass('error-focus');
+			if ($.trim($scope.password_confirm) === "" && noChangePassword) {
+				_notification.setMessage("danger", "Please input the text of 'Password confirm'", function() {
+					$("#password_confirm").removeClass('error-focus');
+				});
+				$("#password_confirm").addClass('error-focus');
+				return;
+			}
+			$("#password_confirm").removeClass('error-focus');
+			if ($.trim($scope.password) !== $.trim($scope.password_confirm)  && noChangePassword) {
+				_notification.setMessage("danger", "Please input the text of 'Password is incorrect'", function() {
+					$("#password").removeClass('error-focus');
+					$("#password_confirm").removeClass('error-focus');
+				});
+				$("#password").addClass('error-focus');
+				$("#password_confirm").addClass('error-focus');
+				return;
+			}
+			$("#password").removeClass('error-focus');
+			$("#password_confirm").removeClass('error-focus');
+		}
+
+		if ($scope.canModifyCompany) {
+			if ($.trim($scope.company) === "") {
+				_notification.setMessage("danger", "Please select the value of 'company'", function() {
+					$("#company").removeClass('error-focus');
+				});
+				$("#company").addClass('error-focus');
+				return;
+			}
+			$("#company").removeClass('error-focus');
+		}
+
+		if ($scope.canModifyGroup) {
+			if ($.trim($scope.group) === "") {
+				_notification.setMessage("danger", "Please select the value of 'group'", function() {
+					$("#group").removeClass('error-focus');
+				});
+				$("#group").addClass('error-focus');
+				return;
+			}
+			$("#group").removeClass('error-focus');
+		}
+
 		var data = {
 			given_name : $scope.given_name,
 			name : $scope.name,
 			nick_name : $scope.nick_name,
 			img_url : $scope.img_url,
 			is_img_blob : $scope.is_img_blob,
+			current_password : $scope.current_password,
+			password : $scope.password,
 			company : $scope.company,
 			group : $scope.group
 		};

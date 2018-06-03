@@ -22,7 +22,8 @@
 										<div class="file-field">
 											<div class="d-flex justify-content-center">
 												<div class="btn btn-primary btn-sm float-left">
-													<span>Choose file</span> <input type="file" id="img_file" ng-model="img_file" onchange="angular.element('#img_file').scope().fileupload()">
+													<span>Choose file</span> 
+													<input type="file" id="img_file" ng-model="img_file" onchange="angular.element('#img_file').scope().fileupload()">
 												</div>
 											</div>
 										</div>
@@ -34,7 +35,8 @@
 							<div class="row">
 								<div class="col-12 pps-group">
 									<div class="md-form form-group pps-group">
-										<input type="text" class="form-control pps-input" id="given_name" ng-model="given_name"> <label for="given_name" class="pps-label" id="given_name_label">Given name</label>
+										<input type="text" class="form-control pps-input" id="given_name" ng-model="given_name"> 
+										<label for="given_name" class="pps-label" id="given_name_label">Given name</label>
 									</div>
 								</div>
 							</div>
@@ -48,24 +50,38 @@
 							<div class="row">
 								<div class="col-12">
 									<div class="md-form form-group pps-group">
-										<input type="text" class="form-control pps-input" id="nick_name" ng-model="nick_name"> <label for="nick_name" class="pps-label" id="nick_name_label">Nick name</label>
+										<input type="text" class="form-control pps-input" id="nick_name" ng-model="nick_name"> 
+										<label for="nick_name" class="pps-label" id="nick_name_label">Nick name</label>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="space-row"></div>
 					<div class="row" ng-show="canModifyPassword">
-						<div class="offset-1 col-5">
+						<div class="offset-sm-1 col-sm-10">
 							<div class="md-form form-group pps-group">
-								<input type="password" class="form-control pps-input" id="password" ng-model="password"> <label for="password" class="pps-label" id="password">Password</label>
+								<input type="password" class="form-control pps-input" id="current_password" ng-model="current_password"> 
+								<label for="current_password" class="pps-label" id="current_password_label">Current Password</label>
 							</div>
 						</div>
-						<div class="col-5">
+					</div>
+					<div class="row" ng-show="canModifyPassword">
+						<div class="offset-sm-1 col-sm-5">
 							<div class="md-form form-group pps-group">
-								<input type="password" class="form-control pps-input" id="password_confirm" ng-model="password_confirm"> <label for="password_confirm" class="pps-label" id="password">Password
-									confirm</label>
+								<input type="password" class="form-control pps-input" id="password" ng-model="password" ng-change="checkPassword()"> 
+								<label for="password" class="pps-label" id="password_label">Password</label>
 							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="md-form form-group pps-group">
+								<input type="password" class="form-control pps-input" id="password_confirm" ng-model="password_confirm" ng-change="checkPassword()"> 
+								<label for="password_confirm" class="pps-label" id="password_confirm_label">Passwordconfirm</label>
+							</div>
+						</div>
+					</div>
+					<div class="row" ng-show="isPasswordError">
+						<div class="offset-sm-1 col-sm-10">
+							<label class="error-label">Please input the text of 'Password is incorrect'</label>
 						</div>
 					</div>
 					<div class="row" ng-show="canModifyCompany">
@@ -73,7 +89,8 @@
 							<select class="mdb-select" id="company">
 								<option value="" disabled selected>Choose your option</option>
 								<option ng-repeat="option in companyList" value="{{option.value}}">{{option.name}}</option>
-							</select> <label>Company</label>
+							</select> 
+							<label>Company</label>
 						</div>
 					</div>
 					<div class="row" ng-show="canModifyGroup">
@@ -81,7 +98,8 @@
 							<select class="mdb-select" id="group">
 								<option value="" disabled selected>Choose your option</option>
 								<option ng-repeat="option in groupList" value="{{option.value}}">{{option.name}}</option>
-							</select> <label>Group</label>
+							</select> 
+							<label>Group</label>
 						</div>
 					</div>
 					<div class="row" style="margin-top: 20px;">

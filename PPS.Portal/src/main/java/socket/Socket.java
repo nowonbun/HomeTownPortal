@@ -36,7 +36,7 @@ public class Socket extends ISocket {
 			sendMessage("navigate", IWorkflow.Init, JsonConverter.create(navi), node.getSession());
 			sendMessage(ret);
 		} catch (Throwable e) {
-			LoggerManager.getLogger(Socket.class).error(e.toString());
+			LoggerManager.getLogger(Socket.class).error(e);
 		}
 	}
 

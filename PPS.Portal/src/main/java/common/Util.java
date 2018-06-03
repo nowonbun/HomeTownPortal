@@ -3,6 +3,9 @@ package common;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,7 +13,11 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
+
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
+
 import common.interfaces.LambdaExpression;
 
 public class Util {
@@ -49,6 +56,21 @@ public class Util {
 			return false;
 		}
 		return val1.equals(val2);
+	}
+
+	public static boolean StringIsEmptyOrNull(String val) {
+		if (val == null) {
+			return true;
+		}
+		if (val.trim().length() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+
+	public static boolean JsonIsKey(JsonObject jsonobj, String key) {
+		return jsonobj.keySet().contains(key) && !jsonobj.isNull(key);
 	}
 
 	public static String getRemoteAddr(HttpServletRequest request) {
@@ -115,5 +137,15 @@ public class Util {
 			}
 		}
 		return classes;
+	}
+
+	public static String convertMD5(String val) {
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			byte[] bytes = md5.digest(val.getBytes(StandardCharsets.UTF_8));
+			return DatatypeConverter.printHexBinary(bytes);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
