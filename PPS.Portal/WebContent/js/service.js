@@ -83,44 +83,70 @@ app.service('_notification', [
 app.service('_ws', [ '$rootScope', '_scopeService', function($rootScope, _scopeService) {
 	var socket = new WebSocket(WS_HOST + "/socket");
 	var delegate = {
-		open : [],
-		close : [],
+		open : null,
+		close : null,
 		error : [],
 		message : []
 	};
 	socket.onopen = function(msg) {
+		if (delegate.open === null) {
+			return;
+		}
 		_scopeService.safeApply(function() {
-			for ( var i in delegate.open) {
-				delegate.open[i].call(this, msg);
-			}
+			delegate.open.func.call(this, msg);
 		});
+		if (delegate.open.cb !== null && delegate.open.cb !== undefined && typeof delegate.open.cb === "function") {
+			delegate.open.cb.call(this);
+		}
 	};
 	socket.onclose = function(msg) {
+		if (delegate.close === null) {
+			return;
+		}
 		_scopeService.safeApply(function() {
-			for ( var i in delegate.close) {
-				delegate.close[i].call(this, msg);
-			}
+			delegate.close.func.call(this, msg);
 		});
+		if (delegate.close.cb !== null && delegate.close.cb !== undefined && typeof delegate.close.cb === "function") {
+			delegate.close.cb.call(this);
+		}
 	};
 	socket.onerror = function(msg) {
-		_scopeService.safeApply(function() {
-			var node = JSON.parse(msg.data);
-			for ( var i in delegate.error) {
-				if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
-					delegate.error[i].func.call(this, node.data);
-				}
+		var item = null;
+		var node = JSON.parse(msg.data);
+		for ( var i in delegate.error) {
+			if (node.control === delegate.error[i].control && node.action === delegate.error[i].action) {
+				item = delegate.error[i];
+				break;
 			}
+		}
+		if (item === null) {
+			return;
+		}
+		_scopeService.safeApply(function() {
+			item.func.call(this, node.data);
 		});
+		if (item.cb !== null && item.cb !== undefined && typeof item.cb === "function") {
+			item.cb.call(this);
+		}
 	};
 	socket.onmessage = function(msg) {
-		_scopeService.safeApply(function() {
-			var node = JSON.parse(msg.data);
-			for ( var i in delegate.message) {
-				if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
-					delegate.message[i].func.call(this, node.data);
-				}
+		var item = null;
+		var node = JSON.parse(msg.data);
+		for ( var i in delegate.message) {
+			if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
+				item = delegate.message[i];
+				break;
 			}
+		}
+		if (item === null) {
+			return;
+		}
+		_scopeService.safeApply(function() {
+			item.func.call(this, node.data);
 		});
+		if (item.cb !== null && item.cb !== undefined && typeof item.cb === "function") {
+			item.cb.call(this);
+		}
 	};
 	sendNode = function(node) {
 		if (socket.readyState === 1) {
@@ -135,14 +161,17 @@ app.service('_ws', [ '$rootScope', '_scopeService', function($rootScope, _scopeS
 			}, 1000);
 		}
 	}
-	function define(type, func) {
+	function define(type, func, cb) {
 		if (func !== null && func !== undefined && typeof func === "function") {
-			delegate[type] = func;
+			delegate[type] = {
+				func : func,
+				cb : cb
+			};
 			return;
 		}
 		console.error("It's not defined because not function method.");
 	}
-	function define2(type, control, action, func) {
+	function define2(type, control, action, func, cb) {
 		if (func !== null && func !== undefined && typeof func === "function") {
 			for ( var i in delegate[type]) {
 				var temp = delegate[type][i];
@@ -154,24 +183,25 @@ app.service('_ws', [ '$rootScope', '_scopeService', function($rootScope, _scopeS
 			delegate[type].push({
 				control : control,
 				action : action,
-				func : func
+				func : func,
+				cb : cb
 			});
 			return;
 		}
 		console.error("It's not defined because not function method.");
 	}
 	return {
-		open : function(func) {
-			define("open", func);
+		open : function(func, cb) {
+			define("open", func, cb);
 		},
-		close : function(func) {
-			define("close", func);
+		close : function(func, cb) {
+			define("close", func, cb);
 		},
-		error : function(control, action, func) {
-			define2("error", control, action, func);
+		error : function(control, action, func, cb) {
+			define2("error", control, action, func, cb);
 		},
-		message : function(control, action, func) {
-			define2("message", control, action, func);
+		message : function(control, action, func, cb) {
+			define2("message", control, action, func, cb);
 		},
 		send : function(control, action, data) {
 			if (data === undefined) {

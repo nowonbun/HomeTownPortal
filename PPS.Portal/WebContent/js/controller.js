@@ -101,6 +101,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 	});
 	_ws.message("profile", "apply", function(data) {
 		var msg = JSON.parse(data);
+		_loader.hide();
 		_notification.setMessage(msg.type, msg.msg);
 	});
 
@@ -219,15 +220,27 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			company : $scope.company,
 			group : $scope.group
 		};
+		_loader.show();
 		_ws.send("profile", "apply", JSON.stringify(data));
 		return;
 	}
 	_ws.send("profile", "init");
 } ]);
 
-app.controller("usermanagement", [ '$scope', '_ws', function($scope, _ws) {
+app.controller("usermanagement", [ '$scope', '_ws', '_loader', function($scope, _ws, _loader) {
+	_loader.controller.hide();
 	_ws.message("usermanagement", "init", function(data) {
-		console.log("LOGGER");
+		$scope.list = JSON.parse(data);
+	},function(){
+		$(function(){
+			$("#tableTest").DataTable({
+				responsive: true
+			});	
+			$("#tableTest_wrapper").addClass("box-shadow-0");
+			$("#tableTest").css("width","");
+		});
+		
+		_loader.controller.show();
 	});
 	_ws.send("usermanagement", "init");
 } ]);
