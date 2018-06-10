@@ -47,9 +47,9 @@ public class Card extends IWorkflow {
 			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
 				entity.typeHeaderClass = "card-image";
 				if (card.getImg() != null) {
-					entity.background = "url('data:image/jpg;base64," + Base64.getEncoder().encodeToString(card.getImg()) + "') center";
+					entity.background = "url('data:image/jpg;base64," + Base64.getEncoder().encodeToString(card.getImg()) + "') no-repeat center";
 				} else {
-					entity.background = "url('./contents/no_card.jpg') center";
+					entity.background = "url('./contents/no_card.jpg') no-repeat center";
 				}
 				entity.header = "";
 				entity.border = "";

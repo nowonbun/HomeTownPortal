@@ -3,7 +3,7 @@
 <%
 	AuthServlet.auth(request, response);
 %>
-<link href="./css/views/application.css" rel="stylesheet">
+<link href="./css/views/profile.css" rel="stylesheet">
 <div class="row">
 	<div class="col-12 text-center">
 		<div class="mdl-shadow--2dp pps-page max-page-1200">
@@ -84,7 +84,7 @@
 							<label class="error-label">Please input the text of 'Password is incorrect'</label>
 						</div>
 					</div>
-					<div class="row" ng-show="canModifyCompany">
+					<div class="row select-row" ng-show="canModifyCompany">
 						<div class="offset-sm-1 col-sm-10">
 							<select class="mdb-select" id="company">
 								<option value="" disabled selected>Choose your option</option>
@@ -93,7 +93,7 @@
 							<label>Company</label>
 						</div>
 					</div>
-					<div class="row" ng-show="canModifyGroup">
+					<div class="row select-row" ng-show="canModifyGroup">
 						<div class="offset-sm-1 col-sm-10">
 							<select class="mdb-select" id="group">
 								<option value="" disabled selected>Choose your option</option>

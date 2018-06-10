@@ -1,5 +1,8 @@
 package common;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
@@ -12,7 +15,7 @@ public abstract class IWorkflow extends ICommon {
 	protected abstract NavigateNode[] navigation();
 
 	protected WebSocketResult createWebSocketError(WebSocketNode node) {
-		return createWebSocketResult(WebSocketResultType.Single, node, node.getControl(), node.getAction(), "System error", navigation());
+		return createWebSocketResult(WebSocketResultType.Single, node, node.getControl(), node.getAction(), createNotification(NotificationType.Danger, "System error"), navigation());
 	}
 
 	protected WebSocketResult createWebSocketResult(WebSocketNode node) {
@@ -43,5 +46,18 @@ public abstract class IWorkflow extends ICommon {
 		}
 
 		return ret;
+	}
+
+	protected String createNotification(NotificationType type, String msg) {
+		JsonObjectBuilder obj = Json.createObjectBuilder();
+		if (type == NotificationType.Success) {
+			obj.add("type", "success");
+		} else if (type == NotificationType.Warning) {
+			obj.add("type", "warning");
+		} else {
+			obj.add("type", "danger");
+		}
+		obj.add("msg", msg);
+		return obj.build().toString();
 	}
 }

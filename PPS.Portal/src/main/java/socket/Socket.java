@@ -87,6 +87,8 @@ public class Socket extends ISocket {
 		ret.add(Login.class);
 		ret.add(Main.class);
 		ret.add(Profile.class);
+		ret.add(DataMasterSetting.class);
+		ret.add(UserManagement.class);
 		return ret;
 	}
 

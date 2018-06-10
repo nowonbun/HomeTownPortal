@@ -48,11 +48,15 @@ input.form-control {
 
 .error-label {
 	color: red;
-    font-size: 8pt;
+	font-size: 8pt;
 }
 
 .pps-thumnail {
 	width: 100%;
+}
+
+.select-row {
+	margin-top: 20px;
 }
 
 /*

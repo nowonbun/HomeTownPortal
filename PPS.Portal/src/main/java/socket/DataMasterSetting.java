@@ -3,6 +3,7 @@ package socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
@@ -16,10 +17,8 @@ import model.CardStep;
 import model.CardType;
 import model.User;
 
-@Workflow(name = "admin")
-public class Admin extends IWorkflow {
-
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin") };
+@Workflow(name = "datamastersetting")
+public class DataMasterSetting extends IWorkflow {
 
 	@SuppressWarnings("unused")
 	private class Node {
@@ -31,21 +30,22 @@ public class Admin extends IWorkflow {
 		String href;
 	}
 
+	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin"), new NavigateNode("./#!/datamastersetting", "Master setting") };
+
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
-		User user =  super.getUserinfo(node.getSession()).getUser();
+		User user = super.getUserinfo(node.getSession()).getUser();
 		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
 		List<Node> data = new ArrayList<>();
 		for (model.Card card : cards) {
-			if (!Util.StringEquals(CardStep.ADMIN, card.getCardStep().getStep())) {
+			if (!Util.StringEquals(CardStep.MAST, card.getCardStep().getStep())) {
 				continue;
 			}
 			Node entity = new Node();
 			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
 				entity.typeHeaderClass = "card-image";
 				if (card.getImg() != null) {
-					entity.background = "url('data:image/jpg;base64,"
-							+ Base64.getEncoder().encodeToString(card.getImg()) + "') center";
+					entity.background = "url('data:image/jpg;base64," + Base64.getEncoder().encodeToString(card.getImg()) + "') center";
 				} else {
 					entity.background = "url('./contents/no_card.jpg') no-repeat center";
 				}
@@ -58,8 +58,7 @@ public class Admin extends IWorkflow {
 				entity.background = card.getColor();
 				entity.header = card.getTitle();
 				entity.border = "mdl-card--border";
-				entity.body = "<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>"
-						+ card.getName() + "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon()
+				entity.body = "<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>" + card.getName() + "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon()
 						+ "'></i>";
 				entity.href = card.getHref();
 			} else {
@@ -68,11 +67,11 @@ public class Admin extends IWorkflow {
 			data.add(entity);
 		}
 		return createWebSocketResult(JsonConverter.create(data), node);
-
 	}
 
 	@Override
 	protected NavigateNode[] navigation() {
 		return navi;
 	}
+
 }

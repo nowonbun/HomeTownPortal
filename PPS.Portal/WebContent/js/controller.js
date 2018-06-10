@@ -19,6 +19,24 @@ app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _load
 	_ws.send("card", "init");
 } ]);
 
+app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
+	_ws.message("admin", "init", function(data) {
+		// TODO: This program is if the internet is connected,
+		// we can not work it.
+		$scope.cards = JSON.parse(data);
+	});
+	_ws.send("admin", "init");
+} ]);
+
+app.controller("datamastersetting", [ '$scope', '_ws', function($scope, _ws) {
+	_ws.message("datamastersetting", "init", function(data) {
+		// TODO: This program is if the internet is connected,
+		// we can not work it.
+		$scope.cards = JSON.parse(data);
+	});
+	_ws.send("datamastersetting", "init");
+} ]);
+
 app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_scopeService', function($scope, _ws, _notification, _filereader, _loader, _scopeService) {
 	_loader.controller.hide();
 	_ws.message("profile", "init", function(data) {
@@ -82,8 +100,8 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		_loader.controller.show();
 	});
 	_ws.message("profile", "apply", function(data) {
-		console.log(data);
-		debugger;
+		var msg = JSON.parse(data);
+		_notification.setMessage(msg.type, msg.msg);
 	});
 
 	$scope.fileupload = function() {
@@ -155,7 +173,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				return;
 			}
 			$("#password_confirm").removeClass('error-focus');
-			if ($.trim($scope.password) !== $.trim($scope.password_confirm)  && noChangePassword) {
+			if ($.trim($scope.password) !== $.trim($scope.password_confirm) && noChangePassword) {
 				_notification.setMessage("danger", "Please input the text of 'Password is incorrect'", function() {
 					$("#password").removeClass('error-focus');
 					$("#password_confirm").removeClass('error-focus');
@@ -207,11 +225,9 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 	_ws.send("profile", "init");
 } ]);
 
-app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
-	_ws.message("admin", "init", function(data) {
-		// TODO: This program is if the internet is connected,
-		// we can not work it.
-		$scope.cards = JSON.parse(data);
+app.controller("usermanagement", [ '$scope', '_ws', function($scope, _ws) {
+	_ws.message("usermanagement", "init", function(data) {
+		console.log("LOGGER");
 	});
-	_ws.send("admin", "init");
+	_ws.send("usermanagement", "init");
 } ]);

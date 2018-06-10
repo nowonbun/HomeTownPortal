@@ -4,4 +4,7 @@
 	#breadcrumb {
 		display: none;
 	}
+	.card-item {
+		width:100%;
+	}
 }

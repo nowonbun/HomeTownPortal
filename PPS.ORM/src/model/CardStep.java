@@ -12,6 +12,7 @@ public class CardStep implements Serializable {
 
 	public static String ADMIN = "ADMN";
 	public static String HOME = "HOME";
+	public static String MAST = "MAST";
 
 	@Id
 	@Column(name = "STEP")

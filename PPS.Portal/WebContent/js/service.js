@@ -137,13 +137,20 @@ app.service('_ws', [ '$rootScope', '_scopeService', function($rootScope, _scopeS
 	}
 	function define(type, func) {
 		if (func !== null && func !== undefined && typeof func === "function") {
-			delegate[type].push(func);
+			delegate[type] = func;
 			return;
 		}
 		console.error("It's not defined because not function method.");
 	}
 	function define2(type, control, action, func) {
 		if (func !== null && func !== undefined && typeof func === "function") {
+			for ( var i in delegate[type]) {
+				var temp = delegate[type][i];
+				if (temp.control === control && temp.action === action) {
+					temp.func = func;
+					return;
+				}
+			}
 			delegate[type].push({
 				control : control,
 				action : action,

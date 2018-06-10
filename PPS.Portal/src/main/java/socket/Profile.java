@@ -6,6 +6,7 @@ import java.util.List;
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
+import common.NotificationType;
 import common.Util;
 import common.Workflow;
 import dao.CompanyDao;
@@ -143,10 +144,10 @@ public class Profile extends IWorkflow {
 				}
 			});
 			if (!buffer.passwordcheck) {
-				return createWebSocketResult("The password is incorrect.", node);
+				return createWebSocketResult(createNotification(NotificationType.Danger, "The password is incorrect."), node);
 			}
 			FactoryDao.getDao(UserDao.class).update(user);
-			return createWebSocketResult("The profile is updated", node);
+			return createWebSocketResult(createNotification(NotificationType.Success, "The profile is updated"), node);
 		} catch (Throwable e) {
 			return createWebSocketError(node);
 		}
