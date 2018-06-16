@@ -12,12 +12,16 @@
 	<title>Portal</title>
 	<link href="./favicon.ico" rel="icon">
 	<link href="./css/vendor/mdb.min.css" rel="stylesheet">
+	<!-- link href="//cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.2/css/mdb.min.css" rel="stylesheet"-->
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-	<link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
-	<!-- link href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet"-->
-	
-	<link href="./css/vendor/sb-admin.css" rel="stylesheet">	
+	<link href="//cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css" rel="stylesheet">
+	<link href="//cdn.datatables.net/responsive/2.2.2/css/responsive.dataTables.min.css" rel="stylesheet">
+	<link href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<link href="//cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" rel="stylesheet">
+	<link href="//cdn.datatables.net/select/1.2.6/css/select.dataTables.min.css" rel="stylesheet">
+	<!-- link href="./css/editor.dataTables.css" rel="stylesheet"-->
+	<link href="./css/vendor/sb-admin.css" rel="stylesheet">
 	<link href="./css/common.css" rel="stylesheet">
 	<link href="./css/shadow.css" rel="stylesheet">
 	<link href="./css/size/1extrasmall.css" rel="stylesheet">
@@ -80,13 +84,17 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-sanitize.min.js" type="text/javascript"></script>
 	
 	<!-- script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" type="text/javascript"></script-->
+	<!-- script src="//cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.2/js/mdb.min.js" type="text/javascript"></script-->
 	<script src="./js/vendor/mdb.min.js" type="text/javascript"></script>
 	<!-- script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" type="text/javascript"></script-->
 	<!-- script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" type="text/javascript"></script-->
 	<!-- script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" type="text/javascript"></script-->
-	<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" type="text/javascript"></script>
 	<script src="//cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js" type="text/javascript"></script>
-	<!-- script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" type="text/javascript"></script-->
+	<script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+	<!-- script src="//cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js" type="text/javascript"></script-->
+	<script src="//cdn.datatables.net/select/1.2.6/js/dataTables.select.min.js" type="text/javascript"></script>
+	<!-- script src="./js/dataTables.editor.js" type="text/javascript"></script-->
 	<!-- script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script-->
 	<script src="./js/vendor/sb-admin.js" type="text/javascript"></script>
 	<!-- script src="./js/vendor/sb-admin-datatables.js" type="text/javascript"></script-->

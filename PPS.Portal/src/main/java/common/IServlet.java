@@ -97,7 +97,7 @@ public abstract class IServlet extends HttpServlet {
 	}
 
 	protected void setStatus(int code) {
-		getResponse().setStatus(403);
+		getResponse().setStatus(code);
 	}
 
 	public void setLoginSession(UserService user) {

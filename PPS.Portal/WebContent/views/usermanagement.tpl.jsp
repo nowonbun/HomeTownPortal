@@ -15,10 +15,27 @@
 #tableTest_wrapper {
 	padding: 10px;
 }
+
+.dataTables_length, .dataTables_filter {
+	text-align: left !important;
+}
+
+.data-item-column {
+	white-space: nowrap;
+}
+
+.dtr-details {
+	width: 100%;
+}
+
+.responsive-column {
+	width: 1px!important;
+}
 </style>
 <table id="tableTest">
 	<thead>
 		<tr>
+			<th class="responsive-column"></th>
 			<th>ID</th>
 			<th>Given name</th>
 			<th>Name</th>
@@ -29,16 +46,5 @@
 			<th>Active</th>
 		</tr>
 	</thead>
-	<tbody>
-		<tr ng-repeat="item in list">
-			<td>{{item.id}}</td>
-			<td>{{item.given}}</td>
-			<td>{{item.name}}</td>
-			<td>{{item.nick}}</td>
-			<td>{{item.company}}</td>
-			<td>{{item.group}}</td>
-			<td>{{item.type}}</td>
-			<td>{{item.active}}</td>
-		</tr>
-	</tbody>
+	<tbody></tbody>
 </table>

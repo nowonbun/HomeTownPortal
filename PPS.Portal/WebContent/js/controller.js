@@ -230,16 +230,66 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 app.controller("usermanagement", [ '$scope', '_ws', '_loader', function($scope, _ws, _loader) {
 	_loader.controller.hide();
 	_ws.message("usermanagement", "init", function(data) {
-		$scope.list = JSON.parse(data);
-	},function(){
-		$(function(){
+		$scope.ajaxurl = data;
+	}, function() {
+		$(function() {
 			$("#tableTest").DataTable({
-				responsive: true
-			});	
-			$("#tableTest_wrapper").addClass("box-shadow-0");
-			$("#tableTest").css("width","");
+				ajax : {
+					url : $scope.ajaxurl,
+					type : "POST",
+					complete : function() {
+						$("#tableTest_wrapper").addClass("box-shadow-0");
+						$("#tableTest").css("width", "");
+					},
+					error : function(xhr, error, thrown) {
+					}
+				},
+				ordering : false,
+				select : {
+		            style: 'single'
+		        },
+				columnDefs : [ {
+					className : 'control',
+					targets : 0,
+					data : null,
+					defaultContent : ''
+				} ],
+				responsive : {
+					details : {
+						type : 'column',
+						target : 0
+					}
+				},
+				columns : [ {
+					data : null
+				}, {
+					data : "id",
+					width: "10%"
+				}, {
+					data : "given",
+					width: "10%"
+				}, {
+					data : "name",
+					width: "10%"
+				}, {
+					data : "nick",
+					width: "10%"
+				}, {
+					data : "company",
+					width: "10%"
+				}, {
+					data : "group",
+					width: "10%"
+				}, {
+					data : "type",
+					width: "10%"
+				}, {
+					data : "active",
+					width: "5%"
+				} ]
+			});
 		});
-		
+
 		_loader.controller.show();
 	});
 	_ws.send("usermanagement", "init");

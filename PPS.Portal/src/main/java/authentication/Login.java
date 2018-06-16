@@ -1,16 +1,10 @@
 package authentication;
 
 import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.annotation.WebServlet;
-import javax.xml.bind.DatatypeConverter;
-
 import common.FactoryDao;
 import common.IServlet;
 import common.Util;
