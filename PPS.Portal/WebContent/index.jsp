@@ -39,13 +39,13 @@
     	<a class="navbar-brand" href="./#!/">Home Portal</a>
     	<!-- Breadcrumbs-->
 		<ul id="breadcrumb" navigation ng-controller="navigate"></ul>
-		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+		<button id="navitoggler" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
     	<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="./#!/profile">
+					<a class="nav-link" href="./#!/profile" onclick="$('#navitoggler').click();">
 						<i class="fa fa-fw  fa-user"></i>Profile
 					</a>
 				</li>

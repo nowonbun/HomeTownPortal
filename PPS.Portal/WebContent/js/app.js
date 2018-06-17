@@ -16,6 +16,9 @@ app.config(function($routeProvider) {
 	}).when("/usermanagement", {
 		controller : "usermanagement",
 		templateUrl : "./views/usermanagement.tpl.jsp"
+	}).when("/useredit", {
+		controller : "useredit",
+		templateUrl : "./views/useredit.tpl.jsp"
 	}).otherwise({
 		redirectTo : "/"
 	});

@@ -19,7 +19,8 @@ import model.User;
 @Workflow(name = "admin")
 public class Admin extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin") };
+	private static NavigateNode[] navi = new NavigateNode[] { 
+			new NavigateNode("./#!/admin", "Admin") };
 
 	@SuppressWarnings("unused")
 	private class Node {

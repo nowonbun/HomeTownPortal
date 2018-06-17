@@ -30,7 +30,9 @@ public class DataMasterSetting extends IWorkflow {
 		String href;
 	}
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin"), new NavigateNode("./#!/datamastersetting", "Master setting") };
+	private static NavigateNode[] navi = new NavigateNode[] { 
+			new NavigateNode("./#!/admin", "Admin"), 
+			new NavigateNode("./#!/datamastersetting", "Master setting") };
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {

@@ -26,7 +26,8 @@ import reference.StateMaster;
 @Workflow(name = "profile")
 public class Profile extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/profile", "Profile") };
+	private static NavigateNode[] navi = new NavigateNode[] { 
+			new NavigateNode("./#!/profile", "Profile") };
 	private boolean passwordcheck;
 
 	@SuppressWarnings("unused")

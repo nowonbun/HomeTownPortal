@@ -1,4 +1,6 @@
-app.run([ '$rootScope', '_ws', '_loader', function($rootScope, _ws, _loader) {
+app.run(
+		[ '$rootScope', '_ws', '_loader', 
+			function($rootScope, _ws, _loader) {
 	_ws.message("login", "init", function(data) {
 		if (data === "NG") {
 			location.href = "./Logout";
@@ -6,20 +8,26 @@ app.run([ '$rootScope', '_ws', '_loader', function($rootScope, _ws, _loader) {
 	});
 } ]);
 
-app.controller("navigate", [ '$scope', '_ws', function($scope, _ws) {
+app.controller("navigate", 
+		[ '$scope', '_ws', 
+			function($scope, _ws) {
 	_ws.message("navigate", "init", function(data) {
 		$scope.navi = JSON.parse(data);
 	});
 } ]);
 
-app.controller("card", [ '$scope', '_ws', '_loader', function($scope, _ws, _loader) {
+app.controller("card", 
+		[ '$scope', '_ws', '_loader', 
+			function($scope, _ws, _loader) {
 	_ws.message("card", "init", function(data) {
 		$scope.cards = JSON.parse(data);
 	});
 	_ws.send("card", "init");
 } ]);
 
-app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
+app.controller("admin", 
+		[ '$scope', '_ws', 
+			function($scope, _ws) {
 	_ws.message("admin", "init", function(data) {
 		// TODO: This program is if the internet is connected,
 		// we can not work it.
@@ -28,7 +36,9 @@ app.controller("admin", [ '$scope', '_ws', function($scope, _ws) {
 	_ws.send("admin", "init");
 } ]);
 
-app.controller("datamastersetting", [ '$scope', '_ws', function($scope, _ws) {
+app.controller("datamastersetting", 
+		[ '$scope', '_ws', 
+	function($scope, _ws) {
 	_ws.message("datamastersetting", "init", function(data) {
 		// TODO: This program is if the internet is connected,
 		// we can not work it.
@@ -37,7 +47,9 @@ app.controller("datamastersetting", [ '$scope', '_ws', function($scope, _ws) {
 	_ws.send("datamastersetting", "init");
 } ]);
 
-app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_scopeService', function($scope, _ws, _notification, _filereader, _loader, _scopeService) {
+app.controller("profile", 
+		[ '$scope', '_ws', '_notification', '_filereader', '_loader', '_scopeService', 
+			function($scope, _ws, _notification, _filereader, _loader, _scopeService) {
 	_loader.controller.hide();
 	_ws.message("profile", "init", function(data) {
 		var node = JSON.parse(data);
@@ -227,27 +239,40 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 	_ws.send("profile", "init");
 } ]);
 
-app.controller("usermanagement", [ '$scope', '_ws', '_loader', function($scope, _ws, _loader) {
+app.controller("usermanagement", 
+		[ '$scope', '_ws', '_loader', '_scopeService', 
+			function($scope, _ws, _loader, _scopeService) {
 	_loader.controller.hide();
+	$scope.userAdd = function() {
+		location.href = "./#!/useredit";
+	}
+	$scope.userEdit = function() {
+		location.href = "./#!/useredit/" + $scope.selectid;
+	}
+	$scope.userDelete = function() {
+		location.href = "./#!/useredit/" + $scope.selectid;
+	}
+
 	_ws.message("usermanagement", "init", function(data) {
 		$scope.ajaxurl = data;
 	}, function() {
 		$(function() {
-			$("#tableTest").DataTable({
+			var table = $("#tablelist").DataTable({
 				ajax : {
 					url : $scope.ajaxurl,
 					type : "POST",
 					complete : function() {
-						$("#tableTest_wrapper").addClass("box-shadow-0");
-						$("#tableTest").css("width", "");
+						$("#tablelist_wrapper").addClass("box-shadow-0");
+						$("#tablelist").css("width", "");
+						$("#tablelist thead th").css("width", "");
 					},
 					error : function(xhr, error, thrown) {
 					}
 				},
 				ordering : false,
 				select : {
-		            style: 'single'
-		        },
+					style : 'single'
+				},
 				columnDefs : [ {
 					className : 'control',
 					targets : 0,
@@ -263,34 +288,54 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', function($scope, 
 				columns : [ {
 					data : null
 				}, {
-					data : "id",
-					width: "10%"
+					data : "id"
 				}, {
-					data : "given",
-					width: "10%"
+					data : "given"
 				}, {
-					data : "name",
-					width: "10%"
+					data : "name"
 				}, {
-					data : "nick",
-					width: "10%"
+					data : "nick"
 				}, {
-					data : "company",
-					width: "10%"
+					data : "company"
 				}, {
-					data : "group",
-					width: "10%"
+					data : "group"
 				}, {
-					data : "type",
-					width: "10%"
+					data : "type"
 				}, {
-					data : "active",
-					width: "5%"
+					data : "active"
 				} ]
+			});
+			table.on('select', function(e, dt, type, indexes) {
+				if (type === 'row') {
+					_scopeService.safeApply(function() {
+						$("#editbtn").prop("disabled", false);
+						$("#deletebtn").prop("disabled", false);
+						var data = table.rows(indexes).data().pluck('id');
+						$scope.selectid = data[0];
+					});
+				}
+			});
+			table.on('deselect', function(e, dt, type, indexes) {
+				if (type === 'row') {
+					_scopeService.safeApply(function() {
+						$("#editbtn").prop("disabled", true);
+						$("#deletebtn").prop("disabled", true);
+						$scope.selectid = null;
+					});
+				}
 			});
 		});
 
 		_loader.controller.show();
 	});
 	_ws.send("usermanagement", "init");
+} ]);
+
+app.controller("useredit", 
+		[ '$scope', '_ws', 
+			function($scope, _ws) {
+	_ws.message("useredit", "init", function(data) {
+		console.log("DEBUG");
+	});
+	_ws.send("useredit", "init");
 } ]);
