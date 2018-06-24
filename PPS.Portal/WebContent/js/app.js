@@ -16,9 +16,15 @@ app.config(function($routeProvider) {
 	}).when("/usermanagement", {
 		controller : "usermanagement",
 		templateUrl : "./views/usermanagement.tpl.jsp"
-	}).when("/useredit", {
+	}).when("/useradd/", {
+		controller : "useradd",
+		templateUrl : "./views/profile.tpl.jsp"
+	}).when("/useredit/:id", {
 		controller : "useredit",
-		templateUrl : "./views/useredit.tpl.jsp"
+		templateUrl : "./views/profile.tpl.jsp"
+	}).when("/userdelete/:id", {
+		controller : "userdelete",
+		templateUrl : "./views/profile.tpl.jsp"
 	}).otherwise({
 		redirectTo : "/"
 	});

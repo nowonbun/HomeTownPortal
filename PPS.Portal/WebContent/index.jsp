@@ -99,9 +99,19 @@
 	<script src="./js/vendor/sb-admin.js" type="text/javascript"></script>
 	<!-- script src="./js/vendor/sb-admin-datatables.js" type="text/javascript"></script-->
 	
-	<script src="./js/common.js"></script>
-	<script src="./js/app.js"></script>
-	<script src="./js/service.js"></script>
-	<script src="./js/factory.js"></script>
-	<script src="./js/controller.js"></script>
+	<script src="./js/common.js" type="text/javascript"></script>
+	<script src="./js/app.js" type="text/javascript"></script>
+	<script src="./js/service.js" type="text/javascript"></script>
+	<script src="./js/factory.js" type="text/javascript"></script>
+	
+	<script src="./js/controller/run.js" type="text/javascript"></script>
+	<script src="./js/controller/admin.js" type="text/javascript"></script>
+	<script src="./js/controller/card.js" type="text/javascript"></script>
+	<script src="./js/controller/datamastersetting.js" type="text/javascript"></script>
+	<script src="./js/controller/navigate.js" type="text/javascript"></script>
+	<script src="./js/controller/profile.js" type="text/javascript"></script>
+	<script src="./js/controller/useradd.js" type="text/javascript"></script>
+	<script src="./js/controller/userdelete.js" type="text/javascript"></script>
+	<script src="./js/controller/useredit.js" type="text/javascript"></script>
+	<script src="./js/controller/usermanagement.js" type="text/javascript"></script>
 </html>
