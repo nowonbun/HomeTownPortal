@@ -1,16 +1,12 @@
 package common;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+
+import entity.bean.ObjectBean;
 
 public abstract class IAjaxServlet extends IServlet {
 
 	private static final long serialVersionUID = 1L;
-
-	private class Node {
-		private Object data;
-	}
 
 	@Override
 	protected final void doGet() {
@@ -35,10 +31,8 @@ public abstract class IAjaxServlet extends IServlet {
 	}
 
 	protected final String getDataTableData(Object obj) {
-		Node node = new Node();
-		// node.data = new ArrayList<>();
-		// node.data.add(obj);
-		node.data = obj;
+		ObjectBean node = new ObjectBean();
+		node.setData(obj);
 		return getJsonData(node);
 	}
 

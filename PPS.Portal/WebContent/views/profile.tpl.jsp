@@ -8,7 +8,7 @@
 	<div class="col-12 text-center">
 		<div class="mdl-shadow--2dp pps-page max-page-1200">
 			<div class="pps-title box-shadow-1 text-shadow-1">
-				<span>Profile</span>
+				<span>{{title}}</span>
 			</div>
 			<div class="pps-contents box-shadow-0">
 				<div class="pps-body">
@@ -32,8 +32,15 @@
 							</div>
 						</div>
 						<div class="col-md-9 col-sm-8">
-							<div class="row">
+							<div class="row" ng-show="canUserId">
 								<div class="col-12 pps-group">
+									<div class="md-form form-group pps-group">
+										<input type="text" class="form-control pps-input" id="uid" ng-model="uid"> <label for="uid" class="pps-label" id="uid_label">User Id</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 {{!canUserId?'pps-group':''}}">
 									<div class="md-form form-group pps-group">
 										<input type="text" class="form-control pps-input" id="given_name" ng-model="given_name"> <label for="given_name" class="pps-label" id="given_name_label">Given name</label>
 									</div>
@@ -55,7 +62,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row" ng-show="canModifyPassword">
+					<div class="row" ng-show="canCorrentPassword">
 						<div class="offset-sm-1 col-sm-10">
 							<div class="md-form form-group pps-group">
 								<input type="password" class="form-control pps-input" id="current_password" ng-model="current_password"> <label for="current_password" class="pps-label" id="current_password_label">Current
@@ -91,7 +98,7 @@
 					</div>
 					<div class="row select-row" ng-show="canModifyGroup">
 						<div class="offset-sm-1 col-sm-10">
-							<select class="mdb-select" id="group">
+							<select class="mdb-select" id="group" ng-model="group">
 								<option value="" disabled selected>Choose your option</option>
 								<option ng-repeat="option in groupList" value="{{option.value}}">{{option.name}}</option>
 							</select> <label>Group</label>

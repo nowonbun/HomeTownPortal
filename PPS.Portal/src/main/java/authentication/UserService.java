@@ -10,6 +10,7 @@ import dao.CompanyDao;
 import dao.GroupDao;
 import dao.UserDao;
 import model.User;
+import reference.StateMaster;
 
 public class UserService {
 	public static final String SESSION_ID = "user";
@@ -208,7 +209,7 @@ public class UserService {
 		if (this.user != null) {
 			return;
 		}
-		this.user = new User(this.id);
+		this.user = new User(this.id, StateMaster.getGoogleId());
 		this.user.setId(this.id);
 		this.user.setGivenName(this.givenName);
 		this.user.setName(this.displayName);

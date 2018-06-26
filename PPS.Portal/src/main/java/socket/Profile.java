@@ -17,6 +17,7 @@ import entity.NavigateNode;
 import entity.SelectNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import entity.bean.UserBean;
 import model.Password;
 import model.Role;
 import model.User;
@@ -30,62 +31,44 @@ public class Profile extends IWorkflow {
 			new NavigateNode("./#!/profile", "Profile") };
 	private boolean passwordcheck;
 
-	@SuppressWarnings("unused")
-	private class Node {
-		String given_name;
-		String name;
-		String nick_name;
-		boolean is_img_blob;
-		String img_url;
-		byte[] img_blob;
-		boolean canModifyPassword;
-		boolean canModifyCompany;
-		boolean canModifyGroup;
-		int company;
-		int group;
-		List<SelectNode> companyList;
-		List<SelectNode> groupList;
-		boolean passwordcheck;
-	}
-
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = getUserinfo(node.getSession()).getUser();
-		Node data = new Node();
-		data.companyList = new ArrayList<>();
-		data.groupList = new ArrayList<>();
+		UserBean data = new UserBean();
+		data.setCompanyList(new ArrayList<>());
+		data.setGroupList(new ArrayList<>());
 
-		data.given_name = user.getGivenName();
-		data.name = user.getName();
-		data.nick_name = user.getNickName();
+		data.setGiven_name(user.getGivenName());
+		data.setName(user.getName());
+		data.setNick_name(user.getNickName());
 		if (user.getImgBlob() == null) {
-			data.is_img_blob = false;
-			data.img_url = user.getImgUrl();
+			data.setIs_img_blob(false);
+			data.setImg_url(user.getImgUrl());
 		} else {
-			data.is_img_blob = true;
-			data.img_blob = user.getImgBlob();
+			data.setIs_img_blob(true);
+			data.setImg_blob(user.getImgBlob());
 		}
-		data.canModifyPassword = !StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId());
+		data.setCanModifyPassword(!StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId()));
 		List<Role> rolelist = FactoryDao.getDao(RoleDao.class).getRolebyUser(user);
-		data.canModifyCompany = RoleMaster.has(rolelist, RoleMaster.getCompanyChange());
-		if (data.canModifyCompany) {
+		data.setCanModifyCompany(RoleMaster.has(rolelist, RoleMaster.getCompanyChange()));
+		if (data.isCanModifyCompany()) {
 			FactoryDao.getDao(CompanyDao.class).getCompanyAll().forEach(x -> {
 				SelectNode select = new SelectNode();
-				data.companyList.add(select);
+				data.getCompanyList().add(select);
 				select.setValue(String.valueOf(x.getId()));
 				select.setName(x.getName());
 			});
-			data.company = user.getCompany().getId();
+			data.setCompany(user.getCompany().getId());
 		}
-		data.canModifyGroup = RoleMaster.has(rolelist, RoleMaster.getCompanyChange());
-		if (data.canModifyGroup) {
+		data.setCanModifyGroup(RoleMaster.has(rolelist, RoleMaster.getCompanyChange()));
+		if (data.isCanModifyGroup()) {
 			FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
 				SelectNode select = new SelectNode();
-				data.groupList.add(select);
+				data.getGroupList().add(select);
 				select.setValue(String.valueOf(x.getId()));
 				select.setName(x.getName());
 			});
-			data.group = user.getGroup().getId();
+			data.setGroup(user.getGroup().getId());
 		}
 
 		return createWebSocketResult(JsonConverter.create(data), node);
@@ -136,12 +119,11 @@ public class Profile extends IWorkflow {
 						user.setImgBlob(null);
 					}
 				}
-
 				if (Util.JsonIsKey(data, "company")) {
-					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(data.getInt("company")));
+					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
 				}
 				if (Util.JsonIsKey(data, "group")) {
-					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(data.getInt("group")));
+					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
 				}
 			});
 			if (!buffer.passwordcheck) {

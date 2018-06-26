@@ -3,8 +3,6 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import common.TransactionModel;
-import reference.StateMaster;
-
 import java.util.List;
 
 @Entity
@@ -49,8 +47,8 @@ public class User extends TransactionModel implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "GROUP_ID")
 	private Group group;
-	
-	@ManyToMany(mappedBy="users")
+
+	@ManyToMany(mappedBy = "users")
 	private List<Card> cards;
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -58,11 +56,12 @@ public class User extends TransactionModel implements Serializable {
 	private StateInfo stateInfo;
 
 	@SuppressWarnings("unused")
-	private User() { }
+	private User() {
+	}
 
-	public User(String user) {
+	public User(String user, State type) {
 		super.createTransation(user);
-		this.stateInfo.setState(StateMaster.getGoogleId());
+		this.stateInfo.setState(type);
 	}
 
 	public String getId() {
@@ -188,7 +187,7 @@ public class User extends TransactionModel implements Serializable {
 	public void setStateInfo(StateInfo stateInfo) {
 		this.stateInfo = stateInfo;
 	}
-	
+
 	public List<Card> getCards() {
 		return cards;
 	}

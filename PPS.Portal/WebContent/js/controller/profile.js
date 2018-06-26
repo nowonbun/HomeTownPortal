@@ -1,5 +1,7 @@
 app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_scopeService', function($scope, _ws, _notification, _filereader, _loader, _scopeService) {
 	_loader.controller.hide();
+	$scope.title = "Profile";
+	$scope.canUserId = false;
 	_ws.message("profile", "init", function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
@@ -14,7 +16,6 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		if ($scope.nick_name !== null) {
 			$("#nick_name_label").addClass("active");
 		}
-		// ./contents/no_photo.png
 		if (node.is_img_blob) {
 			if ($scope.is_img_blob == null) {
 				node.is_img_blob = false;
@@ -30,11 +31,11 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				$scope.img_url = node.img_url;
 			}
 		}
+		$scope.canCorrentPassword = node.canModifyPassword;
 		$scope.canModifyPassword = node.canModifyPassword;
 		$scope.canModifyCompany = node.canModifyCompany;
 		if (node.canModifyCompany) {
 			$scope.companyList = node.companyList;
-			$("#company").val(node.company);
 			$scope.company = node.company;
 			$(document).off("change", "#company").on("change", "#company", function() {
 				_scopeService.safeApply(function() {
@@ -45,7 +46,6 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		$scope.canModifyGroup = node.canModifyGroup;
 		if (node.canModifyGroup) {
 			$scope.groupList = node.groupList;
-			$("#group").val(node.group);
 			$scope.group = node.group;
 			$(document).off("change", "#group").on("change", "#group", function() {
 				_scopeService.safeApply(function() {
@@ -55,6 +55,12 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		}
 
 		_loader.ready(function() {
+			if (node.canModifyCompany) {
+				$("#company").val(node.company);
+			}
+			if (node.canModifyGroup) {
+				$("#group").val(node.group);
+			}
 			$('.mdb-select').material_select();
 		});
 
