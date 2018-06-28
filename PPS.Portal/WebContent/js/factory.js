@@ -1,4 +1,4 @@
-app.factory('_filereader', [ '$rootScope', '_scopeService', function($rootScope, _scopeService) {
+app.factory('_filereader', [ '$rootScope', '_safeApply', function($rootScope, _safeApply) {
 	read = function(file, cb) {
 		node = new function() {
 			return {
@@ -9,7 +9,7 @@ app.factory('_filereader', [ '$rootScope', '_scopeService', function($rootScope,
 		node.reader.onload = function(e) {
 			node.binary = this.result;
 			if (cb !== null && cb !== undefined && typeof cb === "function") {
-				_scopeService.safeApply(function() {
+				_safeApply(function() {
 					cb.call(this, node);
 				});
 				return;

@@ -10,9 +10,6 @@ import java.util.List;
 public class CardType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final String IMAGE = "IMG";
-	public static final String EVENT = "EVT";
-
 	@Id
 	@Column(name = "CARD_TYPE")
 	private String cardType;

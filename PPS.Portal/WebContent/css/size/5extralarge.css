@@ -4,4 +4,9 @@
 	#breadcrumb {
 		display: block;
 	}
+	.modal-dialog.max-page {
+		max-width: 1200px!important;
+		margin-right: calc((100vw - 1200px)/2);
+		margin-top: 40px;
+	}
 }

@@ -4,21 +4,59 @@ import java.util.List;
 
 import entity.SelectNode;
 
-public class UserBean extends ObjectBean{
-	String given_name;
-	String name;
-	String nick_name;
-	boolean is_img_blob;
-	String img_url;
-	byte[] img_blob;
-	boolean canModifyPassword;
-	boolean canModifyCompany;
-	boolean canModifyGroup;
-	int company;
-	int group;
-	List<SelectNode> companyList;
-	List<SelectNode> groupList;
+public class UserBean extends ObjectBean {
+	private String id;
+	private String given_name;
+	private String name;
+	private String nick_name;
+	private boolean is_img_blob;
+	private String img_url;
+	private byte[] img_blob;
+	private boolean canModifyPassword;
+	private boolean canModifyCompany;
+	private boolean canModifyGroup;
+	private int company;
+	private int group;
+	private List<SelectNode> companyList;
+	private List<SelectNode> groupList;
+	private String company_name;
+	private String group_name;
+	private String type;
+	private String active;
+
 	boolean passwordcheck;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCompany_name() {
+		return company_name;
+	}
+
+	public void setCompany_name(String company_name) {
+		this.company_name = company_name;
+	}
+
+	public String getGroup_name() {
+		return group_name;
+	}
+
+	public void setGroup_name(String group_name) {
+		this.group_name = group_name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public String getGiven_name() {
 		return given_name;
@@ -131,4 +169,13 @@ public class UserBean extends ObjectBean{
 	public void setPasswordcheck(boolean passwordcheck) {
 		this.passwordcheck = passwordcheck;
 	}
+
+	public String getActive() {
+		return active;
+	}
+
+	public void setActive(String active) {
+		this.active = active;
+	}
+
 }

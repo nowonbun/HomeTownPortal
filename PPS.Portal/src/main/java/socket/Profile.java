@@ -2,7 +2,6 @@ package socket;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
@@ -21,14 +20,14 @@ import entity.bean.UserBean;
 import model.Password;
 import model.Role;
 import model.User;
+import reference.CardMaster;
 import reference.RoleMaster;
 import reference.StateMaster;
 
-@Workflow(name = "profile")
+@Workflow(name = "profile", viewrole = CardMaster.PROFILE)
 public class Profile extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { 
-			new NavigateNode("./#!/profile", "Profile") };
+	private static NavigateNode[] navi = null;
 	private boolean passwordcheck;
 
 	@Override
@@ -60,7 +59,7 @@ public class Profile extends IWorkflow {
 			});
 			data.setCompany(user.getCompany().getId());
 		}
-		data.setCanModifyGroup(RoleMaster.has(rolelist, RoleMaster.getCompanyChange()));
+		data.setCanModifyGroup(RoleMaster.has(rolelist, RoleMaster.getGroupChange()));
 		if (data.isCanModifyGroup()) {
 			FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
 				SelectNode select = new SelectNode();
@@ -71,7 +70,7 @@ public class Profile extends IWorkflow {
 			data.setGroup(user.getGroup().getId());
 		}
 
-		return createWebSocketResult(JsonConverter.create(data), node);
+		return createWebSocketResult(data.toJson(), node);
 	}
 
 	public WebSocketResult apply(WebSocketNode node) {
@@ -80,7 +79,8 @@ public class Profile extends IWorkflow {
 			Profile buffer = this;
 			buffer.passwordcheck = true;
 			JsonConverter.parse(node.getData(), (data) -> {
-				if (Util.JsonIsKey(data, "current_password") && !Util.StringIsEmptyOrNull(data.getString("current_password"))) {
+				if (Util.JsonIsKey(data, "current_password")
+						&& !Util.StringIsEmptyOrNull(data.getString("current_password"))) {
 					buffer.passwordcheck = false;
 					String password = Util.convertMD5(data.getString("current_password"));
 					for (Password item : user.getPasswords()) {

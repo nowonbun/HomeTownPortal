@@ -1,13 +1,13 @@
-package socket;
+package socket.common;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import javax.websocket.server.ServerEndpoint;
-
+import common.FactoryDao;
 import common.HttpSessionConfigurator;
 import common.ISocket;
 import common.IWorkflow;
@@ -15,9 +15,13 @@ import common.JsonConverter;
 import common.LoggerManager;
 import common.Util;
 import common.Workflow;
+import dao.CardDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import model.User;
+import reference.CardMaster;
+import socket.Login;
 
 @ServerEndpoint(value = "/socket", configurator = HttpSessionConfigurator.class)
 public class Socket extends ISocket {
@@ -31,9 +35,20 @@ public class Socket extends ISocket {
 			if (Util.StringEquals(ret.getData(), Login.NG)) {
 				return;
 			}
+			if (!isRoleCheck(node.getControl(), node)) {
+				JsonObjectBuilder obj = Json.createObjectBuilder();
+				obj.add("type", "danger");
+				obj.add("msg", "You don't have permission.");
+				ret.setData(obj.build().toString());
+				ret.setAction(IWorkflow.Permission);
+				sendMessage(ret);
+				return;
+			}
 			ret = getExecute(node.getControl(), node.getAction(), node);
 			List<NavigateNode> navi = ret.getNavigate();
-			sendMessage("navigate", IWorkflow.Init, JsonConverter.create(navi), node.getSession());
+			if (navi != null) {
+				sendMessage("navigate", IWorkflow.Init, JsonConverter.create(navi), node.getSession());
+			}
 			sendMessage(ret);
 		} catch (Throwable e) {
 			LoggerManager.getLogger(Socket.class).error(e);
@@ -45,6 +60,17 @@ public class Socket extends ISocket {
 		IWorkflow clz = getClass(control);
 
 		return (WebSocketResult) mthd.invoke(clz, node);
+	}
+
+	private boolean isRoleCheck(String control, WebSocketNode node) throws Throwable {
+		User user = getUserinfo(node.getSession()).getUser();
+		IWorkflow clz = getClass(control);
+		Workflow anno = clz.getClass().getAnnotation(Workflow.class);
+		if (anno.viewrole().isEmpty()) {
+			return true;
+		}
+		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
+		return CardMaster.has(cards, CardMaster.getDao().getCard(anno.viewrole()));
 	}
 
 	private Method getMethod(String control, String action) throws Throwable {
@@ -65,7 +91,7 @@ public class Socket extends ISocket {
 			return null;
 		}
 		if (!flyweight.containsKey(control)) {
-			Class<?> clz = getClassBundle().stream().filter(x -> {
+			Class<?> clz = SocketBundleSet.getList().stream().filter(x -> {
 				Workflow anno = x.getAnnotation(Workflow.class);
 				if (anno != null && control.equals(anno.name())) {
 					return true;
@@ -79,17 +105,4 @@ public class Socket extends ISocket {
 		}
 		return flyweight.get(control);
 	}
-
-	private List<Class<?>> getClassBundle() {
-		List<Class<?>> ret = new ArrayList<>();
-		ret.add(Admin.class);
-		ret.add(Card.class);
-		ret.add(Login.class);
-		ret.add(Main.class);
-		ret.add(Profile.class);
-		ret.add(DataMasterSetting.class);
-		ret.add(UserManagement.class);
-		return ret;
-	}
-
 }

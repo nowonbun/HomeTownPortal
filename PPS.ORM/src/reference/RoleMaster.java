@@ -1,6 +1,7 @@
 package reference;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import common.FactoryDao;
 import dao.RoleDao;
@@ -23,7 +24,11 @@ public class RoleMaster {
 	}
 
 	public static boolean has(List<Role> list, Role role) {
-		return list.stream().filter(x -> equals(x, role)).count() > 0;
+		try {
+			return list.stream().filter(x -> equals(x, role)).findFirst().isPresent();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
 	}
 
 	public static boolean equals(Role val1, Role val2) {

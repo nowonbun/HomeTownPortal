@@ -3,7 +3,6 @@ package socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
@@ -14,14 +13,16 @@ import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.TileBean;
-import model.CardStep;
-import model.CardType;
 import model.User;
+import reference.CardMaster;
+import reference.CardStepMaster;
+import reference.CardTypeMaster;
 
-@Workflow(name = "datamastersetting")
+@Workflow(name = "datamastersetting", viewrole = CardMaster.DATA_MASTER_SETTING)
 public class DataMasterSetting extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin"),
+	private static NavigateNode[] navi = new NavigateNode[] { 
+			new NavigateNode("./#!/admin", "Admin"),
 			new NavigateNode("./#!/datamastersetting", "Master setting") };
 
 	@Override
@@ -30,11 +31,14 @@ public class DataMasterSetting extends IWorkflow {
 		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
 		List<TileBean> data = new ArrayList<>();
 		for (model.Card card : cards) {
-			if (!Util.StringEquals(CardStep.MAST, card.getCardStep().getStep())) {
+			if (!Util.StringEquals(CardStepMaster.MASTER, card.getCardStep().getStep())) {
+				continue;
+			}
+			if (Util.StringEquals(CardTypeMaster.MOMAL_CARD, card.getCardType().getCardType())) {
 				continue;
 			}
 			TileBean entity = new TileBean();
-			if (Util.StringEquals(card.getCardType().getCardType(), CardType.IMAGE)) {
+			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD)) {
 				entity.setTypeHeaderClass("card-image");
 				if (card.getImg() != null) {
 					entity.setBackground("url('data:image/jpg;base64,"
@@ -46,7 +50,7 @@ public class DataMasterSetting extends IWorkflow {
 				entity.setBorder("");
 				entity.setBody("<span class='card-image__body'>" + card.getName() + "</span>");
 				entity.setHref(card.getHref());
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardType.EVENT)) {
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.DEFAULT_CARD)) {
 				entity.setTypeHeaderClass("card-event");
 				entity.setBackground(card.getColor());
 				entity.setHeader(card.getTitle());

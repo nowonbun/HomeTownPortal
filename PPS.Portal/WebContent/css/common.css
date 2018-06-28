@@ -41,7 +41,7 @@ body.sticky-footer .content-wrapper {
 	position: fixed;
 	right: 20px;
 	top: 100px;
-	z-index: 1009;
+	z-index: 1999;
 }
 
 .notification-zone .alert {
@@ -322,6 +322,18 @@ body.sticky-footer .content-wrapper {
 
 /*loading*/
 
+/*modal*/
+.modal-dialog.modal-notify.modal-pps .modal-header{
+    background-color: #343a40c4!important;
+}
+@media screen and (max-width: 760px) {
+	.modal-backdrop, .side-modal {
+     	display: inherit!important; 
+	}
+}
+
+/*modal*/
+
 /*page*/
 .pps-page {
 	/*padding: 20px;*/
@@ -335,6 +347,7 @@ body.sticky-footer .content-wrapper {
 	font-weight: bold;
 	margin: 5px;
 	margin-bottom: 20px;
+	text-align: left;
 	/*box-shadow: 5px 5px 7px 3px rgba(0,0,0,0.1);*/
 	/*text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);*/
 }

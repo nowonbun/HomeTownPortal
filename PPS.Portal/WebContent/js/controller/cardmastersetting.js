@@ -1,6 +1,7 @@
-app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', function($scope, _ws, _loader, _safeApply, _extendModal, _notification) {
+app.controller("cardmastersetting", [ '$scope', '_ws', '_loader','_safeApply', '_extendModal', '_notification', 
+	function($scope, _ws, _loader,_safeApply, _extendModal, _notification) {
 	_loader.controller.hide();
-	_ws.message("usermanagement", "init", function(data) {
+	_ws.message("cardmastersetting", "init", function(data) {
 		var node = JSON.parse(data);
 		var table = $("#tablelist").DataTable({
 			ajax : {
@@ -35,22 +36,23 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_e
 				}
 			},
 			columns : [ 
-				{ data : null }, 
-				{ data : "id" }, 
-				{ data : "given_name" }, 
+				{ data : null },
+				{ data : "code" }, 
 				{ data : "name" }, 
-				{ data : "nick_name" }, 
-				{ data : "company_name" }, 
-				{ data : "group_name" }, 
+				{ data : "title" }, 
+				{ data : "description" }, 
+				{ data : "hasImg" }, 
+				{ data : "icon" }, 
+				{ data : "color" }, 
 				{ data : "type" }, 
-				{ data : "active" } ]
+				{ data : "step" },
+				{ data : "seq" } ]
 		});
 		table.on('select', function(e, dt, type, indexes) {
 			if (type === 'row') {
 				_safeApply(function() {
 					$("#editbtn").prop("disabled", false);
-					$("#deletebtn").prop("disabled", false);
-					$scope.selectid = table.rows(indexes).data().pluck('id')[0];
+					$scope.selectid = table.rows(indexes).data().pluck('code')[0];
 				});
 			}
 		});
@@ -58,28 +60,23 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_e
 			if (type === 'row') {
 				_safeApply(function() {
 					$("#editbtn").prop("disabled", true);
-					$("#deletebtn").prop("disabled", true);
 					$scope.selectid = null;
 				});
 			}
 		});
-		$scope.userAdd = function() {
-			_extendModal("./views/profile.tpl.jsp","useradd",$scope);
-		}
-		$scope.userEdit = function() {
-			_extendModal("./views/profile.tpl.jsp","useredit",$scope);
-		}
-		$scope.userDelete = function() {
-			//location.href = "./#!/userdelete/" + $scope.selectid;
+		$scope.cardEdit = function() {
+			/*_extendModal("./views/profile.tpl.jsp","useradd",$scope,function(){
+				$("#profileModal").modal("show");
+			});*/
+			_extendModal("./views/cardmaster.tpl.jsp","cardmaster",$scope);
 		}
 		_loader.controller.show();
-
 	});
-	_ws.message("datamastersetting", "permission", function(data) {
+	_ws.message("cardmastersetting", "permission", function(data) {
 		var node = JSON.parse(data);
 		_notification(node.type, node.msg);
 		location.href="./#!/";
 		return;
 	});
-	_ws.send("usermanagement", "init");
+	_ws.send("cardmastersetting", "init");
 } ]);

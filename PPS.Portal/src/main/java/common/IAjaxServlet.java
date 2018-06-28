@@ -1,8 +1,11 @@
 package common;
 
 import java.io.PrintWriter;
-
+import java.util.List;
+import dao.CardDao;
 import entity.bean.ObjectBean;
+import model.User;
+import reference.CardMaster;
 
 public abstract class IAjaxServlet extends IServlet {
 
@@ -30,6 +33,11 @@ public abstract class IAjaxServlet extends IServlet {
 		}
 	}
 
+	protected boolean isRoleCheck(User user, String code) {
+		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
+		return CardMaster.has(cards, CardMaster.getDao().getCard(code));
+	}
+
 	protected final String getDataTableData(Object obj) {
 		ObjectBean node = new ObjectBean();
 		node.setData(obj);
@@ -40,5 +48,7 @@ public abstract class IAjaxServlet extends IServlet {
 		return JsonConverter.create(obj);
 	}
 
+	
+	
 	protected abstract String doAjax();
 }

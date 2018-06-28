@@ -1,4 +1,5 @@
-app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_scopeService', function($scope, _ws, _notification, _filereader, _loader, _scopeService) {
+app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_safeApply', '_extendModal',
+	function($scope, _ws, _notification, _filereader, _loader, _safeApply, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "Profile";
 	$scope.canUserId = false;
@@ -38,7 +39,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			$scope.companyList = node.companyList;
 			$scope.company = node.company;
 			$(document).off("change", "#company").on("change", "#company", function() {
-				_scopeService.safeApply(function() {
+				_safeApply(function() {
 					$scope.company = $("#company").val();
 				});
 			});
@@ -48,7 +49,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			$scope.groupList = node.groupList;
 			$scope.group = node.group;
 			$(document).off("change", "#group").on("change", "#group", function() {
-				_scopeService.safeApply(function() {
+				_safeApply(function() {
 					$scope.group = $("#group").val();
 				});
 			});
@@ -62,14 +63,14 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				$("#group").val(node.group);
 			}
 			$('.mdb-select').material_select();
+			$("#profileModal").modal("show");
 		});
-
 		_loader.controller.show();
 	});
 	_ws.message("profile", "apply", function(data) {
 		var msg = JSON.parse(data);
 		_loader.hide();
-		_notification.setMessage(msg.type, msg.msg);
+		_notification(msg.type, msg.msg);
 	});
 
 	$scope.fileupload = function() {
@@ -94,7 +95,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 
 	$scope.apply = function() {
 		if ($.trim($scope.given_name) === "") {
-			_notification.setMessage("danger", "Please input the text of 'Given name'", function() {
+			_notification("danger", "Please input the text of 'Given name'", function() {
 				$("#given_name").removeClass('error-focus');
 			});
 			$("#given_name").addClass('error-focus');
@@ -103,7 +104,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		$("#given_name").removeClass('error-focus');
 
 		if ($.trim($scope.name) === "") {
-			_notification.setMessage("danger", "Please input the text of 'name'", function() {
+			_notification("danger", "Please input the text of 'name'", function() {
 				$("#name").removeClass('error-focus');
 			});
 			$("#name").addClass('error-focus');
@@ -112,7 +113,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		$("#name").removeClass('error-focus');
 
 		if ($.trim($scope.nick_name) === "") {
-			_notification.setMessage("danger", "Please input the text of 'Nick name'", function() {
+			_notification("danger", "Please input the text of 'Nick name'", function() {
 				$("#nick_name").removeClass('error-focus');
 			});
 			$("#nick_name").addClass('error-focus');
@@ -126,7 +127,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				noChangePassword = false;
 			}
 			if ($.trim($scope.password) === "" && noChangePassword) {
-				_notification.setMessage("danger", "Please input the text of 'Password'", function() {
+				_notification("danger", "Please input the text of 'Password'", function() {
 					$("#password").removeClass('error-focus');
 				});
 				$("#password").addClass('error-focus');
@@ -134,7 +135,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			}
 			$("#password").removeClass('error-focus');
 			if ($.trim($scope.password_confirm) === "" && noChangePassword) {
-				_notification.setMessage("danger", "Please input the text of 'Password confirm'", function() {
+				_notification("danger", "Please input the text of 'Password confirm'", function() {
 					$("#password_confirm").removeClass('error-focus');
 				});
 				$("#password_confirm").addClass('error-focus');
@@ -142,7 +143,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			}
 			$("#password_confirm").removeClass('error-focus');
 			if ($.trim($scope.password) !== $.trim($scope.password_confirm) && noChangePassword) {
-				_notification.setMessage("danger", "Please input the text of 'Password is incorrect'", function() {
+				_notification("danger", "Please input the text of 'Password is incorrect'", function() {
 					$("#password").removeClass('error-focus');
 					$("#password_confirm").removeClass('error-focus');
 				});
@@ -156,7 +157,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 
 		if ($scope.canModifyCompany) {
 			if ($.trim($scope.company) === "") {
-				_notification.setMessage("danger", "Please select the value of 'company'", function() {
+				_notification("danger", "Please select the value of 'company'", function() {
 					$("#company").removeClass('error-focus');
 				});
 				$("#company").addClass('error-focus');
@@ -167,7 +168,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 
 		if ($scope.canModifyGroup) {
 			if ($.trim($scope.group) === "") {
-				_notification.setMessage("danger", "Please select the value of 'group'", function() {
+				_notification("danger", "Please select the value of 'group'", function() {
 					$("#group").removeClass('error-focus');
 				});
 				$("#group").addClass('error-focus');
@@ -191,5 +192,12 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		_ws.send("profile", "apply", JSON.stringify(data));
 		return;
 	}
+	_ws.message("profile", "permission", function(data) {
+		var node = JSON.parse(data);
+		_notification(node.type, node.msg);
+		_extendModal();
+		_loader.controller.show();
+		return;
+	});
 	_ws.send("profile", "init");
 } ]);

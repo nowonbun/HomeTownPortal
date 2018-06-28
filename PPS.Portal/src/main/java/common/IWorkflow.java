@@ -9,6 +9,7 @@ import entity.WebSocketResult;
 
 public abstract class IWorkflow extends ICommon {
 	public static String Init = "init";
+	public static String Permission = "permission";
 
 	public abstract WebSocketResult init(WebSocketNode node);
 

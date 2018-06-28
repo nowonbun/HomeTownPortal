@@ -1,8 +1,7 @@
-app.controller("useredit", [ '$scope', '_ws', '_loader', '$routeParams' , '_scopeService', function($scope, _ws, _loader, $routeParams, _scopeService) {
+app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', function($scope, _ws, _loader, _safeApply) {
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canCorrentPassword = false;
-	
 	_ws.message("usermanagement", "initEdit", function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
@@ -38,7 +37,7 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '$routeParams' , '_scop
 			$scope.companyList = node.companyList;
 			$scope.company = node.company;
 			$(document).off("change", "#company").on("change", "#company", function() {
-				_scopeService.safeApply(function() {
+				_safeApply(function() {
 					$scope.company = $("#company").val();
 				});
 			});
@@ -48,7 +47,7 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '$routeParams' , '_scop
 			$scope.groupList = node.groupList;
 			$scope.group = node.group;
 			$(document).off("change", "#group").on("change", "#group", function() {
-				_scopeService.safeApply(function() {
+				_safeApply(function() {
 					$scope.group = $("#group").val();
 				});
 			});
@@ -61,9 +60,10 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '$routeParams' , '_scop
 				$("#group").val(node.group);
 			}
 			$('.mdb-select').material_select();
+			$("#profileModal").modal("show");
 		});
 		_loader.controller.show();
 	});
 	
-	_ws.send("usermanagement", "initEdit", $routeParams.id);
+	_ws.send("usermanagement", "initEdit", $scope.selectid);
 } ]);

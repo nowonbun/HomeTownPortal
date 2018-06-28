@@ -10,10 +10,6 @@ import java.util.List;
 public class CardStep implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static String ADMIN = "ADMN";
-	public static String HOME = "HOME";
-	public static String MAST = "MAST";
-
 	@Id
 	@Column(name = "STEP")
 	private String step;

@@ -1,34 +1,26 @@
 var app = angular.module('app', [ "ngRoute", "ngSanitize" ]);
 
-app.config(function($routeProvider) {
+app.config(['$routeProvider', '$qProvider', function($routeProvider, $qProvider) {
 	$routeProvider.when("/", {
 		controller : "card",
 		templateUrl : "./views/card.tpl.jsp"
 	}).when("/admin", {
 		controller : "admin",
 		templateUrl : "./views/card.tpl.jsp"
-	}).when("/profile", {
-		controller : "profile",
-		templateUrl : "./views/profile.tpl.jsp"
 	}).when("/datamastersetting", {
 		controller : "datamastersetting",
 		templateUrl : "./views/card.tpl.jsp"
-	}).when("/usermanagement", {
+	}).when("/cardmastersetting",{
+		controller : "cardmastersetting",
+		templateUrl : "./views/cardmastersetting.tpl.jsp"
+	})
+	.when("/usermanagement", {
 		controller : "usermanagement",
 		templateUrl : "./views/usermanagement.tpl.jsp"
-	}).when("/useradd/", {
-		controller : "useradd",
-		templateUrl : "./views/profile.tpl.jsp"
-	}).when("/useredit/:id", {
-		controller : "useredit",
-		templateUrl : "./views/profile.tpl.jsp"
-	}).when("/userdelete/:id", {
-		controller : "userdelete",
-		templateUrl : "./views/profile.tpl.jsp"
 	}).otherwise({
 		redirectTo : "/"
 	});
-});
+}]);
 
 app.directive("navigation", function() {
 	return {

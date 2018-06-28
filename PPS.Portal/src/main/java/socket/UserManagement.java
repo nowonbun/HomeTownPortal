@@ -2,7 +2,6 @@ package socket;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
@@ -17,22 +16,27 @@ import entity.NavigateNode;
 import entity.SelectNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import entity.bean.ObjectBean;
 import entity.bean.UserBean;
 import model.Password;
 import model.Role;
 import model.User;
+import reference.CardMaster;
 import reference.RoleMaster;
 import reference.StateMaster;
 
-@Workflow(name = "usermanagement")
+@Workflow(name = "usermanagement", viewrole = CardMaster.USER_MANAGEMENT)
 public class UserManagement extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin"),
+	private static NavigateNode[] navi = new NavigateNode[] { 
+			new NavigateNode("./#!/admin", "Admin"),
 			new NavigateNode("./#!/usermanagement", "UserManagement") };
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
-		return createWebSocketResult("userlist", node);
+		ObjectBean data = new ObjectBean();
+		data.setData("userlist");
+		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 
 	public WebSocketResult initAdd(WebSocketNode node) {
@@ -51,7 +55,7 @@ public class UserManagement extends IWorkflow {
 			select.setValue(String.valueOf(x.getId()));
 			select.setName(x.getName());
 		});
-		return createWebSocketResult(JsonConverter.create(data), node);
+		return createWebSocketResult(data.toJson(), node);
 	}
 
 	public WebSocketResult addUser(WebSocketNode node) {
@@ -77,8 +81,7 @@ public class UserManagement extends IWorkflow {
 						user.setImgBlob(null);
 					}
 				}
-				user.setCompany(
-						FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
+				user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
 				user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
 				FactoryDao.getDao(UserDao.class).update(user);
 			});
@@ -132,7 +135,7 @@ public class UserManagement extends IWorkflow {
 			data.setGroup(user.getGroup().getId());
 		}
 
-		return createWebSocketResult(JsonConverter.create(data), node);
+		return createWebSocketResult(data.toJson(), node);
 	}
 
 	public WebSocketResult initDelete(WebSocketNode node) {
