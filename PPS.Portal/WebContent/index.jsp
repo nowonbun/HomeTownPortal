@@ -114,4 +114,7 @@
 	<script src="./js/controller/usermanagement.js" type="text/javascript"></script>
 	<script src="./js/controller/cardmastersetting.js" type="text/javascript"></script>
 	<script src="./js/controller/cardmaster.js" type="text/javascript"></script>
+	<script src="./js/controller/actionrole.js" type="text/javascript"></script>
+	<script src="./js/controller/cardviewrole.js" type="text/javascript"></script>
+	<script src="./js/controller/comgroupsetting.js" type="text/javascript"></script>
 </html>

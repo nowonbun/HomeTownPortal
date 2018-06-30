@@ -6,7 +6,7 @@ import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 
-@Workflow(name = "login", viewrole = "")
+@Workflow(name = "login", cardrole = "")
 public class Login extends IWorkflow {
 
 	public static String OK = "OK";

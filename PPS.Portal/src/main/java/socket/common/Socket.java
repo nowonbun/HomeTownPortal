@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.websocket.server.ServerEndpoint;
-import common.FactoryDao;
 import common.HttpSessionConfigurator;
 import common.ISocket;
 import common.IWorkflow;
@@ -15,12 +14,12 @@ import common.JsonConverter;
 import common.LoggerManager;
 import common.Util;
 import common.Workflow;
-import dao.CardDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import model.User;
 import reference.CardMaster;
+import reference.CardRoleCache;
 import socket.Login;
 
 @ServerEndpoint(value = "/socket", configurator = HttpSessionConfigurator.class)
@@ -65,12 +64,11 @@ public class Socket extends ISocket {
 	private boolean isRoleCheck(String control, WebSocketNode node) throws Throwable {
 		User user = getUserinfo(node.getSession()).getUser();
 		IWorkflow clz = getClass(control);
-		Workflow anno = clz.getClass().getAnnotation(Workflow.class);
-		if (anno.viewrole().isEmpty()) {
+		Workflow anno = clz.getClass().getDeclaredAnnotation(Workflow.class);
+		if (anno.cardrole().isEmpty()) {
 			return true;
 		}
-		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
-		return CardMaster.has(cards, CardMaster.getDao().getCard(anno.viewrole()));
+		return CardRoleCache.hasPermission(user, CardMaster.getDao().getCard(anno.cardrole()));
 	}
 
 	private Method getMethod(String control, String action) throws Throwable {
@@ -81,7 +79,7 @@ public class Socket extends ISocket {
 		Map<String, Method> sub = flyweight2.get(control);
 
 		if (!sub.containsKey(action)) {
-			sub.put(action, clz.getClass().getMethod(action, WebSocketNode.class));
+			sub.put(action, clz.getClass().getDeclaredMethod(action, WebSocketNode.class));
 		}
 		return sub.get(action);
 	}
@@ -92,7 +90,7 @@ public class Socket extends ISocket {
 		}
 		if (!flyweight.containsKey(control)) {
 			Class<?> clz = SocketBundleSet.getList().stream().filter(x -> {
-				Workflow anno = x.getAnnotation(Workflow.class);
+				Workflow anno = x.getDeclaredAnnotation(Workflow.class);
 				if (anno != null && control.equals(anno.name())) {
 					return true;
 				}

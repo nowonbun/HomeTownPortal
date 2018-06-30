@@ -11,7 +11,7 @@ public class PasswordPK implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idx;
 
-	@Column(name="ID", insertable=false, updatable=false)
+	@Column(name = "ID", insertable = false, updatable = false)
 	private String id;
 
 	public PasswordPK() {

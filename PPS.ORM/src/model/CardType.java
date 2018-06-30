@@ -18,7 +18,7 @@ public class CardType implements Serializable {
 	private String name;
 
 	// bi-directional many-to-one association to Card
-	@OneToMany(mappedBy = "cardType")
+	@OneToMany(mappedBy = "cardType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Card> cards;
 
 	public CardType() {
@@ -46,20 +46,6 @@ public class CardType implements Serializable {
 
 	public void setCards(List<Card> cards) {
 		this.cards = cards;
-	}
-
-	public Card addCard(Card card) {
-		getCards().add(card);
-		card.setCardType(this);
-
-		return card;
-	}
-
-	public Card removeCard(Card card) {
-		getCards().remove(card);
-		card.setCardType(null);
-
-		return card;
 	}
 
 }

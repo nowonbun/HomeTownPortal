@@ -34,24 +34,31 @@ public class User extends TransactionModel implements Serializable {
 	@Column(name = "NICK_NAME")
 	private String nickName;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Cookie> cookies;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Password> passwords;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "COMPANY_ID")
 	private Company company;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "GROUP_ID")
 	private Group group;
 
-	@ManyToMany(mappedBy = "users")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "MAP_VIEW_ROLE_USER", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "CARD_CODE") })
 	private List<Card> cards;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "MAP_ACTION_ROLE_USER", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "ROLE_CODE") })
+	private List<Role> roles;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
@@ -128,20 +135,6 @@ public class User extends TransactionModel implements Serializable {
 		this.cookies = cookies;
 	}
 
-	public Cookie addCookie(Cookie cookie) {
-		getCookies().add(cookie);
-		cookie.setUser(this);
-
-		return cookie;
-	}
-
-	public Cookie removeCookie(Cookie cookie) {
-		getCookies().remove(cookie);
-		cookie.setUser(null);
-
-		return cookie;
-	}
-
 	public Company getCompany() {
 		return this.company;
 	}
@@ -166,20 +159,6 @@ public class User extends TransactionModel implements Serializable {
 		this.passwords = passwords;
 	}
 
-	public Password addPassword(Password password) {
-		getPasswords().add(password);
-		password.setUser(this);
-
-		return password;
-	}
-
-	public Password removePassword(Password password) {
-		getPasswords().remove(password);
-		password.setUser(null);
-
-		return password;
-	}
-
 	public StateInfo getStateInfo() {
 		return stateInfo;
 	}
@@ -195,4 +174,13 @@ public class User extends TransactionModel implements Serializable {
 	public void setCards(List<Card> cards) {
 		this.cards = cards;
 	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 }

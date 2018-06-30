@@ -12,18 +12,20 @@ public class Comment extends TransactionModel implements Serializable {
 
 	@Id
 	@Column(name = "IDX")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idx;
 
 	@Lob
 	@Column(name = "`COMMENT`")
 	private String comment;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
 	@SuppressWarnings("unused")
-	private Comment() {	}
+	private Comment() {
+	}
 
 	public Comment(String createUser) {
 		super.createTransation(createUser);

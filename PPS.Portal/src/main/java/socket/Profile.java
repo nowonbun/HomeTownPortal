@@ -1,7 +1,6 @@
 package socket;
 
 import java.util.ArrayList;
-import java.util.List;
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
@@ -10,7 +9,6 @@ import common.Util;
 import common.Workflow;
 import dao.CompanyDao;
 import dao.GroupDao;
-import dao.RoleDao;
 import dao.UserDao;
 import entity.NavigateNode;
 import entity.SelectNode;
@@ -18,13 +16,13 @@ import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.UserBean;
 import model.Password;
-import model.Role;
 import model.User;
+import reference.ActionRoleCache;
 import reference.CardMaster;
 import reference.RoleMaster;
 import reference.StateMaster;
 
-@Workflow(name = "profile", viewrole = CardMaster.PROFILE)
+@Workflow(name = "profile", cardrole = CardMaster.PROFILE)
 public class Profile extends IWorkflow {
 
 	private static NavigateNode[] navi = null;
@@ -48,8 +46,7 @@ public class Profile extends IWorkflow {
 			data.setImg_blob(user.getImgBlob());
 		}
 		data.setCanModifyPassword(!StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId()));
-		List<Role> rolelist = FactoryDao.getDao(RoleDao.class).getRolebyUser(user);
-		data.setCanModifyCompany(RoleMaster.has(rolelist, RoleMaster.getCompanyChange()));
+		data.setCanModifyCompany(ActionRoleCache.hasPermission(user, RoleMaster.getCompanyChange()));
 		if (data.isCanModifyCompany()) {
 			FactoryDao.getDao(CompanyDao.class).getCompanyAll().forEach(x -> {
 				SelectNode select = new SelectNode();
@@ -59,7 +56,7 @@ public class Profile extends IWorkflow {
 			});
 			data.setCompany(user.getCompany().getId());
 		}
-		data.setCanModifyGroup(RoleMaster.has(rolelist, RoleMaster.getGroupChange()));
+		data.setCanModifyGroup(ActionRoleCache.hasPermission(user, RoleMaster.getGroupChange()));
 		if (data.isCanModifyGroup()) {
 			FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
 				SelectNode select = new SelectNode();
@@ -98,7 +95,10 @@ public class Profile extends IWorkflow {
 					}
 					Password pwd = new Password(user, user.getName());
 					pwd.setPassword(Util.convertMD5(data.getString("password")));
-					user.addPassword(pwd);
+					if (user.getPasswords() == null) {
+						user.setPasswords(new ArrayList<>());
+					}
+					user.getPasswords().add(pwd);
 				}
 				if (Util.JsonIsKey(data, "given_name") && !Util.StringIsEmptyOrNull(data.getString("given_name"))) {
 					user.setGivenName(data.getString("given_name"));
@@ -120,14 +120,17 @@ public class Profile extends IWorkflow {
 					}
 				}
 				if (Util.JsonIsKey(data, "company")) {
-					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
+					user.setCompany(
+							FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
 				}
 				if (Util.JsonIsKey(data, "group")) {
-					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
+					user.setGroup(
+							FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
 				}
 			});
 			if (!buffer.passwordcheck) {
-				return createWebSocketResult(createNotification(NotificationType.Danger, "The password is incorrect."), node);
+				return createWebSocketResult(createNotification(NotificationType.Danger, "The password is incorrect."),
+						node);
 			}
 			FactoryDao.getDao(UserDao.class).update(user);
 			return createWebSocketResult(createNotification(NotificationType.Success, "The profile is updated"), node);

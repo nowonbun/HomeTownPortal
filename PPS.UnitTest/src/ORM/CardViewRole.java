@@ -13,10 +13,10 @@ import model.User;
 public class CardViewRole {
 	@Test
 	public void permissionTest() {
-		User user = FactoryDao.getDao(UserDao.class).findOne("admin");
-		List<Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
-		for(Card card : cards) {
-			System.out.println(card.getCode());
-		}
+//		User user = FactoryDao.getDao(UserDao.class).findOne("admin");
+//		List<Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
+//		for(Card card : cards) {
+//			System.out.println(card.getCode());
+//		}
 	}
 }

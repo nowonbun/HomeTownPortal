@@ -2,36 +2,26 @@ package map;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import common.TransactionModel;
 import model.*;
 
 @Entity
 @Table(name = "MAP_ACTION_ROLE_COMPANY")
 @NamedQuery(name = "MapActionRoleCompany.findAll", query = "SELECT m FROM MapActionRoleCompany m")
-public class MapActionRoleCompany extends TransactionModel implements Serializable {
+public class MapActionRoleCompany implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private MapActionRoleCompanyPK id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ROLE_CODE")
 	private Role role;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "COMPANY_ID")
 	private Company company;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "STATE")
-	private StateInfo stateInfo;
-
-	@SuppressWarnings("unused")
-	private MapActionRoleCompany() { }
-
-	public MapActionRoleCompany(String user) {
-		super.createTransation(user);
+	private MapActionRoleCompany() {
 	}
 
 	public MapActionRoleCompanyPK getId() {
@@ -56,13 +46,5 @@ public class MapActionRoleCompany extends TransactionModel implements Serializab
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	public StateInfo getStateInfo() {
-		return stateInfo;
-	}
-
-	public void setStateInfo(StateInfo stateInfo) {
-		this.stateInfo = stateInfo;
 	}
 }

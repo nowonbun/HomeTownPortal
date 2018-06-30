@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.Manager;
@@ -27,7 +29,11 @@ public class CardStepDao extends MasterDao<CardStep> {
 	}
 
 	public CardStep getCardStep(String step) {
-		return getData().stream().filter(x -> x.getStep().equals(step)).findFirst().get();
+		try {
+			return getData().stream().filter(x -> x.getStep().equals(step)).findFirst().get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 }

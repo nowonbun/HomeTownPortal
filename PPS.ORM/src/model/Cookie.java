@@ -24,16 +24,17 @@ public class Cookie extends TransactionModel implements Serializable {
 	@Column(name = "LAST_CONNECT_DATE")
 	private Date lastConnectDate;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID")
 	private User user;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
 	@SuppressWarnings("unused")
-	private Cookie() { }
+	private Cookie() {
+	}
 
 	public Cookie(User user, String cookiekey, String createUser) {
 		CookiePK pk = new CookiePK();

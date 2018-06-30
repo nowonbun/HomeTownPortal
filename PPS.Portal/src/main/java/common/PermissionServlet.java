@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Workflow {
-	public String name();
-	public String cardrole();
+public @interface PermissionServlet {
+	public String value();
 }

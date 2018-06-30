@@ -1,8 +1,5 @@
 package reference;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import common.FactoryDao;
 import dao.CardDao;
 import model.Card;
@@ -15,6 +12,7 @@ public class CardMaster {
 	public static final String PROFILE = "PRFL";
 	public static final String USER_MANAGEMENT = "USMN";
 	public static final String VIEW_ROLE = "VWRL";
+	public static final String COMPANY_N_GROUP_SETTING = "CGST";
 
 	public static CardDao getDao() {
 		return FactoryDao.getDao(CardDao.class);
@@ -48,12 +46,8 @@ public class CardMaster {
 		return getDao().getCard(VIEW_ROLE);
 	}
 
-	public static boolean has(List<Card> list, Card card) {
-		try {
-			return list.stream().filter(x -> equals(x, card)).findFirst().isPresent();
-		} catch (NoSuchElementException e) {
-			return false;
-		}
+	public static Card getCompanyNGroupSettingCard() {
+		return getDao().getCard(COMPANY_N_GROUP_SETTING);
 	}
 
 	public static boolean equals(Card val1, Card val2) {

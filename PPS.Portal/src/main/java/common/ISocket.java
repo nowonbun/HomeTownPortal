@@ -124,6 +124,6 @@ public abstract class ISocket extends ICommon {
 	}
 
 	protected String getClassName(Class<?> clz) {
-		return clz.getAnnotation(Workflow.class).name();
+		return clz.getDeclaredAnnotation(Workflow.class).name();
 	}
 }

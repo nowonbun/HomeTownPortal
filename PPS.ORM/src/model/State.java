@@ -17,7 +17,7 @@ public class State implements Serializable {
 	@Column(name = "NAME")
 	private String name;
 
-	@OneToMany(mappedBy = "state")
+	@OneToMany(mappedBy = "state", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<StateInfo> stateInfos;
 
 	public State() {
@@ -46,19 +46,5 @@ public class State implements Serializable {
 	public void setStateInfos(List<StateInfo> stateInfos) {
 		this.stateInfos = stateInfos;
 	}
-
-	public StateInfo addStateInfo(StateInfo stateInfo) {
-		getStateInfos().add(stateInfo);
-		stateInfo.setState(this);
-
-		return stateInfo;
-	}
-
-	public StateInfo removeStateInfo(StateInfo stateInfo) {
-		getStateInfos().remove(stateInfo);
-		stateInfo.setState(null);
-
-		return stateInfo;
-	}
-
+	
 }

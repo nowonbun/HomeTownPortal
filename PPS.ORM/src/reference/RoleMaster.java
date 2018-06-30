@@ -1,8 +1,5 @@
 package reference;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import common.FactoryDao;
 import dao.RoleDao;
 import model.Role;
@@ -21,14 +18,6 @@ public class RoleMaster {
 
 	public static Role getGroupChange() {
 		return getDao().getRole(GROUP_CHANGE);
-	}
-
-	public static boolean has(List<Role> list, Role role) {
-		try {
-			return list.stream().filter(x -> equals(x, role)).findFirst().isPresent();
-		} catch (NoSuchElementException e) {
-			return false;
-		}
 	}
 
 	public static boolean equals(Role val1, Role val2) {

@@ -3,33 +3,30 @@ package socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
 import common.LoggerManager;
 import common.Util;
 import common.Workflow;
-import dao.CardDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.TileBean;
 import model.User;
+import reference.CardRoleCache;
 import reference.CardStepMaster;
 import reference.CardTypeMaster;
 
-@Workflow(name = "card", viewrole = "")
+@Workflow(name = "card", cardrole = "")
 public class Card extends IWorkflow {
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = super.getUserinfo(node.getSession()).getUser();
 		LoggerManager.getLogger(Card.class).debug("user - " + user.getGivenName());
-		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
-		LoggerManager.getLogger(Card.class).debug("card count - " + cards.size());
 		LoggerManager.getLogger(Card.class).debug(user.getGivenName());
 		List<TileBean> data = new ArrayList<>();
-		for (model.Card card : cards) {
+		for (model.Card card : CardRoleCache.getCardByUser(user)) {
 			if (!Util.StringEquals(CardStepMaster.HOME, card.getCardStep().getStep())) {
 				continue;
 			}

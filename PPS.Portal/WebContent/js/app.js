@@ -13,8 +13,16 @@ app.config(['$routeProvider', '$qProvider', function($routeProvider, $qProvider)
 	}).when("/cardmastersetting",{
 		controller : "cardmastersetting",
 		templateUrl : "./views/cardmastersetting.tpl.jsp"
-	})
-	.when("/usermanagement", {
+	}).when("/cardviewrole",{
+		controller : "cardviewrole",
+		templateUrl : "./views/viewrole.tpl.jsp"
+	}).when("/actionrole",{
+		controller : "actionrole",
+		templateUrl : "./views/viewrole.tpl.jsp"
+	}).when("/comgroupsetting",{
+		controller : "comgroupsetting",
+		templateUrl : "./views/comgroupsetting.tpl.jsp"
+	}).when("/usermanagement", {
 		controller : "usermanagement",
 		templateUrl : "./views/usermanagement.tpl.jsp"
 	}).otherwise({

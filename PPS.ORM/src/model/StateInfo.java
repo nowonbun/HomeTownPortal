@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import map.*;
 
 import java.util.Date;
 
@@ -34,45 +33,27 @@ public class StateInfo implements Serializable {
 	@Column(name = "LAST_UPDATER")
 	private String lastUpdater;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "STATE")
 	private State state;
 
-	@OneToOne(mappedBy = "stateInfo")
+	@OneToOne(mappedBy = "stateInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Cookie cookie;
 
-	@OneToOne(mappedBy = "stateInfo")
+	@OneToOne(mappedBy = "stateInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private User user;
 
-	@OneToOne(mappedBy = "stateInfo")
+	@OneToOne(mappedBy = "stateInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Company company;
-	
-	@OneToOne(mappedBy = "stateInfo")
+
+	@OneToOne(mappedBy = "stateInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Group group;
-	
-	@OneToOne(mappedBy = "stateInfo")
+
+	@OneToOne(mappedBy = "stateInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Password password;
-	
-	@OneToOne(mappedBy = "stateInfo")
+
+	@OneToOne(mappedBy = "stateInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Comment comment;
-	
-	@OneToOne(mappedBy = "stateInfo")
-	private MapActionRoleCompany mapActionRoleCompany;
-	
-	@OneToOne(mappedBy = "stateInfo")
-	private MapActionRoleGroup mapActionRoleGroup;
-	
-	@OneToOne(mappedBy = "stateInfo")
-	private MapActionRoleUser mapActionRoleUser;
-	
-	@OneToOne(mappedBy = "stateInfo")
-	private MapViewRoleCompany mapViewRoleCompany;
-	
-	@OneToOne(mappedBy = "stateInfo")
-	private MapViewRoleGroup mapViewRoleGroup;
-	
-	@OneToOne(mappedBy = "stateInfo")
-	private MapViewRoleUser mapViewRoleUser;
 
 	public Company getCompany() {
 		return company;
@@ -88,54 +69,6 @@ public class StateInfo implements Serializable {
 
 	public void setGroup(Group group) {
 		this.group = group;
-	}
-
-	public MapActionRoleCompany getMapActionRoleCompany() {
-		return mapActionRoleCompany;
-	}
-
-	public void setMapActionRoleCompany(MapActionRoleCompany mapActionRoleCompany) {
-		this.mapActionRoleCompany = mapActionRoleCompany;
-	}
-
-	public MapActionRoleGroup getMapActionRoleGroup() {
-		return mapActionRoleGroup;
-	}
-
-	public void setMapActionRoleGroup(MapActionRoleGroup mapActionRoleGroup) {
-		this.mapActionRoleGroup = mapActionRoleGroup;
-	}
-
-	public MapActionRoleUser getMapActionRoleUser() {
-		return mapActionRoleUser;
-	}
-
-	public void setMapActionRoleUser(MapActionRoleUser mapActionRoleUser) {
-		this.mapActionRoleUser = mapActionRoleUser;
-	}
-
-	public MapViewRoleCompany getMapViewRoleCompany() {
-		return mapViewRoleCompany;
-	}
-
-	public void setMapViewRoleCompany(MapViewRoleCompany mapViewRoleCompany) {
-		this.mapViewRoleCompany = mapViewRoleCompany;
-	}
-
-	public MapViewRoleGroup getMapViewRoleGroup() {
-		return mapViewRoleGroup;
-	}
-
-	public void setMapViewRoleGroup(MapViewRoleGroup mapViewRoleGroup) {
-		this.mapViewRoleGroup = mapViewRoleGroup;
-	}
-
-	public MapViewRoleUser getMapViewRoleUser() {
-		return mapViewRoleUser;
-	}
-
-	public void setMapViewRoleUser(MapViewRoleUser mapViewRoleUser) {
-		this.mapViewRoleUser = mapViewRoleUser;
 	}
 
 	public Password getPassword() {
@@ -220,7 +153,7 @@ public class StateInfo implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public Comment getComment() {
 		return comment;
 	}

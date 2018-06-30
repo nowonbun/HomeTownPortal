@@ -3,13 +3,8 @@ package map;
 import java.io.Serializable;
 import javax.persistence.*;
 
-/**
- * The primary key class for the MAP_VIEW_ROLE_GROUP database table.
- * 
- */
 @Embeddable
 public class MapViewRoleGroupPK implements Serializable {
-	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="CARD_CODE", insertable=false, updatable=false)

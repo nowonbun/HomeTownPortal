@@ -3,22 +3,21 @@ package socket;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
 import common.Util;
 import common.Workflow;
-import dao.CardDao;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.TileBean;
 import model.User;
 import reference.CardMaster;
+import reference.CardRoleCache;
 import reference.CardStepMaster;
 import reference.CardTypeMaster;
 
-@Workflow(name = "admin", viewrole = CardMaster.ADMIN)
+@Workflow(name = "admin", cardrole = CardMaster.ADMIN)
 public class Admin extends IWorkflow {
 
 	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin") };
@@ -26,9 +25,8 @@ public class Admin extends IWorkflow {
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = super.getUserinfo(node.getSession()).getUser();
-		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
 		List<TileBean> data = new ArrayList<>();
-		for (model.Card card : cards) {
+		for (model.Card card : CardRoleCache.getCardByUser(user)) {
 			if (!Util.StringEquals(CardStepMaster.ADMIN, card.getCardStep().getStep())) {
 				continue;
 			}

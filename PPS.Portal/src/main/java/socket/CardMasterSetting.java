@@ -8,7 +8,7 @@ import entity.WebSocketResult;
 import entity.bean.ObjectBean;
 import reference.CardMaster;
 
-@Workflow(name = "cardmastersetting", viewrole = CardMaster.CARD_MASTER_SETTING)
+@Workflow(name = "cardmastersetting", cardrole = CardMaster.CARD_MASTER_SETTING)
 public class CardMasterSetting extends IWorkflow {
 
 	private static NavigateNode[] navi = new NavigateNode[] { 

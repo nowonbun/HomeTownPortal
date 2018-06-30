@@ -8,30 +8,39 @@ import common.TransactionModel;
 import java.util.List;
 
 @Entity
-@Table(name="TSN_COMPANY")
-@NamedQuery(name="Company.findAll", query="SELECT c FROM Company c")
+@Table(name = "TSN_COMPANY")
+@NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
 public class Company extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name="NAME")
+	@Column(name = "NAME")
 	private String name;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
-	@OneToMany(mappedBy="company")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Group> groups;
-	
-	@ManyToMany(mappedBy="companies")
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "MAP_VIEW_ROLE_COMPANY", joinColumns = {
+			@JoinColumn(name = "COMPANY_ID") }, inverseJoinColumns = { @JoinColumn(name = "CARD_CODE") })
 	private List<Card> cards;
 
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "MAP_ACTION_ROLE_COMPANY", joinColumns = {
+			@JoinColumn(name = "COMPANY_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_CODE") })
+	private List<Role> roles;
+
 	@SuppressWarnings("unused")
-	private Company() { }
+	private Company() {
+	}
 
 	public Company(String user) {
 		super.createTransation(user);
@@ -61,20 +70,6 @@ public class Company extends TransactionModel implements Serializable {
 		this.groups = groups;
 	}
 
-	public Group addGroup(Group group) {
-		getGroups().add(group);
-		group.setCompany(this);
-
-		return group;
-	}
-
-	public Group removeGroup(Group group) {
-		getGroups().remove(group);
-		group.setCompany(null);
-
-		return group;
-	}
-	
 	public List<Card> getCards() {
 		return this.cards;
 	}
@@ -82,7 +77,7 @@ public class Company extends TransactionModel implements Serializable {
 	public void setCards(List<Card> cards) {
 		this.cards = cards;
 	}
-	
+
 	public StateInfo getStateInfo() {
 		return stateInfo;
 	}
@@ -90,4 +85,13 @@ public class Company extends TransactionModel implements Serializable {
 	public void setStateInfo(StateInfo stateInfo) {
 		this.stateInfo = stateInfo;
 	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 }

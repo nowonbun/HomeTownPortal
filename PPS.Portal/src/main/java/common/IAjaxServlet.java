@@ -1,11 +1,10 @@
 package common;
 
 import java.io.PrintWriter;
-import java.util.List;
-import dao.CardDao;
 import entity.bean.ObjectBean;
 import model.User;
 import reference.CardMaster;
+import reference.CardRoleCache;
 
 public abstract class IAjaxServlet extends IServlet {
 
@@ -27,15 +26,21 @@ public abstract class IAjaxServlet extends IServlet {
 		} catch (Exception e) {
 			LoggerManager.getLogger(IAjaxServlet.class).error(e);
 		}
-
+		PermissionServlet servlet = this.getClass().getDeclaredAnnotation(PermissionServlet.class);
+		if (servlet != null) {
+			String code = servlet.value();
+			if (!isRoleCheck(getUserinfo().getUser(), code)) {
+				setStatus(401);
+				return;
+			}
+		}
 		try (PrintWriter writer = super.getPrinter()) {
 			writer.println(doAjax());
 		}
 	}
 
 	protected boolean isRoleCheck(User user, String code) {
-		List<model.Card> cards = FactoryDao.getDao(CardDao.class).getCardbyUser(user);
-		return CardMaster.has(cards, CardMaster.getDao().getCard(code));
+		return CardRoleCache.hasPermission(user, CardMaster.getDao().getCard(code));
 	}
 
 	protected final String getDataTableData(Object obj) {
@@ -48,7 +53,5 @@ public abstract class IAjaxServlet extends IServlet {
 		return JsonConverter.create(obj);
 	}
 
-	
-	
 	protected abstract String doAjax();
 }

@@ -17,16 +17,17 @@ public class Password extends TransactionModel implements Serializable {
 	@Column(name = "PASSWORD")
 	private String password;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID")
 	private User user;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "STATE")
 	private StateInfo stateInfo;
 
 	@SuppressWarnings("unused")
-	private Password() { }
+	private Password() {
+	}
 
 	public Password(User user, String createUser) {
 		PasswordPK pk = new PasswordPK();

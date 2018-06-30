@@ -5,22 +5,20 @@ import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import common.FactoryDao;
 import common.IAjaxServlet;
+import common.PermissionServlet;
 import dao.UserDao;
 import entity.bean.UserBean;
 import model.User;
 import reference.CardMaster;
 
 @WebServlet("/userlist")
+@PermissionServlet(CardMaster.USER_MANAGEMENT)
 public class UserList extends IAjaxServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected String doAjax() {
-		if (!isRoleCheck(getUserinfo().getUser(), CardMaster.USER_MANAGEMENT)) {
-			setStatus(401);
-			return "";
-		}
 		List<User> userlist = FactoryDao.getDao(UserDao.class).findAll();
 		List<UserBean> data = new ArrayList<>();
 		for (User user : userlist) {

@@ -40,29 +40,20 @@ public class Card implements Serializable {
 	@Column(name = "ORDER_SEQ")
 	private int orderSeq;
 
-	@ManyToMany
-	@JoinTable(	name = "MAP_VIEW_ROLE_COMPANY", 
-				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
-				inverseJoinColumns = { @JoinColumn(name = "COMPANY_ID") })
+	@ManyToMany(mappedBy = "cards", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Company> companies;
 
-	@ManyToMany
-	@JoinTable(	name = "MAP_VIEW_ROLE_GROUP", 
-				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
-				inverseJoinColumns = {	@JoinColumn(name = "GROUP_ID") })
+	@ManyToMany(mappedBy = "cards", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Group> groups;
 
-	@ManyToMany
-	@JoinTable(	name = "MAP_VIEW_ROLE_USER", 
-				joinColumns = { @JoinColumn(name = "CARD_CODE") }, 
-				inverseJoinColumns = {	@JoinColumn(name = "USER_ID") })
+	@ManyToMany(mappedBy = "cards", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<User> users;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "STEP")
 	private CardStep cardStep;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "CARD_TYPE")
 	private CardType cardType;
 

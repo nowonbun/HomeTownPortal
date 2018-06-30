@@ -2,36 +2,26 @@ package map;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import common.TransactionModel;
 import model.*;
 
 @Entity
-@Table(name="MAP_ACTION_ROLE_USER")
-@NamedQuery(name="MapActionRoleUser.findAll", query="SELECT m FROM MapActionRoleUser m")
-public class MapActionRoleUser extends TransactionModel implements Serializable {
+@Table(name = "MAP_ACTION_ROLE_USER")
+@NamedQuery(name = "MapActionRoleUser.findAll", query = "SELECT m FROM MapActionRoleUser m")
+public class MapActionRoleUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private MapActionRoleUserPK id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ROLE_CODE")
 	private Role role;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "USER_ID")
 	private User user;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "STATE")
-	private StateInfo stateInfo;
-
-	@SuppressWarnings("unused")
-	private MapActionRoleUser() { }
-
-	public MapActionRoleUser(String user) {
-		super.createTransation(user);
+	private MapActionRoleUser() {
 	}
 
 	public MapActionRoleUserPK getId() {
@@ -41,7 +31,7 @@ public class MapActionRoleUser extends TransactionModel implements Serializable 
 	public void setId(MapActionRoleUserPK id) {
 		this.id = id;
 	}
-	
+
 	public Role getRole() {
 		return this.role;
 	}
@@ -56,13 +46,5 @@ public class MapActionRoleUser extends TransactionModel implements Serializable 
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public StateInfo getStateInfo() {
-		return stateInfo;
-	}
-
-	public void setStateInfo(StateInfo stateInfo) {
-		this.stateInfo = stateInfo;
 	}
 }

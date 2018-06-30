@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.Manager;
@@ -27,11 +29,19 @@ public class LookUpDao extends MasterDao<LookUp> {
 	}
 
 	public LookUp getLookUp(String key) {
-		return getData().stream().filter(x -> x.getKey().equals(key)).findFirst().get();
+		try {
+			return getData().stream().filter(x -> x.getKey().equals(key)).findFirst().get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 	public String getValueString(String key) {
-		return getLookUp(key).getValue();
+		LookUp lookup = getLookUp(key);
+		if (lookup == null) {
+			return null;
+		}
+		return lookup.getValue();
 	}
 
 	public int getValueInt(String key) {

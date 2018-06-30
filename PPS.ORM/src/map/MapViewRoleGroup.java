@@ -2,38 +2,27 @@ package map;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import common.TransactionModel;
 import model.*;
 
 @Entity
 @Table(name = "MAP_VIEW_ROLE_GROUP")
 @NamedQuery(name = "MapViewRoleGroup.findAll", query = "SELECT m FROM MapViewRoleGroup m")
-public class MapViewRoleGroup extends TransactionModel implements Serializable {
+public class MapViewRoleGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private MapViewRoleGroupPK id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "CARD_CODE")
 	private Card card;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "GROUP_ID")
 	private Group group;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "STATE")
-	private StateInfo stateInfo;
-	
-	@SuppressWarnings("unused")
-	private MapViewRoleGroup() { }
 
-	public MapViewRoleGroup(String user) {
-		super.createTransation(user);
+	private MapViewRoleGroup() {
 	}
-
 
 	public MapViewRoleGroupPK getId() {
 		return this.id;
@@ -59,11 +48,4 @@ public class MapViewRoleGroup extends TransactionModel implements Serializable {
 		this.group = group;
 	}
 
-	public StateInfo getStateInfo() {
-		return stateInfo;
-	}
-
-	public void setStateInfo(StateInfo stateInfo) {
-		this.stateInfo = stateInfo;
-	}
 }

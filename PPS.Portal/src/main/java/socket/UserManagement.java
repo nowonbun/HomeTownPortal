@@ -1,7 +1,6 @@
 package socket;
 
 import java.util.ArrayList;
-import java.util.List;
 import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
@@ -10,7 +9,6 @@ import common.Util;
 import common.Workflow;
 import dao.CompanyDao;
 import dao.GroupDao;
-import dao.RoleDao;
 import dao.UserDao;
 import entity.NavigateNode;
 import entity.SelectNode;
@@ -19,13 +17,13 @@ import entity.WebSocketResult;
 import entity.bean.ObjectBean;
 import entity.bean.UserBean;
 import model.Password;
-import model.Role;
 import model.User;
+import reference.ActionRoleCache;
 import reference.CardMaster;
 import reference.RoleMaster;
 import reference.StateMaster;
 
-@Workflow(name = "usermanagement", viewrole = CardMaster.USER_MANAGEMENT)
+@Workflow(name = "usermanagement", cardrole = CardMaster.USER_MANAGEMENT)
 public class UserManagement extends IWorkflow {
 
 	private static NavigateNode[] navi = new NavigateNode[] { 
@@ -67,7 +65,7 @@ public class UserManagement extends IWorkflow {
 				Password pwd = new Password(user, sessionuser.getName());
 				pwd.setPassword(Util.convertMD5(data.getString("password")));
 				user.setPasswords(new ArrayList<>());
-				user.addPassword(pwd);
+				user.getPasswords().add(pwd);
 				user.setGivenName(data.getString("given_name"));
 				user.setName(data.getString("name"));
 				user.setNickName(data.getString("nick_name"));
@@ -113,8 +111,7 @@ public class UserManagement extends IWorkflow {
 			data.setImg_blob(user.getImgBlob());
 		}
 		data.setCanModifyPassword(!StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId()));
-		List<Role> rolelist = FactoryDao.getDao(RoleDao.class).getRolebyUser(sessionuser);
-		data.setCanModifyCompany(RoleMaster.has(rolelist, RoleMaster.getCompanyChange()));
+		data.setCanModifyCompany(ActionRoleCache.hasPermission(sessionuser, RoleMaster.getCompanyChange()));
 		if (data.isCanModifyCompany()) {
 			FactoryDao.getDao(CompanyDao.class).getCompanyAll().forEach(x -> {
 				SelectNode select = new SelectNode();
@@ -124,7 +121,7 @@ public class UserManagement extends IWorkflow {
 			});
 			data.setCompany(user.getCompany().getId());
 		}
-		data.setCanModifyGroup(RoleMaster.has(rolelist, RoleMaster.getCompanyChange()));
+		data.setCanModifyGroup(ActionRoleCache.hasPermission(sessionuser, RoleMaster.getGroupChange()));
 		if (data.isCanModifyGroup()) {
 			FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
 				SelectNode select = new SelectNode();

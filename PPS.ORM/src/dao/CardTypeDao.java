@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import common.Manager;
@@ -27,7 +29,10 @@ public class CardTypeDao extends MasterDao<CardType> {
 	}
 
 	public CardType getCardType(String type) {
-		return getData().stream().filter(x -> x.getCardType().equals(type)).findFirst().get();
+		try {
+			return getData().stream().filter(x -> x.getCardType().equals(type)).findFirst().get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
-
 }

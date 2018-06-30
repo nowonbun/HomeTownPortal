@@ -6,34 +6,25 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="MST_ROLE")
-@NamedQuery(name="Role.findAll", query="SELECT r FROM Role r")
+@Table(name = "MST_ROLE")
+@NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ROLE")
+	@Column(name = "ROLE")
 	private String role;
 
-	@Column(name="NAME")
+	@Column(name = "NAME")
 	private String name;
-	
-	@ManyToMany
-	@JoinTable(	name = "MAP_ACTION_ROLE_COMPANY", 
-				joinColumns = { @JoinColumn(name = "ROLE_CODE") }, 
-				inverseJoinColumns = { @JoinColumn(name = "COMPANY_ID") })
+
+	@ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Company> companies;
 
-	@ManyToMany
-	@JoinTable(	name = "MAP_ACTION_ROLE_GROUP", 
-				joinColumns = { @JoinColumn(name = "ROLE_CODE") }, 
-				inverseJoinColumns = {	@JoinColumn(name = "GROUP_ID") })
+	@ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Group> groups;
 
-	@ManyToMany
-	@JoinTable(	name = "MAP_ACTION_ROLE_USER", 
-				joinColumns = { @JoinColumn(name = "ROLE_CODE") }, 
-				inverseJoinColumns = {	@JoinColumn(name = "USER_ID") })
+	@ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<User> users;
 
 	public Role() {
@@ -54,7 +45,7 @@ public class Role implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public List<Company> getCompanies() {
 		return this.companies;
 	}
