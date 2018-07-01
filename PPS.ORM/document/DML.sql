@@ -13,17 +13,19 @@ INSERT INTO MST_CARD_STEP(STEP, NAME) VALUES ('MAST', 'Master setting tile');
 INSERT INTO MST_CARD_STEP(STEP, NAME) VALUES ('MODL', 'Modal type');
 
 INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES ('IMG','Image Card');
-INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES ('EVT','Default Card');
+INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES ('EVT','Event Card');
 INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES ('MDL','Modal Card');
+INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES ('IMC','Image Menu Card');
+INSERT INTO MST_CARD_TYPE(CARD_TYPE,NAME) VALUES ('EMC','Event Menu Card');
 
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('ADMN','Admin','./#!/admin','HOME',null,'',null,null,null,'IMG',1);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('PRFL','Profile','./#!/profile','MODL',null,'',null,null,null,'MDL',2);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('USMN','User Management','./#!/usermanagement','ADMN',null,'',null,null,null,'IMG',1);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('CGST','Company & Group Setting','./#!/comgroupsetting','ADMN',null,'',null,null,null,'IMG',2);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('VWRL','View Role','./#!/cardviewrole','ADMN',null,'',null,null,null,'IMG',3);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('ATRL','Action Role','./#!/actionrole','ADMN',null,'',null,null,null,'IMG',4);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('MSST','Data Master Setting','./#!/datamastersetting','ADMN',null,'',null,null,null,'IMG',5);
-INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,ORDER_SEQ) VALUES ('CMST','Card Master Setting','./#!/cardmastersetting','MAST',null,'',null,null,null,'IMG',1);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('ADMN','Admin',null,'HOME',null,'',null,null,null,'IMC','admin', './views/card.tpl.jsp',1);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('PRFL','Profile',null,'MODL',null,'',null,null,null,'MDL','profile','./views/profile.tpl.jsp',2);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('USMN','User Management','./#!/usermanagement','ADMN',null,'',null,null,null,'IMG', 'usermanagement','./views/usermanagement.tpl.jsp',1);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('CGST','Company & Group Setting','./#!/comgroupsetting','ADMN',null,'',null,null,null,'IMG', 'comgroupsetting','./views/comgroupsetting.tpl.jsp',2);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('VWRL','View Role','./#!/cardviewrole','ADMN',null,'',null,null,null,'IMG', 'cardviewrole','./views/cardviewrole.tpl.jsp',3);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('ATRL','Action Role','./#!/actionrole','ADMN',null,'',null,null,null,'IMG', 'actionrole','./views/actionrole.tpl.jsp',4);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('MSST','Data Master Setting',null,'ADMN',null,'',null,null,null,'IMC', 'datamastersetting','./views/card.tpl.jsp',5);
+INSERT INTO MST_CARD (CODE,NAME,HREF,STEP,TITLE,DESCRIPTION,IMG,ICON,COLOR,CARD_TYPE,CONTROL,TEMPLATE,ORDER_SEQ) VALUES ('CMST','Card Master Setting','./#!/cardmastersetting','MAST',null,'',null,null,null,'IMG', 'cardmastersetting', './views/cardmastersetting.tpl.jsp',1);
 
 
 INSERT INTO MST_ROLE (ROLE,NAME) VALUES ('CMCH','COMPANY_CHANGE');

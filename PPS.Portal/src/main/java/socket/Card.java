@@ -35,7 +35,7 @@ public class Card extends IWorkflow {
 			}
 			LoggerManager.getLogger(Card.class).debug("card - " + card.getName());
 			TileBean entity = new TileBean();
-			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD)) {
+			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD) || Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD)) {
 				entity.setTypeHeaderClass("card-image");
 				if (card.getImg() != null) {
 					entity.setBackground("url('data:image/jpg;base64," + Base64.getEncoder().encodeToString(card.getImg()) + "') no-repeat center");
@@ -45,15 +45,21 @@ public class Card extends IWorkflow {
 				entity.setHeader("");
 				entity.setBorder("");
 				entity.setBody("<span class='card-image__body'>" + card.getName() + "</span>");
+				entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD));
 				entity.setHref(card.getHref());
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.DEFAULT_CARD)) {
+				entity.setControl(card.getControl());
+				entity.setTemplate(card.getTemplate());
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_CARD) || Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD)) {
 				entity.setTypeHeaderClass("card-event");
 				entity.setBackground(card.getColor());
 				entity.setHeader(card.getTitle());
 				entity.setBorder("mdl-card--border");
-				entity.setBody("<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>" + card.getName()
-								+ "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon() + "'></i>");
+				entity.setBody("<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>" + card.getName() + "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon()
+						+ "'></i>");
+				entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD));
 				entity.setHref(card.getHref());
+				entity.setControl(card.getControl());
+				entity.setTemplate(card.getTemplate());
 			} else {
 				continue;
 			}

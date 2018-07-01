@@ -5,16 +5,26 @@ import dao.CardTypeDao;
 import model.CardType;
 
 public class CardTypeMaster {
-	public static String DEFAULT_CARD = "EVT";
+	public static String EVENT_CARD = "EVT";
 	public static String IMAGE_CARD = "IMG";
 	public static String MOMAL_CARD = "MDL";
+	public static String EVENT_MENU_CARD = "EMC";
+	public static String IMAGE_MENU_CARD = "IMC";
 
 	public static CardTypeDao getDao() {
 		return FactoryDao.getDao(CardTypeDao.class);
 	}
+	
+	public static CardType getImageMenuCardType() {
+		return getDao().getCardType(IMAGE_MENU_CARD);
+	}
+	
+	public static CardType getEventMenuCardType() {
+		return getDao().getCardType(EVENT_MENU_CARD);
+	}
 
-	public static CardType getDefaultCardType() {
-		return getDao().getCardType(DEFAULT_CARD);
+	public static CardType getEventCardType() {
+		return getDao().getCardType(EVENT_CARD);
 	}
 
 	public static CardType getImageCardType() {

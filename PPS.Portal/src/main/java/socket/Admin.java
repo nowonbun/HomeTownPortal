@@ -20,8 +20,6 @@ import reference.CardTypeMaster;
 @Workflow(name = "admin", cardrole = CardMaster.ADMIN)
 public class Admin extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode("./#!/admin", "Admin") };
-
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = super.getUserinfo(node.getSession()).getUser();
@@ -34,7 +32,8 @@ public class Admin extends IWorkflow {
 				continue;
 			}
 			TileBean entity = new TileBean();
-			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD)) {
+			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD) ||
+				Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD)) {
 				entity.setTypeHeaderClass("card-image");
 				if (card.getImg() != null) {
 					entity.setBackground("url('data:image/jpg;base64,"
@@ -45,15 +44,22 @@ public class Admin extends IWorkflow {
 				entity.setHeader("");
 				entity.setBorder("");
 				entity.setBody("<span class='card-image__body'>" + card.getName() + "</span>");
+				entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD));
 				entity.setHref(card.getHref());
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.DEFAULT_CARD)) {
+				entity.setControl(card.getControl());
+				entity.setTemplate(card.getTemplate());
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_CARD) ||
+					   Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD)) {
 				entity.setTypeHeaderClass("card-event");
 				entity.setBackground(card.getColor());
 				entity.setHeader(card.getTitle());
 				entity.setBorder("mdl-card--border");
 				entity.setBody("<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>" + card.getName()
 								+ "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon() + "'></i>");
+				entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD));
 				entity.setHref(card.getHref());
+				entity.setControl(card.getControl());
+				entity.setTemplate(card.getTemplate());
 			} else {
 				continue;
 			}
@@ -65,6 +71,6 @@ public class Admin extends IWorkflow {
 
 	@Override
 	protected NavigateNode[] navigation() {
-		return navi;
+		return null;
 	}
 }

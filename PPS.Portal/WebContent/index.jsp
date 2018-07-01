@@ -34,7 +34,9 @@
 	<div class="notification-zone"></div>
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    	<a class="navbar-brand" href="./#!/">Home Portal</a>
+    	<a class="navbar-brand" ng-click="menu(true,'card','./views/card.tpl.jsp');">
+    		<i class="fa fa-th"></i>
+		</a>
     	<!-- Breadcrumbs-->
 		<ul id="breadcrumb" navigation ng-controller="navigate"></ul>
 		<button id="navitoggler" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +46,7 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<a class="nav-link" ng-click="profileEdit();">
-						<i class="fa fa-fw  fa-user"></i>Profile
+						<i class="fa fa-fw fa-user"></i>Profile
 					</a>
 				</li>
 				<li class="nav-item">
@@ -76,6 +78,7 @@
 		</div>
 	</div>
 	<div id="extendModal"></div>
+	<div id="menuFrame"></div>
 	</body>
 	<script src="//code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js" type="text/javascript"></script>
@@ -103,13 +106,13 @@
 	<script src="./js/factory.js" type="text/javascript"></script>
 	
 	<script src="./js/controller/run.js" type="text/javascript"></script>
+	<script src="./js/controller/main.js" type="text/javascript"></script>
 	<script src="./js/controller/admin.js" type="text/javascript"></script>
 	<script src="./js/controller/card.js" type="text/javascript"></script>
 	<script src="./js/controller/datamastersetting.js" type="text/javascript"></script>
 	<script src="./js/controller/navigate.js" type="text/javascript"></script>
 	<script src="./js/controller/profile.js" type="text/javascript"></script>
 	<script src="./js/controller/useradd.js" type="text/javascript"></script>
-	<script src="./js/controller/userdelete.js" type="text/javascript"></script>
 	<script src="./js/controller/useredit.js" type="text/javascript"></script>
 	<script src="./js/controller/usermanagement.js" type="text/javascript"></script>
 	<script src="./js/controller/cardmastersetting.js" type="text/javascript"></script>

@@ -7,6 +7,9 @@ public class TileBean extends ObjectBean {
 	private String border;
 	private String body;
 	private String href;
+	private boolean menu;
+	private String control;
+	private String template;
 
 	public String getTypeHeaderClass() {
 		return typeHeaderClass;
@@ -54,6 +57,30 @@ public class TileBean extends ObjectBean {
 
 	public void setHref(String href) {
 		this.href = href;
+	}
+
+	public boolean isMenu() {
+		return menu;
+	}
+
+	public void setMenu(boolean menu) {
+		this.menu = menu;
+	}
+
+	public String getControl() {
+		return control;
+	}
+
+	public void setControl(String control) {
+		this.control = control;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 
 }

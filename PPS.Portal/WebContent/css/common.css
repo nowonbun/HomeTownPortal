@@ -67,8 +67,40 @@ body.sticky-footer .content-wrapper {
 	background: #00000050;
 	text-align: center;
 	border-radius: 5px;
-	box-shadow: 2px 2px 4px #ffffff20;
-	width: 150px;
+	box-shadow: 0px 1.0px 1px 1.0px rgba(255, 255, 255, 0.01), 0px 1.0px 2px 1.0px rgba(255, 255, 255, 0.01), 0px 1.0px 3px 1.0px rgba(255, 255, 255, 0.01);
+	width: 40px;
+	color: white;
+}
+#mainNav .navbar-brand:hover {
+	box-shadow: 0px 1.1px 1px 1.2px rgba(255, 255, 255, 0.04), 0px 1.2px 2px 1.4px rgba(255, 255, 255, 0.04), 0px 1.4px 3px 1.6px rgba(255, 255, 255, 0.04);
+}
+.menu-backdrop{
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #000;
+}
+.menu-backdrop.show{
+	opacity: .5;
+}
+.menu {
+	position: fixed;
+    top: calc(-100vh);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    outline: 0;
+    transition: top 0.5s;
+    z-index:1041;
+}
+.menu.show {
+	top: 70px;
+}
+.menu a{
+	background-color: white!important;
 }
 /*title*/
 

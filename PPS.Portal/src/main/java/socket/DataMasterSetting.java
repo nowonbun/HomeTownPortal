@@ -20,10 +20,6 @@ import reference.CardTypeMaster;
 @Workflow(name = "datamastersetting", cardrole = CardMaster.DATA_MASTER_SETTING)
 public class DataMasterSetting extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { 
-			new NavigateNode("./#!/admin", "Admin"),
-			new NavigateNode("./#!/datamastersetting", "Master setting") };
-
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = super.getUserinfo(node.getSession()).getUser();
@@ -36,7 +32,8 @@ public class DataMasterSetting extends IWorkflow {
 				continue;
 			}
 			TileBean entity = new TileBean();
-			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD)) {
+			if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD) ||
+				Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD)) {
 				entity.setTypeHeaderClass("card-image");
 				if (card.getImg() != null) {
 					entity.setBackground("url('data:image/jpg;base64,"
@@ -47,8 +44,12 @@ public class DataMasterSetting extends IWorkflow {
 				entity.setHeader("");
 				entity.setBorder("");
 				entity.setBody("<span class='card-image__body'>" + card.getName() + "</span>");
+				entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD));
 				entity.setHref(card.getHref());
-			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.DEFAULT_CARD)) {
+				entity.setControl(card.getControl());
+				entity.setTemplate(card.getTemplate());
+			} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_CARD) ||
+					   Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD)) {
 				entity.setTypeHeaderClass("card-event");
 				entity.setBackground(card.getColor());
 				entity.setHeader(card.getTitle());
@@ -56,7 +57,10 @@ public class DataMasterSetting extends IWorkflow {
 				entity.setBody(
 						"<a class='mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect'>" + card.getName()
 								+ "</a><div class='mdl-layout-spacer'></div><i class='" + card.getIcon() + "'></i>");
+				entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD));
 				entity.setHref(card.getHref());
+				entity.setControl(card.getControl());
+				entity.setTemplate(card.getTemplate());
 			} else {
 				continue;
 			}
@@ -67,7 +71,7 @@ public class DataMasterSetting extends IWorkflow {
 
 	@Override
 	protected NavigateNode[] navigation() {
-		return navi;
+		return null;
 	}
 
 }

@@ -12,6 +12,7 @@ import socket.CardViewRole;
 import socket.ComGroupSetting;
 import socket.DataMasterSetting;
 import socket.Login;
+import socket.Main;
 import socket.Profile;
 import socket.UserManagement;
 import socket.common.SocketBundleSet;
@@ -35,6 +36,7 @@ public class Startup extends IServlet {
 		SocketBundleSet.setClass(ActionRole.class);
 		SocketBundleSet.setClass(CardViewRole.class);
 		SocketBundleSet.setClass(ComGroupSetting.class);
+		SocketBundleSet.setClass(Main.class);
 		FactoryDao.initializeMaster();
 		CardRoleCache.reset();
 		ActionRoleCache.reset();

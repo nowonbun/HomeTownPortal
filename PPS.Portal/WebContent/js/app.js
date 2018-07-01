@@ -1,15 +1,9 @@
 var app = angular.module('app', [ "ngRoute", "ngSanitize" ]);
 
 app.config(['$routeProvider', '$qProvider', function($routeProvider, $qProvider) {
-	$routeProvider.when("/", {
-		controller : "card",
-		templateUrl : "./views/card.tpl.jsp"
-	}).when("/admin", {
-		controller : "admin",
-		templateUrl : "./views/card.tpl.jsp"
-	}).when("/datamastersetting", {
-		controller : "datamastersetting",
-		templateUrl : "./views/card.tpl.jsp"
+	$routeProvider.when("/",{
+		controller : "main",
+		templateUrl : "./views/main.tpl.jsp"
 	}).when("/cardmastersetting",{
 		controller : "cardmastersetting",
 		templateUrl : "./views/cardmastersetting.tpl.jsp"

@@ -40,6 +40,12 @@ public class Card implements Serializable {
 	@Column(name = "ORDER_SEQ")
 	private int orderSeq;
 
+	@Column(name = "CONTROL")
+	private String control;
+
+	@Column(name = "TEMPLATE")
+	private String template;
+
 	@ManyToMany(mappedBy = "cards", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Company> companies;
 
@@ -57,7 +63,8 @@ public class Card implements Serializable {
 	@JoinColumn(name = "CARD_TYPE")
 	private CardType cardType;
 
-	public Card() { }
+	public Card() {
+	}
 
 	public String getCode() {
 		return this.code;
@@ -169,6 +176,22 @@ public class Card implements Serializable {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public String getControl() {
+		return control;
+	}
+
+	public void setControl(String control) {
+		this.control = control;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 
 }
