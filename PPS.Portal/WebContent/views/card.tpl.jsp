@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%AuthServlet.auth(request, response);%>
 <div class="menu fade top">
-	<div class="row" style="margin-right: 20px; margin-left: 20px;">
+	<div class="row" style="margin-right: 20px; margin-left: 20px; transition: top 0.15s linear;">
 		<div class="col-md-12">
 			<div class="card-grid">
 				<a ng-repeat="card in cards" ng-click="menu(card.menu,card.control,card.template,card.href);"

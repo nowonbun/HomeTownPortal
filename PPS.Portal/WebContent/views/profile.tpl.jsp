@@ -1,7 +1,6 @@
 <%@page import="authentication.AuthServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%AuthServlet.auth(request, response);%>
-<link href="./css/views/profile.css" rel="stylesheet">
 <div class="modal fade top" id="profileModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-full-height modal-top modal-notify modal-pps max-page" role="document">
         <div class="modal-content" >
@@ -42,7 +41,8 @@
 						<div class="row">
 							<div class="col-12 {{!canUserId?'pps-group':''}}">
 								<div class="md-form form-group pps-group">
-									<input type="text" class="form-control pps-input" id="given_name" ng-model="given_name"> <label for="given_name" class="pps-label" id="given_name_label">Given name</label>
+									<input type="text" class="form-control pps-input" id="given_name" ng-model="given_name"> 
+									<label for="given_name" class="pps-label" id="given_name_label">Given name</label>
 								</div>
 							</div>
 						</div>

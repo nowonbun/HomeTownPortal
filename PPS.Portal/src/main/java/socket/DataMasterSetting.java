@@ -19,7 +19,7 @@ import reference.CardTypeMaster;
 
 @Workflow(name = "datamastersetting", cardrole = CardMaster.DATA_MASTER_SETTING)
 public class DataMasterSetting extends IWorkflow {
-
+	
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = super.getUserinfo(node.getSession()).getUser();

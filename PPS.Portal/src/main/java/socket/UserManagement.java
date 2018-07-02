@@ -26,9 +26,8 @@ import reference.StateMaster;
 @Workflow(name = "usermanagement", cardrole = CardMaster.USER_MANAGEMENT)
 public class UserManagement extends IWorkflow {
 
-	private static NavigateNode[] navi = new NavigateNode[] { 
-			new NavigateNode("./#!/admin", "Admin"),
-			new NavigateNode("./#!/usermanagement", "UserManagement") };
+	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode(CardMaster.getAdminCard()),
+			new NavigateNode(CardMaster.getUserManagementCard()) };
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {

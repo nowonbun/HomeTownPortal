@@ -1,22 +1,26 @@
 package socket;
 
 import common.IWorkflow;
+import common.JsonConverter;
 import common.Workflow;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import entity.bean.ObjectBean;
 import reference.CardMaster;
 
 @Workflow(name = "actionrole", cardrole = CardMaster.ACTION_ROLE)
 public class ActionRole extends IWorkflow {
 
 	private static NavigateNode[] navi = new NavigateNode[] { 
-			new NavigateNode("./#!/admin", "Admin"), 
-			new NavigateNode("./#!/actionrole", "actionrole")};
+			new NavigateNode(CardMaster.getAdminCard()), 
+			new NavigateNode(CardMaster.getActionRoleCard())};
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
-		return createWebSocketResult(node);
+		ObjectBean data = new ObjectBean();
+		data.setData("actionrole");
+		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 
 	@Override

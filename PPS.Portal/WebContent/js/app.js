@@ -27,7 +27,7 @@ app.config(['$routeProvider', '$qProvider', function($routeProvider, $qProvider)
 app.directive("navigation", function() {
 	return {
 		restrict : "A",
-		template : "<li ng-repeat='n in navi'><a href='{{n.url}}'>{{n.name}}</a></li>"
+		template : "<li ng-repeat='n in navi'><a ng-click='menu(n.menu,n.control,n.template,n.href);'>{{n.name}}</a></li>"
 	};
 });
 

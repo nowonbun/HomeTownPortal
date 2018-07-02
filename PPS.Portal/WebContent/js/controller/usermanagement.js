@@ -1,4 +1,5 @@
-app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', function($scope, _ws, _loader, _safeApply, _extendModal, _notification) {
+app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', 
+	function($scope, _ws, _loader, _safeApply, _extendModal, _notification) {
 	_loader.controller.hide();
 	_ws.message("usermanagement", "init", function(data) {
 		var node = JSON.parse(data);

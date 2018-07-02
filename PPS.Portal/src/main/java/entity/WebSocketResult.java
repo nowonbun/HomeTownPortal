@@ -6,7 +6,7 @@ import java.util.List;
 import common.WebSocketResultType;
 
 public class WebSocketResult {
-	private List<NavigateNode> navigate = new ArrayList<>();
+	private List<NavigateNode> navigate = null;
 	private WebSocketNode node;
 	private WebSocketResultType type;
 	private String control;
@@ -14,7 +14,7 @@ public class WebSocketResult {
 	private String data;
 
 	public WebSocketResult() {
-		navigate.add(new NavigateNode("./#!/", "Home"));
+
 	}
 
 	public WebSocketResultType getType() {
@@ -62,6 +62,10 @@ public class WebSocketResult {
 	}
 
 	public void addRangeNavigate(NavigateNode... navi) {
+		if (navigate == null) {
+			navigate = new ArrayList<>();
+			navigate.add(new NavigateNode(false, "./#!/", "Home", "main", "./views/main.tpl.jsp"));
+		}
 		for (NavigateNode n : navi) {
 			navigate.add(n);
 		}

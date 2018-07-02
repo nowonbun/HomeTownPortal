@@ -34,9 +34,6 @@ body.sticky-footer .content-wrapper {
 	right: 0px;
 }
 
-/*.card:hover {
-	border: 1px solid blue;
-}*/
 .notification-zone {
 	position: fixed;
 	right: 20px;
@@ -53,8 +50,6 @@ body.sticky-footer .content-wrapper {
 }
 
 .notification-zone span.glyphicon {
-	/*margin-top: 20px;
-    display: block;*/
 	
 }
 
@@ -76,15 +71,15 @@ body.sticky-footer .content-wrapper {
 }
 .menu-backdrop{
 	position: fixed;
-    top: 0;
+    top: 55px;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1040;
+    z-index: 1010;
     background-color: #000;
 }
 .menu-backdrop.show{
-	opacity: .5;
+	opacity: .7;
 }
 .menu {
 	position: fixed;
@@ -93,14 +88,27 @@ body.sticky-footer .content-wrapper {
     bottom: 0;
     left: 0;
     outline: 0;
-    transition: top 0.5s;
-    z-index:1041;
+    transition: top 0.15s linear;
+    z-index:1011;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .menu.show {
 	top: 70px;
 }
 .menu a{
 	background-color: white!important;
+}
+.system-title {
+	color: white!important;
+    padding-left: 5px;
+    padding-right: 20px;
+    font-size: 15pt;
+}
+@media screen and (max-width: 350px) {
+	.system-title {
+     	display: none!important; 
+	}
 }
 /*title*/
 
@@ -126,7 +134,6 @@ body.sticky-footer .content-wrapper {
 }
 
 .card-item:hover {
-	/*border: 1px solid rgba(0, 0, 0, 0.5);*/
 	cursor: pointer;
 	box-shadow: 0px 1.3px 1px 1.6px rgba(0, 0, 0, 0.1), 0px 1.6px 2px 2.4px rgba(0, 0, 0, 0.1), 0px 2.4px 3px 2.8px rgba(0, 0, 0, 0.1);
 }
@@ -153,13 +160,11 @@ body.sticky-footer .content-wrapper {
 }
 /*card image*/
 .card-image.mdl-card {
-	/*width: 128px;*/
-	/*height: 128px;*/
+
 }
 
 .card-image.mdl-card.fixcard {
-	/*min-height: 128px;*/
-	/*min-width: 128px;*/
+
 }
 
 .card-image>.mdl-card__actions {
@@ -329,7 +334,7 @@ body.sticky-footer .content-wrapper {
 /*loading*/
 .loader-loc {
 	position: absolute;
-	z-index: 10000;
+	z-index: 1998;
 	background: #ffffff80;
 	width: 100%;
 	top: 0px;
@@ -339,8 +344,8 @@ body.sticky-footer .content-wrapper {
 }
 
 .loader {
-	border: 16px solid #f3f3f3; /* Light grey */
-	border-top: 16px solid #3498db; /* Blue */
+	border: 16px solid #f3f3f3;
+	border-top: 16px solid #3498db;
 	border-radius: 50%;
 	width: 120px;
 	height: 120px;
@@ -368,7 +373,7 @@ body.sticky-footer .content-wrapper {
 
 /*page*/
 .pps-page {
-	/*padding: 20px;*/
+	
 }
 
 .pps-page .pps-title {
@@ -380,8 +385,6 @@ body.sticky-footer .content-wrapper {
 	margin: 5px;
 	margin-bottom: 20px;
 	text-align: left;
-	/*box-shadow: 5px 5px 7px 3px rgba(0,0,0,0.1);*/
-	/*text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);*/
 }
 
 .pps-page .pps-contents {
@@ -389,19 +392,14 @@ body.sticky-footer .content-wrapper {
 	border: 1px solid #AAA;
 	border-radius: 5px;
 	margin: 5px;;
-	/*box-shadow: 5px 5px 7px 3px rgba(0,0,0,0.1);*/
 }
 
 .pps-page .pps-header {
 	margin: 2px;
 	padding: 5px;
 	padding-left: 10px;
-	/*border-bottom: 1px solid #AAA;*/
 	border-left: 5px solid #343a40;
 	font-size: 13pt;
-	/*box-shadow: 3px 3px 0px #EEE;*/
-	/*border-radius: 5px;*/
-	/*text-shadow: 2px 2px 2px #BBB*/
 }
 
 .pps-page.max-page-1200 {
@@ -426,3 +424,102 @@ body.sticky-footer .content-wrapper {
 .space-row {
 	margin: 30px;
 }
+
+/*table_list*/
+#tablelist_wrapper select {
+	display: inherit !important;
+}
+
+#tablelist {
+	width: 100%;
+}
+
+#tablelist_wrapper {
+	padding: 10px;
+}
+
+.dataTables_length, .dataTables_filter {
+	text-align: left !important;
+}
+
+.data-item-column {
+	white-space: nowrap;
+}
+
+.dtr-details {
+	width: 100%;
+}
+
+.dataTable tbody td {
+	cursor: pointer;
+}
+
+.text-align-right {
+	text-align: right;
+}
+
+.custom-button {
+	width: 80px;
+	padding: 10px;
+}
+/*table_list*/
+
+/*group-form*/
+.pps-group {
+	margin-top: 1.0rem;
+	margin-bottom: 0rem;
+}
+
+.pps-group-nomargin {
+	margin-top: 0rem;
+	margin-bottom: 0rem;
+}
+
+.pps-label {
+	color: rgb(200, 200, 200) !important;
+}
+
+.pps-label.active {
+	color: #000 !important;
+}
+
+.pps-input {
+	padding: 10px !important;
+}
+.pps-image {
+	padding: .25rem;
+	background-color: #fff;
+	border-radius: .25rem;
+	max-width: 500px;
+	max-height: 500px;
+	text-align: center;
+}
+
+.pps-notice-label {
+	margin: 10px;
+	font-size: 11pt;
+	margin-top: 30px;
+	color: #b3b3b3;
+}
+
+input.form-control {
+	box-sizing: border-box !important;
+}
+
+.error-focus {
+	border-bottom-color: red !important;
+}
+
+.error-label {
+	color: red;
+	font-size: 8pt;
+}
+
+.pps-thumnail {
+	width: 100%;
+}
+
+.select-row {
+	margin-top: 20px;
+}
+/*group-form*/

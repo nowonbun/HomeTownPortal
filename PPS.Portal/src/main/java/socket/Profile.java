@@ -25,7 +25,6 @@ import reference.StateMaster;
 @Workflow(name = "profile", cardrole = CardMaster.PROFILE)
 public class Profile extends IWorkflow {
 
-	private static NavigateNode[] navi = null;
 	private boolean passwordcheck;
 
 	@Override
@@ -129,8 +128,7 @@ public class Profile extends IWorkflow {
 				}
 			});
 			if (!buffer.passwordcheck) {
-				return createWebSocketResult(createNotification(NotificationType.Danger, "The password is incorrect."),
-						node);
+				return createWebSocketResult(createNotification(NotificationType.Danger, "The password is incorrect."), node);
 			}
 			FactoryDao.getDao(UserDao.class).update(user);
 			return createWebSocketResult(createNotification(NotificationType.Success, "The profile is updated"), node);
@@ -141,6 +139,6 @@ public class Profile extends IWorkflow {
 
 	@Override
 	protected NavigateNode[] navigation() {
-		return navi;
+		return null;
 	}
 }

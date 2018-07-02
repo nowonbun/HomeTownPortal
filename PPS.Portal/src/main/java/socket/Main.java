@@ -8,7 +8,7 @@ import entity.WebSocketResult;
 
 @Workflow(name = "main", cardrole = "")
 public class Main extends IWorkflow {
-
+	private static NavigateNode[] navi = new NavigateNode[] { };
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		return createWebSocketResult(node);
@@ -16,6 +16,6 @@ public class Main extends IWorkflow {
 
 	@Override
 	protected NavigateNode[] navigation() {
-		return null;
+		return navi;
 	}
 }

@@ -1,8 +1,6 @@
 <%@page import="authentication.AuthServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	AuthServlet.auth(request, response);
-%>
+<%AuthServlet.auth(request, response);%>
 <link href="./css/views/profile.css" rel="stylesheet">
 <div class="row">
 	<div class="col-12 text-center">

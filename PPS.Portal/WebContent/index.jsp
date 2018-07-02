@@ -34,9 +34,10 @@
 	<div class="notification-zone"></div>
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    	<a class="navbar-brand" ng-click="menu(true,'card','./views/card.tpl.jsp');">
+    	<a class="navbar-brand" ng-click="menu(true,'card','./views/card.tpl.jsp','');">
     		<i class="fa fa-th"></i>
 		</a>
+		<a class="system-title text-shadow-1" ng-click="menu(false,'main','./views/main.tpl.jsp','./#!/');">Public Portal System</a>
     	<!-- Breadcrumbs-->
 		<ul id="breadcrumb" navigation ng-controller="navigate"></ul>
 		<button id="navitoggler" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

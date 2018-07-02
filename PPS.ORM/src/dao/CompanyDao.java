@@ -35,4 +35,16 @@ public class CompanyDao extends TransactionDao<Company> {
 			}
 		});
 	}
+	@SuppressWarnings("unchecked")
+	public List<Company> getCompanyAllIncludeDelete() {
+		return Manager.transaction(() -> {
+			try {
+				String qy = "SELECT c FROM Company c";
+				Query query = Manager.get().createQuery(qy);
+				return (List<Company>) query.getResultList();
+			} catch (NoResultException e) {
+				return null;
+			}
+		});
+	}
 }

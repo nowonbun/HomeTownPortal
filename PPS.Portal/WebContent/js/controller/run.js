@@ -28,6 +28,7 @@ app.run([ '$rootScope', '_ws', '_loader', '_notification', '_extendModal', '$tim
 	}
 	$rootScope.menu = function(ismenu, control, template, href) {
 		if (!ismenu) {
+			$(".menu-backdrop").click();
 			location.href = href;
 			return;
 		}
@@ -35,8 +36,9 @@ app.run([ '$rootScope', '_ws', '_loader', '_notification', '_extendModal', '$tim
 		if(backdrop.length < 1) {
 			backdrop = $("<div></div>").addClass("menu-backdrop").addClass("fade").addClass("show");
 			backdrop.on("click", function() {
-				$(this).remove();
+				$(".menu.fade.top").removeClass("show");
 				$("#menuFrame").attr("ng-controller", "").html("");
+				$(this).remove();
 			});
 			$("body").append(backdrop);
 		} else {

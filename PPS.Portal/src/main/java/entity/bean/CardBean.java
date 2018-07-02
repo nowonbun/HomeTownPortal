@@ -1,5 +1,9 @@
 package entity.bean;
 
+import java.util.List;
+
+import entity.SelectNode;
+
 public class CardBean extends ObjectBean {
 	private String code;
 	private String name;
@@ -12,6 +16,9 @@ public class CardBean extends ObjectBean {
 	private String step;
 	private String type;
 	private int seq;
+	private String controller;
+	private String template;
+	private List<SelectNode> cardtypelist;
 
 	public String getCode() {
 		return code;
@@ -99,6 +106,30 @@ public class CardBean extends ObjectBean {
 
 	public void setStep(String step) {
 		this.step = step;
+	}
+
+	public String getController() {
+		return this.controller;
+	}
+
+	public void setController(String controller) {
+		this.controller = controller;
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public List<SelectNode> getCardtypelist() {
+		return cardtypelist;
+	}
+
+	public void setCardtypelist(List<SelectNode> cardtypelist) {
+		this.cardtypelist = cardtypelist;
 	}
 
 }
