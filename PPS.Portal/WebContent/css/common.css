@@ -99,6 +99,10 @@ body.sticky-footer .content-wrapper {
 .menu a{
 	background-color: white!important;
 }
+.position-fix{
+	position: fixed;
+    width: calc(100vw);
+}
 .system-title {
 	color: white!important;
     padding-left: 5px;
@@ -166,7 +170,7 @@ body.sticky-footer .content-wrapper {
 .card-image.mdl-card.fixcard {
 
 }
-
+.card-event>.mdl-card__actions,
 .card-image>.mdl-card__actions {
 	height: 52px;
 	padding: 16px;
@@ -179,12 +183,18 @@ body.sticky-footer .content-wrapper {
     box-sizing: border-box;
 }
 
-.card-image__body {
+.card-caption-body {
 	color: #fff;
 	/*font-size: 14px;*/
 	font-size: 12px;
 	font-weight: 500;
 	font-weight: bold;
+}
+.image-legend {
+	color: red;
+	font-size: 8pt;
+	text-align: center;
+	display: block;
 }
 /*card image*/
 /*card event*/
@@ -204,12 +214,25 @@ body.sticky-footer .content-wrapper {
 .card-event>.mdl-card__title>h4 {
 	margin-top: 0;
 }
-
+.card-icon {
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    width: 100%;
+    /* height: 100%; */
+    padding-top: 5px;
+    /*opacity: .4;*/
+}
+.card-icon>i{
+    font-size: 100pt;
+}
+/*
 .card-event>.mdl-card__actions {
 	display: flex;
 	box-sizing: border-box;
 	align-items: center;
-}
+}*/
 
 .card-event>.mdl-card__actions>.material-icons {
 	padding-right: 10px;
@@ -363,6 +386,7 @@ body.sticky-footer .content-wrapper {
 .modal-dialog.modal-notify.modal-pps .modal-header{
     background-color: #343a40c4!important;
 }
+
 @media screen and (max-width: 760px) {
 	.modal-backdrop, .side-modal {
      	display: inherit!important; 

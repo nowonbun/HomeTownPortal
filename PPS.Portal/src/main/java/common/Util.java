@@ -67,10 +67,38 @@ public class Util {
 		}
 		return false;
 	}
-	
 
 	public static boolean JsonIsKey(JsonObject jsonobj, String key) {
 		return jsonobj.keySet().contains(key) && !jsonobj.isNull(key);
+	}
+
+	public static String JsonString(JsonObject jsonobj, String key) {
+		if (JsonIsKey(jsonobj, key)) {
+			return jsonobj.getString(key);
+		}
+		return null;
+	}
+
+	public static Boolean JsonBoolean(JsonObject jsonobj, String key) {
+		if (JsonIsKey(jsonobj, key)) {
+			return jsonobj.getBoolean(key);
+		}
+		return null;
+	}
+
+	public static byte[] JsonBytes(JsonObject jsonobj, String key) {
+		String ret = JsonString(jsonobj, key);
+		if (ret == null) {
+			return null;
+		}
+		return ret.getBytes();
+	}
+
+	public static Integer JsonInteger(JsonObject jsonobj, String key) {
+		if (JsonIsKey(jsonobj, key)) {
+			return jsonobj.getInt(key);
+		}
+		return null;
 	}
 
 	public static String getRemoteAddr(HttpServletRequest request) {
@@ -133,7 +161,8 @@ public class Util {
 				assert !file.getName().contains(".");
 				classes.addAll(findClasses(file, packageName + "." + file.getName()));
 			} else if (file.getName().endsWith(".class")) {
-				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+				classes.add(
+						Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
 			}
 		}
 		return classes;

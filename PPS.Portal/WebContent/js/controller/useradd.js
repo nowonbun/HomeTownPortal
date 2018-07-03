@@ -26,6 +26,9 @@ app.controller("useradd", [ '$scope', '_ws', '_loader','_filereader', '_safeAppl
 		_loader.ready(function() {
 			$('.mdb-select').material_select();
 			$("#profileModal").modal("show");
+			$('#profileModal').on('hidden.bs.modal', function () {
+				_extendModal();
+			});
 		});
 		_loader.controller.show();
 	});

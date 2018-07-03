@@ -65,10 +65,10 @@ app.controller("cardmastersetting", [ '$scope', '_ws', '_loader','_safeApply', '
 			}
 		});
 		$scope.cardEdit = function() {
-			/*_extendModal("./views/profile.tpl.jsp","useradd",$scope,function(){
-				$("#profileModal").modal("show");
-			});*/
 			_extendModal("./views/cardmaster.tpl.jsp","cardmaster",$scope);
+		}
+		$scope.reloadTable = function() {
+			table.ajax.reload();
 		}
 		_loader.controller.show();
 	});
@@ -78,5 +78,6 @@ app.controller("cardmastersetting", [ '$scope', '_ws', '_loader','_safeApply', '
 		location.href="./#!/";
 		return;
 	});
+	
 	_ws.send("cardmastersetting", "init");
 } ]);

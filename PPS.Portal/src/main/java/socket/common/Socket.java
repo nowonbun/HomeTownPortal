@@ -28,8 +28,9 @@ public class Socket extends ISocket {
 	private static Map<String, Map<String, Method>> flyweight2 = new HashMap<>();
 
 	public void main(WebSocketNode node) {
+		WebSocketResult ret = null;
 		try {
-			WebSocketResult ret = getExecute("login", IWorkflow.Init, node);
+			ret = getExecute("login", IWorkflow.Init, node);
 			sendMessage("login", IWorkflow.Init, ret.getData(), node.getSession());
 			if (Util.StringEquals(ret.getData(), Login.NG)) {
 				return;

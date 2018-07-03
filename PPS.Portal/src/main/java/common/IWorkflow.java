@@ -6,6 +6,8 @@ import javax.json.JsonObjectBuilder;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import entity.bean.TileBean;
+import reference.CardTypeMaster;
 
 public abstract class IWorkflow extends ICommon {
 	public static String Init = "init";
@@ -60,5 +62,39 @@ public abstract class IWorkflow extends ICommon {
 		}
 		obj.add("msg", msg);
 		return obj.build().toString();
+	}
+
+	protected TileBean createTile(model.Card card) {
+
+		if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_CARD) || Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD)) {
+			TileBean entity = new TileBean();
+			entity.setTypeHeaderClass("card-image");
+			if (card.getImg() != null) {
+				entity.setBackground("url('" + new String(card.getImg()) + "') no-repeat center");
+			} else {
+				entity.setBackground("url('./contents/no_card.jpg') no-repeat center");
+			}
+			entity.setBorder("");
+			entity.setHeader("");
+			entity.setBody("<span class='card-caption-body'>" + card.getTitle() + "</span>");
+			entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.IMAGE_MENU_CARD));
+			entity.setHref(card.getHref());
+			entity.setControl(card.getControl());
+			entity.setTemplate(card.getTemplate());
+			return entity;
+		} else if (Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_CARD) || Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD)) {
+			TileBean entity = new TileBean();
+			entity.setTypeHeaderClass("card-event");
+			entity.setBackground("");
+			entity.setBorder("mdl-card--border");
+			entity.setHeader("<div class='card-icon'><i class='" + card.getIcon() + "' style='color:" + card.getColor() + ";'></i></div>");
+			entity.setBody("<span class='card-caption-body'>" + card.getTitle() + "</span><div class='mdl-layout-spacer'></div>");
+			entity.setMenu(Util.StringEquals(card.getCardType().getCardType(), CardTypeMaster.EVENT_MENU_CARD));
+			entity.setHref(card.getHref());
+			entity.setControl(card.getControl());
+			entity.setTemplate(card.getTemplate());
+			return entity;
+		}
+		return null;
 	}
 }

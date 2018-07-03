@@ -48,47 +48,52 @@ app.service('_safeApply', [ '$rootScope', function($rootScope) {
 	}
 } ]);
 
-app.service('_notification', [ '$rootScope', '$timeout', '_safeApply',
-		function($rootScope, $timeout, _safeApply) {
-			return function(type, msg, cb) {
-					_safeApply(function() {
-						if (type !== "success" && type !== "warning") {
-							type = "danger";
-						}
-						var dom = $("<div></div>").addClass("notification-row").append(
-								$("<div></div>").addClass("alert alert-" + type)
-										.append($("<button></button>").addClass("close").append($("<span></span>").attr("aria-hidden", "true").html("&times;"))).append(
-												$("<span></span>").addClass("glyphicon glyphicon-exclamation-sign").text(msg)));
-						if ($("div.notification-row").length > 5) {
-							$("div.notification-row")[0].remove();
-						}
-						$(".notification-zone").append(dom);
-						$timeout(function() {
-							dom.remove();
-							if (cb !== undefined) {
-								cb.call(this);
-							}
-						}, 5000);
-					});
-				}
-		} ]);
-
-app.service('_extendModal', [ '$rootScope', '$http', '$compile',
-	function($rootScope, $http, $compile) {
-		return function(templeteUrl, controller, $scope, callback){
-			if(templeteUrl === undefined){
-				var dom = $("#extendModal").attr("ng-controller","").html("");
-				return;
+app.service('_notification', [ '$rootScope', '$timeout', '_safeApply', function($rootScope, $timeout, _safeApply) {
+	return function(type, msg, cb) {
+		_safeApply(function() {
+			if (type !== "success" && type !== "warning") {
+				type = "danger";
 			}
-			$http.get(templeteUrl).then(function(result){
-				var dom = $("#extendModal").attr("ng-controller",controller).html(result.data);
-				$compile(dom)($scope == null?$rootScope:$scope);
-				if (callback && typeof callback === 'function') {
-					callback.call(this);
+			var title = $("<span></span>");
+			if (type === "danger" || type === "warning") {
+				title.append($("<i></i>").addClass("fa fa-warning"));
+			}
+			title.append("&nbsp;" + type.toUpperCase());
+			var button = $("<button></button>").addClass("close").append($("<span></span>").attr("aria-hidden", "true").html("&times;"));
+			var header = $("<span></span>").css("display", "block").append(title).append(button);
+			var body = $("<div></div>").addClass("alert alert-" + type).append(header).append($("<span></span>").addClass("glyphicon glyphicon-exclamation-sign").text(msg));
+			var dom = $("<div></div>").addClass("notification-row").append(body);
+			if ($("div.notification-row").length > 5) {
+				$("div.notification-row")[0].remove();
+			}
+			$(".notification-zone").append(dom);
+			$timeout(function() {
+				dom.remove();
+				if (cb !== undefined) {
+					cb.call(this);
 				}
-		    });
+			}, 5000);
+		});
+	}
+} ]);
+
+app.service('_extendModal', [ '$rootScope', '$http', '$compile', function($rootScope, $http, $compile) {
+	return function(templeteUrl, controller, $scope, callback) {
+		if (templeteUrl === undefined) {
+			var dom = $("#extendModal").attr("ng-controller", "").html("");
+			$(".content-wrapper").removeClass("position-fix");
+			return;
 		}
-	} ]);
+		$http.get(templeteUrl).then(function(result) {
+			var dom = $("#extendModal").attr("ng-controller", controller).html(result.data);
+			$(".content-wrapper").addClass("position-fix");
+			$compile(dom)($scope == null ? $rootScope : $scope);
+			if (callback && typeof callback === 'function') {
+				callback.call(this);
+			}
+		});
+	}
+} ]);
 
 app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply) {
 	var socket = new WebSocket(WS_HOST + "/socket");
@@ -226,3 +231,25 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 	}
 } ]);
 
+app.service('_util', [ '_notification', function(_notification) {
+	return {
+		validateInput : function(val, lbl, name) {
+			if ($.trim(val) === "") {
+				_notification("danger", "Please input the text of '" + name + "'", function() {
+					$(lbl).removeClass('error-focus');
+				});
+				$(lbl).addClass('error-focus');
+				return false;
+			}
+			$(lbl).removeClass('error-focus');
+			return true;
+		},
+		parseInt : function(value) {
+			var ret = Number(value);
+			if (Number.isNaN(ret)) {
+				return -1;
+			}
+			return ret;
+		}
+	}
+} ]);

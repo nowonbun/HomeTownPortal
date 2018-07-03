@@ -9,7 +9,7 @@ public class CardBean extends ObjectBean {
 	private String name;
 	private String title;
 	private String description;
-	private byte[] img;
+	private String img;
 	private boolean hasImg;
 	private String icon;
 	private String color;
@@ -52,11 +52,11 @@ public class CardBean extends ObjectBean {
 		this.description = description;
 	}
 
-	public byte[] getImg() {
+	public String getImg() {
 		return img;
 	}
 
-	public void setImg(byte[] img) {
+	public void setImg(String img) {
 		this.img = img;
 	}
 

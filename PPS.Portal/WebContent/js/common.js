@@ -16,3 +16,4 @@ $(document).on("keypress", ".md-textarea-auto", autotestarea);
 var HOST = location.origin + location.pathname;
 var WS_HOST = HOST.replace("http", "ws");
 var CONTENTS = HOST + "contents/";
+var CARD_FILE_SIZE_LIMIT = 60 * 1024;

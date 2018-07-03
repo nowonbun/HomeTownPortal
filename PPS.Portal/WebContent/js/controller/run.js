@@ -37,6 +37,7 @@ app.run([ '$rootScope', '_ws', '_loader', '_notification', '_extendModal', '$tim
 			backdrop = $("<div></div>").addClass("menu-backdrop").addClass("fade").addClass("show");
 			backdrop.on("click", function() {
 				$(".menu.fade.top").removeClass("show");
+				$(".content-wrapper").removeClass("position-fix");
 				$("#menuFrame").attr("ng-controller", "").html("");
 				$(this).remove();
 			});
@@ -48,6 +49,7 @@ app.run([ '$rootScope', '_ws', '_loader', '_notification', '_extendModal', '$tim
 			var dom = $("#menuFrame").attr("ng-controller", control).html(result.data);
 			$compile(dom)($rootScope);
 			$timeout(function() {
+				$(".content-wrapper").addClass("position-fix");
 				$(".menu.fade.top").addClass("show");
 			}, 1);
 			dom.on("click", function() {

@@ -1,19 +1,19 @@
 var app = angular.module('app', [ "ngRoute", "ngSanitize" ]);
 
-app.config(['$routeProvider', '$qProvider', function($routeProvider, $qProvider) {
-	$routeProvider.when("/",{
+app.config([ '$routeProvider', '$qProvider', function($routeProvider, $qProvider) {
+	$routeProvider.when("/", {
 		controller : "main",
 		templateUrl : "./views/main.tpl.jsp"
-	}).when("/cardmastersetting",{
+	}).when("/cardmastersetting", {
 		controller : "cardmastersetting",
 		templateUrl : "./views/cardmastersetting.tpl.jsp"
-	}).when("/cardviewrole",{
+	}).when("/cardviewrole", {
 		controller : "cardviewrole",
 		templateUrl : "./views/viewrole.tpl.jsp"
-	}).when("/actionrole",{
+	}).when("/actionrole", {
 		controller : "actionrole",
 		templateUrl : "./views/viewrole.tpl.jsp"
-	}).when("/comgroupsetting",{
+	}).when("/comgroupsetting", {
 		controller : "comgroupsetting",
 		templateUrl : "./views/comgroupsetting.tpl.jsp"
 	}).when("/usermanagement", {
@@ -22,7 +22,7 @@ app.config(['$routeProvider', '$qProvider', function($routeProvider, $qProvider)
 	}).otherwise({
 		redirectTo : "/"
 	});
-}]);
+} ]);
 
 app.directive("navigation", function() {
 	return {
@@ -37,3 +37,9 @@ app.directive("loader", function() {
 		template : "<div class='loader'></div>"
 	};
 });
+
+app.filter('trusted', [ '$sce', function($sce) {
+	return function(html) {
+		return $sce.trustAsHtml(html)
+	}
+} ]);

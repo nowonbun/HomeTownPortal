@@ -64,6 +64,9 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			}
 			$('.mdb-select').material_select();
 			$("#profileModal").modal("show");
+			$('#profileModal').on('hidden.bs.modal', function () {
+				_extendModal();
+			});
 		});
 		_loader.controller.show();
 	});

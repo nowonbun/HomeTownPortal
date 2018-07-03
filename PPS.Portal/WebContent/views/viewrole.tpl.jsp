@@ -22,8 +22,8 @@
 								<thead>
 									<tr>
 										<th width='1%;'></th>
-										<th width='10%;'>Role Code</th>
-										<th width='89%;'>Name</th>
+										<th width='40%;'>Role Code</th>
+										<th width='59%;'>Name</th>
 									</tr>
 								</thead>
 								<tbody></tbody>

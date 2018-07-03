@@ -6,8 +6,8 @@
 		<div class="col-md-12">
 			<div class="card-grid">
 				<a ng-repeat="card in cards" ng-click="menu(card.menu,card.control,card.template,card.href);"
-					class="card-item box-shadow-0 margin-5px {{card.typeHeaderClass}}" style="background: {{card.background}}">
-					<div class="card-header" ng-bind-html="card.header"></div>
+					class="card-item box-shadow-0 margin-5px {{card.typeHeaderClass}}" style="background: {{card.background}};background-size: 100%;">
+					<div class="card-header" ng-bind-html="card.header | trusted"></div>
 					<div class="card-body mdl-card__actions {{card.border}}" ng-bind-html="card.body"></div>
 				</a>
 			</div>

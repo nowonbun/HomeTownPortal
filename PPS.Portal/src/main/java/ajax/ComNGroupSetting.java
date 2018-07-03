@@ -26,7 +26,7 @@ public class ComNGroupSetting extends IAjaxServlet {
 			CompanyBean entity = new CompanyBean();
 			entity.setId(com.getId());
 			entity.setName(com.getName());
-			entity.setActive(com.getStateInfo().getIsDelete());
+			entity.setActive(!com.getStateInfo().getIsDelete());
 			data.add(entity);
 		}
 		return getDataTableData(data);

@@ -44,7 +44,7 @@
 				<div class="row">
 					<div class="offset-sm-1 col-sm-4">
 						<div class="md-form form-group pps-group">
-							<input type="text" class="form-control pps-input" id="name" ng-model="name"> 
+							<input type="text" class="form-control pps-input" id="name" ng-model="name" disabled> 
 							<label for="name" class="pps-label" id="name_label">Name</label>
 						</div>
 					</div>
@@ -52,6 +52,14 @@
 						<div class="md-form form-group pps-group">
 							<input type="text" class="form-control pps-input" id="sequence" ng-model="sequence"> 
 							<label for="sequence" class="pps-label" id="sequence_label">Sequence</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="offset-sm-1 col-sm-10">
+						<div class="md-form form-group pps-group">
+							<input type="text" class="form-control pps-input" id="title" ng-model="title"> 
+							<label for="title" class="pps-label" id="title_label">Title</label>
 						</div>
 					</div>
 				</div>
@@ -71,10 +79,11 @@
 						</select> <label>Card Type</label>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" ng-show="isImageType">
 					<div class="col align-self-center pps-group">
 						<div class="pps-image" style="max-height: inherit;max-width: inherit;">
-							<img ng-src="{{img_url}}" class="img-thumbnail pps-thumnail" style="max-width: 350px;max-height: 200px;">
+							<img ng-src="{{img_url}}" class="img-thumbnail pps-thumnail" style="max-width: 300px;max-height: 200px;">
+							<label class="image-legend">Maximum size : 60KB</label>
 						</div>
 						<form class="md-form">
 							<div class="file-field">
@@ -87,15 +96,7 @@
 						</form>
 					</div>
 				</div>
-				<div class="row">
-					<div class="offset-sm-1 col-sm-10">
-						<div class="md-form form-group pps-group">
-							<input type="text" class="form-control pps-input" id="title" ng-model="title"> 
-							<label for="title" class="pps-label" id="title_label">Title</label>
-						</div>
-					</div>
-				</div>
-				<div class="row">
+				<div class="row" ng-show="isEventType">
 					<div class="offset-sm-1 col-sm-4">
 						<div class="md-form form-group pps-group">
 							<input type="text" class="form-control pps-input" id="icon" ng-model="icon"> 
