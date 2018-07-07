@@ -36,11 +36,10 @@ app.service('_loader', [ '$rootScope', '_safeApply', function($rootScope, _safeA
 
 app.service('_safeApply', [ '$rootScope', function($rootScope) {
 	return function(fn) {
-		// var phase = $scope.$root.$$phase;
 		var phase = $rootScope.$$phase;
 		if (phase == '$apply' || phase == '$digest') {
-			if (fn && typeof fn === 'function') {
-				fn();
+			if (util.isFunction(fn)) {
+				fn.call(this);
 			}
 		} else {
 			$rootScope.$apply(fn);
@@ -69,7 +68,7 @@ app.service('_notification', [ '$rootScope', '$timeout', '_safeApply', function(
 			$(".notification-zone").append(dom);
 			$timeout(function() {
 				dom.remove();
-				if (cb !== undefined) {
+				if (util.isFunction(cb)) {
 					cb.call(this);
 				}
 			}, 5000);
@@ -77,21 +76,52 @@ app.service('_notification', [ '$rootScope', '$timeout', '_safeApply', function(
 	}
 } ]);
 
-app.service('_extendModal', [ '$rootScope', '$http', '$compile', function($rootScope, $http, $compile) {
-	return function(templeteUrl, controller, $scope, callback) {
-		if (templeteUrl === undefined) {
-			var dom = $("#extendModal").attr("ng-controller", "").html("");
-			$(".content-wrapper").removeClass("position-fix");
-			return;
-		}
-		$http.get(templeteUrl).then(function(result) {
-			var dom = $("#extendModal").attr("ng-controller", controller).html(result.data);
-			$(".content-wrapper").addClass("position-fix");
-			$compile(dom)($scope == null ? $rootScope : $scope);
-			if (callback && typeof callback === 'function') {
-				callback.call(this);
+app.service('_extendModal', [ '$rootScope', '$http', '$compile', '$timeout', function($rootScope, $http, $compile, $timeout) {
+	return {
+		mainModal : function(templeteUrl, controller, $scope, callback) {
+			if (templeteUrl === undefined) {
+				var dom = $("#extendModal").attr("ng-controller", "").html("");
+				$(".content-wrapper").removeClass("position-fix");
+				return;
 			}
-		});
+			$http.get(templeteUrl).then(function(result) {
+				var dom = $("#extendModal").attr("ng-controller", controller).html(result.data);
+				$(".content-wrapper").addClass("position-fix");
+				$compile(dom)($scope == null ? $rootScope : $scope);
+				if (util.isFunction(callback)) {
+					callback.call(this);
+				}
+			});
+		},
+		menuModal : function(templateUrl, control, $scope, callback) {
+			var backdrop = $("div.menu-backdrop");
+			if (backdrop.length < 1) {
+				backdrop = $("<div></div>").addClass("menu-backdrop").addClass("fade").addClass("show");
+				backdrop.on("click", function() {
+					$(".menu.fade.top").removeClass("show");
+					$(".content-wrapper").removeClass("position-fix");
+					$("#menuFrame").attr("ng-controller", "").html("");
+					$(this).remove();
+				});
+				$("body").append(backdrop);
+			} else {
+				$("#menuFrame").off("click");
+			}
+			$http.get(templateUrl).then(function(result) {
+				var dom = $("#menuFrame").attr("ng-controller", control).html(result.data);
+				$compile(dom)($scope == null ? $rootScope : $scope);
+				$timeout(function() {
+					$(".content-wrapper").addClass("position-fix");
+					$(".menu.fade.top").addClass("show");
+					if (util.isFunction(callback)) {
+						callback.call(this);
+					}
+				}, 1);
+				dom.on("click", function() {
+					$(".menu-backdrop").click();
+				});
+			});
+		}
 	}
 } ]);
 
@@ -110,7 +140,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		_safeApply(function() {
 			delegate.open.func.call(this, msg);
 		});
-		if (delegate.open.cb !== null && delegate.open.cb !== undefined && typeof delegate.open.cb === "function") {
+		if (util.isFunction(delegate.open.cb)) {
 			delegate.open.cb.call(this);
 		}
 	};
@@ -121,7 +151,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		_safeApply(function() {
 			delegate.close.func.call(this, msg);
 		});
-		if (delegate.close.cb !== null && delegate.close.cb !== undefined && typeof delegate.close.cb === "function") {
+		if (util.isFunction(delegate.close.cb)) {
 			delegate.close.cb.call(this);
 		}
 	};
@@ -140,7 +170,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		_safeApply(function() {
 			item.func.call(this, node.data);
 		});
-		if (item.cb !== null && item.cb !== undefined && typeof item.cb === "function") {
+		if (util.isFunction(item.cb)) {
 			item.cb.call(this);
 		}
 	};
@@ -159,7 +189,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		_safeApply(function() {
 			item.func.call(this, node.data);
 		});
-		if (item.cb !== null && item.cb !== undefined && typeof item.cb === "function") {
+		if (util.isFunction(item.cb)) {
 			item.cb.call(this);
 		}
 	};
@@ -177,7 +207,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		}
 	}
 	function define(type, func, cb) {
-		if (func !== null && func !== undefined && typeof func === "function") {
+		if (util.isFunction(func)) {
 			delegate[type] = {
 				func : func,
 				cb : cb
@@ -187,7 +217,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		console.error("It's not defined because not function method.");
 	}
 	function define2(type, control, action, func, cb) {
-		if (func !== null && func !== undefined && typeof func === "function") {
+		if (util.isFunction(func)) {
 			for ( var i in delegate[type]) {
 				var temp = delegate[type][i];
 				if (temp.control === control && temp.action === action) {
@@ -231,6 +261,78 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 	}
 } ]);
 
+app.service('_table', [ '_safeApply', function(_safeApply) {
+	return function(option) {
+		function convertColumn(val) {
+			if (val == null) {
+				return null;
+			}
+			var ret = [ {
+				data : null
+			} ];
+			for ( var i in val) {
+				ret.push({
+					data : val[i]
+				});
+			}
+			return ret;
+		}
+
+		var table = $(option.element).DataTable({
+			ajax : {
+				url : option.url,
+				type : "POST",
+				complete : function() {
+					if (util.isFunction(option.complete)) {
+						option.complete.call(this);
+					}
+				},
+				error : function(xhr, error, thrown) {
+					if (util.isFunction(option.error)) {
+						option.error.call(this, xhr, error, thrown);
+					}
+				}
+			},
+			ordering : false,
+			select : {
+				style : 'single'
+			},
+			columnDefs : [ {
+				className : 'control',
+				targets : 0,
+				data : null,
+				defaultContent : ''
+			} ],
+			responsive : {
+				details : {
+					type : 'column',
+					target : 0
+				}
+			},
+			columns : convertColumn(option.columns)
+		});
+		table.on('select', function(e, dt, type, indexes) {
+			if (type === 'row') {
+				_safeApply(function() {
+					if (util.isFunction(option.select)) {
+						option.select.call(this, table, indexes);
+					}
+				});
+			}
+		});
+		table.on('deselect', function(e, dt, type, indexes) {
+			if (type === 'row') {
+				_safeApply(function() {
+					if (util.isFunction(option.deselect)) {
+						option.deselect.call(this, table, indexes);
+					}
+				});
+			}
+		});
+		return table;
+	}
+} ]);
+
 app.service('_util', [ '_notification', function(_notification) {
 	return {
 		validateInput : function(val, lbl, name) {
@@ -243,13 +345,6 @@ app.service('_util', [ '_notification', function(_notification) {
 			}
 			$(lbl).removeClass('error-focus');
 			return true;
-		},
-		parseInt : function(value) {
-			var ret = Number(value);
-			if (Number.isNaN(ret)) {
-				return -1;
-			}
-			return ret;
 		}
 	}
 } ]);

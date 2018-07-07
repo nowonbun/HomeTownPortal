@@ -1,4 +1,21 @@
 'use strict';
+
+var util = {
+	parseInt : function(value) {
+		var ret = Number(value);
+		if (Number.isNaN(ret)) {
+			return -1;
+		}
+		return ret;
+	},
+	isFunction : function(fn) {
+		if (fn !== null && fn !== undefined && typeof fn === "function") {
+			return true;
+		}
+		return false;
+	}
+}
+
 var IncludeJs = window.IncludeJs = function(jsfile) {
 	var imported = document.createElement("script");
 	imported.src = "./js/" + jsfile + ".js";

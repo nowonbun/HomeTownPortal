@@ -1,5 +1,4 @@
-app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filereader', '_util', '_extendModal', '_notification',
-	function($scope, _ws, _loader, _safeApply, _filereader, _util, _extendModal, _notification) {
+app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filereader', '_util', '_extendModal', '_notification', function($scope, _ws, _loader, _safeApply, _filereader, _util, _extendModal, _notification) {
 	_loader.controller.hide();
 	_ws.message("cardmastersetting", "initEdit", function(data) {
 
@@ -76,14 +75,14 @@ app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filer
 			$('.mdb-select').material_select();
 			$("#cardMasterModal").modal("show");
 			$('#cardMasterModal').on('hidden.bs.modal', function() {
-				_extendModal();
+				_extendModal.mainModal();
 			});
 		});
 		_loader.controller.show();
 	});
 	$scope.fileupload = function() {
 		var file = _filereader.getFile($("#img_file"));
-		if(file.size > CARD_FILE_SIZE_LIMIT){
+		if (file.size > CARD_FILE_SIZE_LIMIT) {
 			_notification("danger", "The file maximum size has been exceeded. max-size : 60KB");
 			return;
 		}
@@ -99,14 +98,17 @@ app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filer
 			return;
 		}
 		$scope.sequence = _util.parseInt($scope.sequence);
+		if ($scope.img_url == CONTENTS + "no_card.jpg") {
+			$scope.img_url = null;
+		}
 		var data = {
 			code : $scope.code,
-			name: $scope.name,
-			seq: $scope.sequence,
-			type: $scope.cardtype,
-			title: $scope.title,
-			icon: $scope.icon,
-			color: $scope.color,
+			name : $scope.name,
+			seq : $scope.sequence,
+			type : $scope.cardtype,
+			title : $scope.title,
+			icon : $scope.icon,
+			color : $scope.color,
 			img : $scope.img_url
 		};
 		_loader.show();

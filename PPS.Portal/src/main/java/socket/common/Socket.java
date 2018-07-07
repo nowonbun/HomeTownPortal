@@ -14,13 +14,13 @@ import common.JsonConverter;
 import common.LoggerManager;
 import common.Util;
 import common.Workflow;
+import contoller.LoginContoller;
 import entity.NavigateNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import model.User;
 import reference.CardMaster;
 import reference.CardRoleCache;
-import socket.Login;
 
 @ServerEndpoint(value = "/socket", configurator = HttpSessionConfigurator.class)
 public class Socket extends ISocket {
@@ -30,18 +30,16 @@ public class Socket extends ISocket {
 	public void main(WebSocketNode node) {
 		WebSocketResult ret = null;
 		try {
-			ret = getExecute("login", IWorkflow.Init, node);
-			sendMessage("login", IWorkflow.Init, ret.getData(), node.getSession());
-			if (Util.StringEquals(ret.getData(), Login.NG)) {
+			ret = getExecute(IWorkflow.Login, IWorkflow.Init, node);
+			sendMessage(IWorkflow.Login, IWorkflow.Init, ret.getData(), node.getSession());
+			if (Util.StringEquals(ret.getData(), LoginContoller.NG)) {
 				return;
 			}
 			if (!isRoleCheck(node.getControl(), node)) {
 				JsonObjectBuilder obj = Json.createObjectBuilder();
 				obj.add("type", "danger");
 				obj.add("msg", "You don't have permission.");
-				ret.setData(obj.build().toString());
-				ret.setAction(IWorkflow.Permission);
-				sendMessage(ret);
+				sendMessage(IWorkflow.Login, IWorkflow.Permission, obj.build().toString(), node.getSession());
 				return;
 			}
 			ret = getExecute(node.getControl(), node.getAction(), node);

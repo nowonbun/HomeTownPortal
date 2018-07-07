@@ -1,5 +1,4 @@
-app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_safeApply', '_extendModal',
-	function($scope, _ws, _notification, _filereader, _loader, _safeApply, _extendModal) {
+app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_loader', '_safeApply', '_extendModal', function($scope, _ws, _notification, _filereader, _loader, _safeApply, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "Profile";
 	$scope.canUserId = false;
@@ -64,8 +63,8 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			}
 			$('.mdb-select').material_select();
 			$("#profileModal").modal("show");
-			$('#profileModal').on('hidden.bs.modal', function () {
-				_extendModal();
+			$('#profileModal').on('hidden.bs.modal', function() {
+				_extendModal.mainModal();
 			});
 		});
 		_loader.controller.show();
@@ -195,12 +194,6 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		_ws.send("profile", "apply", JSON.stringify(data));
 		return;
 	}
-	_ws.message("profile", "permission", function(data) {
-		var node = JSON.parse(data);
-		_notification(node.type, node.msg);
-		_extendModal();
-		_loader.controller.show();
-		return;
-	});
+
 	_ws.send("profile", "init");
 } ]);

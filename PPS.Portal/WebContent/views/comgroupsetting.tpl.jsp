@@ -1,6 +1,8 @@
 <%@page import="authentication.AuthServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%AuthServlet.auth(request, response);%>
+<%
+	AuthServlet.auth(request, response);
+%>
 <div class="row">
 	<div class="col-12 text-center">
 		<div class="mdl-shadow--2dp pps-page max-page-1200">
@@ -11,9 +13,9 @@
 				<div>
 					<div class="row">
 						<div class="col align-self-end text-align-right">
-							<button type="button" id="addbtn" class="btn btn-success custom-button" ng-click="">Add</button>
+							<button type="button" id="addbtn" class="btn btn-success custom-button" ng-click="userAdd();">Add</button>
 							<button type="button" id="editbtn" class="btn btn-warning custom-button" disabled ng-click="">Edit</button>
-							<button type="button" id="deletebtn" class="btn btn-danger custom-button" disabled  ng-click="">Delete</button>
+							<button type="button" id="deletebtn" class="btn btn-danger custom-button" disabled data-toggle="modal" data-target="#deleteModal">Delete</button>
 						</div>
 					</div>
 				</div>
@@ -25,7 +27,8 @@
 									<tr>
 										<th width='1%;'></th>
 										<th width='10%;'>ID</th>
-										<th width='79%;'>Name</th>
+										<th width='40%;'>Company Name</th>
+										<th width='39%;'>Group Name</th>
 										<th width='10%;'>Active</th>
 									</tr>
 								</thead>
@@ -34,6 +37,22 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><i class="fa fa-close"></i></span>
+				</button>
+			</div>
+			<div class="modal-body">Are you sure want to delete?</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+				<button class="btn btn-danger " type="button" ng-click="userDelete();">Delete</button>
 			</div>
 		</div>
 	</div>

@@ -1,4 +1,4 @@
-app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', function($scope, _ws, _loader, _safeApply) {
+app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', function($scope, _ws, _loader, _safeApply, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canCorrentPassword = false;
@@ -61,12 +61,12 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', function(
 			}
 			$('.mdb-select').material_select();
 			$("#profileModal").modal("show");
-			$('#profileModal').on('hidden.bs.modal', function () {
-				_extendModal();
+			$('#profileModal').on('hidden.bs.modal', function() {
+				_extendModal.mainModal();
 			});
 		});
 		_loader.controller.show();
 	});
-	
+
 	_ws.send("usermanagement", "initEdit", $scope.selectid);
 } ]);

@@ -9,6 +9,7 @@ import common.PermissionServlet;
 import dao.CompanyDao;
 import entity.bean.CompanyBean;
 import model.Company;
+import model.Group;
 import reference.CardMaster;
 
 @WebServlet("/comgroupsetting")
@@ -19,15 +20,18 @@ public class ComNGroupSetting extends IAjaxServlet {
 
 	@Override
 	protected String doAjax() {
-		//TODO: When this company is deleted, the user can run login.
+		// TODO: When this company is deleted, the user can run login.
 		List<Company> comlist = FactoryDao.getDao(CompanyDao.class).getCompanyAllIncludeDelete();
 		List<CompanyBean> data = new ArrayList<>();
 		for (Company com : comlist) {
-			CompanyBean entity = new CompanyBean();
-			entity.setId(com.getId());
-			entity.setName(com.getName());
-			entity.setActive(!com.getStateInfo().getIsDelete());
-			data.add(entity);
+			for (Group grp : com.getGroups()) {
+				CompanyBean entity = new CompanyBean();
+				entity.setId(String.format("%d-%d", com.getId(), grp.getId()));
+				entity.setName(com.getName());
+				entity.setGroupname(grp.getName());
+				entity.setActive(!com.getStateInfo().getIsDelete());
+				data.add(entity);
+			}
 		}
 		return getDataTableData(data);
 	}

@@ -2,19 +2,19 @@ package common;
 
 import javax.servlet.annotation.WebServlet;
 
+import contoller.ActionRoleController;
+import contoller.AdminContoller;
+import contoller.CardContoller;
+import contoller.CardMasterSettingController;
+import contoller.CardViewRoleContoller;
+import contoller.ComGroupSettingContoller;
+import contoller.DataMasterSettingContoller;
+import contoller.LoginContoller;
+import contoller.MainContoller;
+import contoller.ProfileContoller;
+import contoller.UserManagementContoller;
 import reference.ActionRoleCache;
 import reference.CardRoleCache;
-import socket.ActionRole;
-import socket.Admin;
-import socket.Card;
-import socket.CardMasterSetting;
-import socket.CardViewRole;
-import socket.ComGroupSetting;
-import socket.DataMasterSetting;
-import socket.Login;
-import socket.Main;
-import socket.Profile;
-import socket.UserManagement;
 import socket.common.SocketBundleSet;
 
 @WebServlet("/Startup")
@@ -26,17 +26,17 @@ public class Startup extends IServlet {
 	}
 
 	public void init() {
-		SocketBundleSet.setClass(Admin.class);
-		SocketBundleSet.setClass(Card.class);
-		SocketBundleSet.setClass(Login.class);
-		SocketBundleSet.setClass(Profile.class);
-		SocketBundleSet.setClass(DataMasterSetting.class);
-		SocketBundleSet.setClass(UserManagement.class);
-		SocketBundleSet.setClass(CardMasterSetting.class);
-		SocketBundleSet.setClass(ActionRole.class);
-		SocketBundleSet.setClass(CardViewRole.class);
-		SocketBundleSet.setClass(ComGroupSetting.class);
-		SocketBundleSet.setClass(Main.class);
+		SocketBundleSet.setClass(AdminContoller.class);
+		SocketBundleSet.setClass(CardContoller.class);
+		SocketBundleSet.setClass(LoginContoller.class);
+		SocketBundleSet.setClass(ProfileContoller.class);
+		SocketBundleSet.setClass(DataMasterSettingContoller.class);
+		SocketBundleSet.setClass(UserManagementContoller.class);
+		SocketBundleSet.setClass(CardMasterSettingController.class);
+		SocketBundleSet.setClass(ActionRoleController.class);
+		SocketBundleSet.setClass(CardViewRoleContoller.class);
+		SocketBundleSet.setClass(ComGroupSettingContoller.class);
+		SocketBundleSet.setClass(MainContoller.class);
 		FactoryDao.initializeMaster();
 		CardRoleCache.reset();
 		ActionRoleCache.reset();

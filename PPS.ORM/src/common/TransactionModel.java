@@ -1,6 +1,8 @@
 package common;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import model.StateInfo;
 
@@ -17,6 +19,15 @@ public abstract class TransactionModel {
 	public void updateTransation(String user) {
 		this.getStateInfo().setLastUpdater(user);
 		this.getStateInfo().setLastUpdate(new Date());
+	}
+
+	@SuppressWarnings("unchecked")
+	public <R, T> List<T> getLazyData(LambdaExpression<R, List<T>> func) {
+		List<T> ret = new ArrayList<>();
+		for (T entity : func.run((R) this)) {
+			ret.add(entity);
+		}
+		return ret;
 	}
 
 	public abstract void setStateInfo(StateInfo stateInfo);

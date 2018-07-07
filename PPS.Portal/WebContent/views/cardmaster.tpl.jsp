@@ -9,7 +9,7 @@
         	<div class="modal-header">
 			    <p class="heading lead">Card Master</p>
 			    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			        <span aria-hidden="true" class="white-text">×</span>
+			        <span aria-hidden="true" class="white-text"><i class="fa fa-close"></i></span>
 			    </button>
 			</div>
 			<div class="modal-body">

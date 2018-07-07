@@ -1,15 +1,16 @@
 package entity.bean;
 
 public class CompanyBean extends ObjectBean {
-	private int id;
+	private String id;
 	private String name;
+	private String groupname;
 	private boolean active;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -27,6 +28,14 @@ public class CompanyBean extends ObjectBean {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public String getGroupname() {
+		return groupname;
+	}
+
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
 	}
 
 }

@@ -51,7 +51,7 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+					<a class="nav-link" data-toggle="modal" data-target="#logoutModal">
 						<i class="fa fa-fw fa-sign-out"></i>Logout
 					</a>
 				</li>
@@ -61,13 +61,13 @@
 	<div class="content-wrapper">
 		<div class="container-fluid" ng-view ng-show="isController"></div>
 	</div>
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
 					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
+						<span aria-hidden="true"><i class="fa fa-close"></i></span>
 					</button>
 				</div>
 				<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
@@ -121,4 +121,5 @@
 	<script src="./js/controller/actionrole.js" type="text/javascript"></script>
 	<script src="./js/controller/cardviewrole.js" type="text/javascript"></script>
 	<script src="./js/controller/comgroupsetting.js" type="text/javascript"></script>
+	<script src="./js/controller/comgroupadd.js" type="text/javascript"></script>
 </html>

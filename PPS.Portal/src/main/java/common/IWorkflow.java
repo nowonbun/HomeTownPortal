@@ -10,6 +10,7 @@ import entity.bean.TileBean;
 import reference.CardTypeMaster;
 
 public abstract class IWorkflow extends ICommon {
+	public static String Login = "login";
 	public static String Init = "init";
 	public static String Permission = "permission";
 
@@ -49,6 +50,10 @@ public abstract class IWorkflow extends ICommon {
 		}
 
 		return ret;
+	}
+
+	protected WebSocketResult createNotificationResult(NotificationType type, String msg, WebSocketNode node) {
+		return createWebSocketResult(createNotification(type, msg), node);
 	}
 
 	protected String createNotification(NotificationType type, String msg) {
