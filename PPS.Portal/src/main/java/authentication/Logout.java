@@ -24,7 +24,6 @@ public class Logout extends IServlet {
 				CookieDao dao = FactoryDao.getDao(CookieDao.class);
 				model.Cookie cookieitem = dao.getEntity(info.getUser().getId(), cookie.getValue());
 				if (cookieitem != null) {
-					// dao.delete(cookieitem);
 					cookieitem.getStateInfo().setIsDelete(true);
 					cookieitem.updateTransation(info.getId());
 					dao.update(cookieitem);

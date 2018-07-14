@@ -1,7 +1,7 @@
 app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', function($scope, _ws, _loader, _table) {
 	_loader.controller.hide();
 	$scope.title = "Action role";
-	_ws.message("actionrole", "init", function(data) {
+	_ws.send("actionrole", "init", null, function(data) {
 		var table = _table({
 			element : "#tablelist",
 			url : JSON.parse(data).data,
@@ -39,6 +39,4 @@ app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', function($s
 		}
 		_loader.controller.show();
 	});
-
-	_ws.send("actionrole", "init");
 } ]);

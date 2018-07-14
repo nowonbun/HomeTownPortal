@@ -1,6 +1,6 @@
 app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', '_table', function($scope, _ws, _loader, _safeApply, _extendModal, _notification, _table) {
 	_loader.controller.hide();
-	_ws.message("usermanagement", "init", function(data) {
+	_ws.send("usermanagement", "init", null, function(data) {
 		var table = _table({
 			element : "#tablelist",
 			url : JSON.parse(data).data,
@@ -39,5 +39,4 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_e
 		_loader.controller.show();
 
 	});
-	_ws.send("usermanagement", "init");
 } ]);

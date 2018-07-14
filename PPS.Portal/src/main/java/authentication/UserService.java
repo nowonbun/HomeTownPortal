@@ -199,10 +199,8 @@ public class UserService {
 			this.coverPhoto_url = obj.getJsonObject("cover").getJsonObject("coverPhoto").getString("url");
 			this.coverPhoto_height = obj.getJsonObject("cover").getJsonObject("coverPhoto").getInt("height");
 			this.coverPhoto_width = obj.getJsonObject("cover").getJsonObject("coverPhoto").getInt("width");
-			this.coverInfo_topImageOffset = obj.getJsonObject("cover").getJsonObject("coverInfo")
-					.getInt("topImageOffset");
-			this.coverInfo_leftImageOffset = obj.getJsonObject("cover").getJsonObject("coverInfo")
-					.getInt("leftImageOffset");
+			this.coverInfo_topImageOffset = obj.getJsonObject("cover").getJsonObject("coverInfo").getInt("topImageOffset");
+			this.coverInfo_leftImageOffset = obj.getJsonObject("cover").getJsonObject("coverInfo").getInt("leftImageOffset");
 		}
 		UserDao dao = FactoryDao.getDao(UserDao.class);
 		this.user = dao.getUser(this.id);

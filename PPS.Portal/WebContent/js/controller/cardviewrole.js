@@ -1,7 +1,7 @@
 app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', function($scope, _ws, _loader, _table) {
 	_loader.controller.hide();
 	$scope.title = "View role";
-	_ws.message("cardviewrole", "init", function(data) {
+	_ws.send("cardviewrole", "init", null, function(data){
 		var table = _table({
 			element : "#tablelist",
 			url : JSON.parse(data).data,
@@ -28,22 +28,9 @@ app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', function(
 				$scope.selectid = null;
 			}
 		});
-		$scope.userAdd = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useradd",$scope);
-		}
 		$scope.userEdit = function() {
 			// _extendModal.mainModal("./views/profile.tpl.jsp","useredit",$scope);
 		}
-		$scope.userDelete = function() {
-			// location.href = "./#!/userdelete/" + $scope.selectid;
-		}
 		_loader.controller.show();
 	});
-	_ws.message("cardviewrole", "permission", function(data) {
-		var node = JSON.parse(data);
-		_notification(node.type, node.msg);
-		location.href = "./#!/";
-		return;
-	});
-	_ws.send("cardviewrole", "init");
 } ]);

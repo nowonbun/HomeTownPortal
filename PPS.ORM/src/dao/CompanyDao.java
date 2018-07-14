@@ -35,6 +35,7 @@ public class CompanyDao extends TransactionDao<Company> {
 			}
 		});
 	}
+
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanyAllIncludeDelete() {
 		return Manager.transaction(() -> {
@@ -42,6 +43,19 @@ public class CompanyDao extends TransactionDao<Company> {
 				String qy = "SELECT c FROM Company c";
 				Query query = Manager.get().createQuery(qy);
 				return (List<Company>) query.getResultList();
+			} catch (NoResultException e) {
+				return null;
+			}
+		});
+	}
+
+	public Company getCompanyByName(String name) {
+		return Manager.transaction(() -> {
+			try {
+				String qy = "SELECT c FROM Company c WHERE c.name = :name AND c.stateInfo.isDelete = false";
+				Query query = Manager.get().createQuery(qy);
+				query.setParameter("name", name);
+				return (Company) query.getSingleResult();
 			} catch (NoResultException e) {
 				return null;
 			}

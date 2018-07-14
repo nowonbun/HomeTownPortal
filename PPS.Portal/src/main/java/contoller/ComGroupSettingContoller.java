@@ -1,5 +1,6 @@
 package contoller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,14 +10,18 @@ import common.IWorkflow;
 import common.JsonConverter;
 import common.LoggerManager;
 import common.NotificationType;
+import common.Util;
 import common.Workflow;
 import dao.CompanyDao;
+import dao.GroupDao;
 import entity.NavigateNode;
+import entity.SelectNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.ObjectBean;
 import model.Company;
 import model.Group;
+import model.User;
 import reference.CardMaster;
 import reference.StateMaster;
 
@@ -62,7 +67,61 @@ public class ComGroupSettingContoller extends IWorkflow {
 	}
 
 	public WebSocketResult initAdd(WebSocketNode node) {
-		return createWebSocketResult(node);
+		List<Company> list = FactoryDao.getDao(CompanyDao.class).getCompanyAll();
+		List<SelectNode> ret = new ArrayList<>();
+		for (Company com : list) {
+			SelectNode bean = new SelectNode();
+			bean.setName(com.getName());
+			bean.setValue(String.valueOf(com.getId()));
+			ret.add(bean);
+		}
+		return createWebSocketResult(JsonConverter.create(ret), node);
+	}
+
+	public WebSocketResult getGroup(WebSocketNode node) {
+		int companyId = Integer.parseInt(node.getData());
+		List<Group> list = FactoryDao.getDao(GroupDao.class).getGroupByCompany(companyId);
+		List<SelectNode> ret = new ArrayList<>();
+		for (Group group : list) {
+			SelectNode bean = new SelectNode();
+			bean.setName(group.getName());
+			bean.setValue(String.valueOf(group.getId()));
+			ret.add(bean);
+		}
+		return createWebSocketResult(JsonConverter.create(ret), node);
+	}
+
+	public WebSocketResult applyAdd(WebSocketNode node) {
+		User user = getUserinfo(node.getSession()).getUser();
+		if (JsonConverter.parse(node.getData(), (data) -> {
+			if (!Util.JsonIsKey(data, "company") || Util.StringIsEmptyOrNull(data.getString("company"))) {
+				return false;
+			}
+			if (!Util.JsonIsKey(data, "group") || Util.StringIsEmptyOrNull(data.getString("group"))) {
+				return false;
+			}
+			Company company = FactoryDao.getDao(CompanyDao.class).getCompanyByName(data.getString("company"));
+			if (company == null) {
+				company = new Company(user.getId());
+				company.setName(data.getString("company"));
+				company.setGroups(new ArrayList<>());
+			}
+			for (Group group : company.getGroups()) {
+				if (Util.StringEquals(group.getName(), data.getString("group"))) {
+					return false;
+				}
+			}
+			Group group = new Group(user.getId());
+			group.setName(data.getString("group"));
+			group.setCompany(company);
+			company.getGroups().add(group);
+			FactoryDao.getDao(CompanyDao.class).update(company);
+			return true;
+		})) {
+			return createWebSocketResult(createNotification(NotificationType.Success, "The company and group is applied."), node);
+		} else {
+			return createWebSocketResult(createNotification(NotificationType.Success, "The company and group is fault to applied."), node);
+		}
 	}
 
 	@Override

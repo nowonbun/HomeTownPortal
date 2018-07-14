@@ -39,6 +39,14 @@ public class JsonConverter {
 		}
 	}
 
+	public static boolean parse(String json, LambdaExpression<JsonObject, Boolean> func) {
+		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
+			return func.run(jsonReader.readObject());
+		} catch (JsonParsingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private static JsonConverter instance = null;
 
 	private JsonConverter() {

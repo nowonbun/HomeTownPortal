@@ -248,9 +248,12 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		message : function(control, action, func, cb) {
 			define2("message", control, action, func, cb);
 		},
-		send : function(control, action, data) {
-			if (data === undefined) {
+		send : function(control, action, data, func, cb) {
+			if (data === undefined || data === null) {
 				data = "";
+			}
+			if (util.isFunction(func)) {
+				define2("message", control, action, func, cb);
 			}
 			sendNode(JSON.stringify({
 				control : control,

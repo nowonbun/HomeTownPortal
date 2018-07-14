@@ -1,6 +1,6 @@
 app.controller("comgroupsetting", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', '_table', function($scope, _ws, _loader, _safeApply, _extendModal, _notification, _table) {
 	_loader.controller.hide();
-	_ws.message("comgroupsetting", "init", function(data) {
+	_ws.send("comgroupsetting", "init", null, function(data) {
 		var table = _table({
 			element : "#tablelist",
 			url : JSON.parse(data).data,
@@ -28,22 +28,23 @@ app.controller("comgroupsetting", [ '$scope', '_ws', '_loader', '_safeApply', '_
 			}
 		});
 		$scope.userAdd = function() {
-			_extendModal.mainModal("./views/comgroupadd.tpl.jsp","comgroupadd",$scope);
+			_extendModal.mainModal("./views/comgroupadd.tpl.jsp", "comgroupadd", $scope);
 		}
 		$scope.userEdit = function() {
 			// _extendModal.mainModal("./views/profile.tpl.jsp","useredit",$scope);
 		}
 		$scope.userDelete = function() {
 			_loader.show();
-			_ws.send("comgroupsetting", "delete", $scope.selectid);
+			_ws.send("comgroupsetting", "delete", $scope.selectid, function(data) {
+				var msg = JSON.parse(data);
+				_loader.hide();
+				_notification(msg.type, msg.msg);
+				$("#deleteModal").modal("hide");
+			});
+		}
+		$scope.reloadTable = function() {
+			table.ajax.reload();
 		}
 		_loader.controller.show();
 	});
-	_ws.message("comgroupsetting", "delete", function(data) {
-		var msg = JSON.parse(data);
-		_loader.hide();
-		_notification(msg.type, msg.msg);
-		$("#deleteModal").modal("hide");
-	});
-	_ws.send("comgroupsetting", "init");
 } ]);

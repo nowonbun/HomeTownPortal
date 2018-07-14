@@ -36,4 +36,18 @@ public class GroupDao extends TransactionDao<Group> {
 			}
 		});
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Group> getGroupByCompany(int companyId){
+		return Manager.transaction(() -> {
+			try {
+				String qy = "SELECT g FROM Group g WHERE g.company.id = :companyId AND g.stateInfo.isDelete = false";
+				Query query = Manager.get().createQuery(qy);
+				query.setParameter("companyId", companyId);
+				return (List<Group>) query.getResultList();
+			} catch (NoResultException e) {
+				return null;
+			}
+		});
+	}
 }

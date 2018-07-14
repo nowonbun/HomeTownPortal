@@ -2,7 +2,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 	_loader.controller.hide();
 	$scope.title = "Profile";
 	$scope.canUserId = false;
-	_ws.message("profile", "init", function(data) {
+	_ws.send("profile", "init", null, function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
 		if ($scope.given_name !== null) {
@@ -194,6 +194,4 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		_ws.send("profile", "apply", JSON.stringify(data));
 		return;
 	}
-
-	_ws.send("profile", "init");
 } ]);

@@ -3,7 +3,6 @@ var common = (function(obj) {
 	$(obj.onLoad);
 	return obj;
 })({
-
 	onLoad : function() {
 		if (ctl === null || ctl === undefined || typeof ctl !== "object") {
 			console.error("declare abstract controller");

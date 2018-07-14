@@ -1,7 +1,6 @@
 app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filereader', '_util', '_extendModal', '_notification', function($scope, _ws, _loader, _safeApply, _filereader, _util, _extendModal, _notification) {
 	_loader.controller.hide();
-	_ws.message("cardmastersetting", "initEdit", function(data) {
-
+	_ws.send("cardmastersetting", "initEdit", $scope.selectid, function(data) {
 		function selectType() {
 			if ($scope.cardtype === "IMC" || $scope.cardtype === "IMG") {
 				$scope.isImageType = true;
@@ -97,7 +96,7 @@ app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filer
 		if (!_util.validateInput($scope.sequence, "#sequence", 'Sequence')) {
 			return;
 		}
-		$scope.sequence = _util.parseInt($scope.sequence);
+		$scope.sequence = util.parseInt($scope.sequence);
 		if ($scope.img_url == CONTENTS + "no_card.jpg") {
 			$scope.img_url = null;
 		}
@@ -112,14 +111,12 @@ app.controller("cardmaster", [ '$scope', '_ws', '_loader', '_safeApply', '_filer
 			img : $scope.img_url
 		};
 		_loader.show();
-		_ws.send("cardmastersetting", "applyEdit", JSON.stringify(data));
+		_ws.send("cardmastersetting", "applyEdit", JSON.stringify(data), function(data) {
+			var msg = JSON.parse(data);
+			_loader.hide();
+			_notification(msg.type, msg.msg);
+			$scope.reloadTable();
+			$("#cardMasterModal").modal("hide");
+		});
 	}
-	_ws.message("cardmastersetting", "applyEdit", function(data) {
-		var msg = JSON.parse(data);
-		_loader.hide();
-		_notification(msg.type, msg.msg);
-		$scope.reloadTable();
-		$("#cardMasterModal").modal("hide");
-	});
-	_ws.send("cardmastersetting", "initEdit", $scope.selectid);
 } ]);

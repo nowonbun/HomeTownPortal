@@ -1,5 +1,4 @@
-app.controller("useradd", [ '$scope', '_ws', '_loader','_filereader', '_safeApply','_notification', 
-	function($scope, _ws, _loader,_filereader,_safeApply,_notification) {
+app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApply', '_notification', function($scope, _ws, _loader, _filereader, _safeApply, _notification) {
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canUserId = true;
@@ -7,8 +6,8 @@ app.controller("useradd", [ '$scope', '_ws', '_loader','_filereader', '_safeAppl
 	$scope.canModifyPassword = true;
 	$scope.canModifyCompany = true;
 	$scope.canModifyGroup = true;
-	
-	_ws.message("usermanagement", "initAdd", function(data) {
+
+	_ws.send("usermanagement", "initAdd", null, function(data) {
 		var node = JSON.parse(data);
 		$scope.img_url = CONTENTS + "no_photo.png";
 		$scope.companyList = node.companyList;
@@ -26,18 +25,11 @@ app.controller("useradd", [ '$scope', '_ws', '_loader','_filereader', '_safeAppl
 		_loader.ready(function() {
 			$('.mdb-select').material_select();
 			$("#profileModal").modal("show");
-			$('#profileModal').on('hidden.bs.modal', function () {
+			$('#profileModal').on('hidden.bs.modal', function() {
 				_extendModal.mainModal();
 			});
 		});
 		_loader.controller.show();
-	});
-	
-	_ws.message("usermanagement", "addUser", function(data) {
-		var msg = JSON.parse(data);
-		_loader.hide();
-		_notification(msg.type, msg.msg);
-		location.href="./#!/usermanagement";
 	});
 
 	$scope.fileupload = function() {
@@ -148,14 +140,18 @@ app.controller("useradd", [ '$scope', '_ws', '_loader','_filereader', '_safeAppl
 			name : $scope.name,
 			nick_name : $scope.nick_name,
 			img_url : $scope.img_url,
-			is_img_blob : $scope.is_img_blob,			
+			is_img_blob : $scope.is_img_blob,
 			password : $scope.password,
 			company : $scope.company,
 			group : $scope.group
 		};
 		_loader.show();
-		_ws.send("usermanagement", "addUser", JSON.stringify(data));
+		_ws.send("usermanagement", "addUser", JSON.stringify(data), function(data) {
+			var msg = JSON.parse(data);
+			_loader.hide();
+			_notification(msg.type, msg.msg);
+			location.href = "./#!/usermanagement";
+		});
 		return;
 	}
-	_ws.send("usermanagement", "initAdd");
 } ]);

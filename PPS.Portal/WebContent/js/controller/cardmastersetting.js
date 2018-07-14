@@ -1,6 +1,6 @@
 app.controller("cardmastersetting", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', '_table', function($scope, _ws, _loader, _safeApply, _extendModal, _notification, _table) {
 	_loader.controller.hide();
-	_ws.message("cardmastersetting", "init", function(data) {
+	_ws.send("cardmastersetting", "init", null, function(data) {
 		var table = _table({
 			element : "#tablelist",
 			url : JSON.parse(data).data,
@@ -33,12 +33,4 @@ app.controller("cardmastersetting", [ '$scope', '_ws', '_loader', '_safeApply', 
 		}
 		_loader.controller.show();
 	});
-	_ws.message("cardmastersetting", "permission", function(data) {
-		var node = JSON.parse(data);
-		_notification(node.type, node.msg);
-		location.href = "./#!/";
-		return;
-	});
-
-	_ws.send("cardmastersetting", "init");
 } ]);

@@ -2,7 +2,7 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canCorrentPassword = false;
-	_ws.message("usermanagement", "initEdit", function(data) {
+	_ws.send("usermanagement", "initEdit", $scope.selectid, function(data) {
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
 		if ($scope.given_name !== null) {
@@ -67,6 +67,4 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 		});
 		_loader.controller.show();
 	});
-
-	_ws.send("usermanagement", "initEdit", $scope.selectid);
 } ]);

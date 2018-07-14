@@ -75,8 +75,7 @@ public class ProfileContoller extends IWorkflow {
 			ProfileContoller buffer = this;
 			buffer.passwordcheck = true;
 			JsonConverter.parse(node.getData(), (data) -> {
-				if (Util.JsonIsKey(data, "current_password")
-						&& !Util.StringIsEmptyOrNull(data.getString("current_password"))) {
+				if (Util.JsonIsKey(data, "current_password") && !Util.StringIsEmptyOrNull(data.getString("current_password"))) {
 					buffer.passwordcheck = false;
 					String password = Util.convertMD5(data.getString("current_password"));
 					for (Password item : user.getPasswords()) {
@@ -119,12 +118,10 @@ public class ProfileContoller extends IWorkflow {
 					}
 				}
 				if (Util.JsonIsKey(data, "company")) {
-					user.setCompany(
-							FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
+					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
 				}
 				if (Util.JsonIsKey(data, "group")) {
-					user.setGroup(
-							FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
+					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
 				}
 			});
 			if (!buffer.passwordcheck) {
