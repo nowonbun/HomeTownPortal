@@ -29,7 +29,7 @@ public class ComNGroupSetting extends IAjaxServlet {
 				entity.setId(String.format("%d-%d", com.getId(), grp.getId()));
 				entity.setName(com.getName());
 				entity.setGroupname(grp.getName());
-				entity.setActive(!com.getStateInfo().getIsDelete());
+				entity.setActive(!grp.getStateInfo().getIsDelete());
 				data.add(entity);
 			}
 		}

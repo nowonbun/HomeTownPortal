@@ -1,6 +1,7 @@
 package contoller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import entity.NavigateNode;
 import entity.SelectNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
+import entity.bean.CompanyBean;
 import entity.bean.ObjectBean;
 import model.Company;
 import model.Group;
@@ -40,6 +42,7 @@ public class ComGroupSettingContoller extends IWorkflow {
 
 	public WebSocketResult delete(WebSocketNode node) {
 		try {
+			User user = getUserinfo(node.getSession()).getUser();
 			String key = node.getData();
 			String[] data = key.split("-");
 			int comcode = Integer.valueOf(data[0]);
@@ -50,9 +53,13 @@ public class ComGroupSettingContoller extends IWorkflow {
 			if (StateMaster.equals(StateMaster.getDefaultTransactionData(), group.getStateInfo().getState())) {
 				return createNotificationResult(NotificationType.Danger, "The delete is impossible. because this is initial data.", node);
 			}
+			group.getStateInfo().setLastUpdate(new Date());
+			group.getStateInfo().setLastUpdater(user.getId());
 			group.getStateInfo().setDelete(true);
 			if (groups.stream().filter(x -> !x.getStateInfo().getIsDelete()).count() < 1) {
 				if (!StateMaster.equals(StateMaster.getDefaultTransactionData(), com.getStateInfo().getState())) {
+					com.getStateInfo().setLastUpdate(new Date());
+					com.getStateInfo().setLastUpdater(user.getId());
 					com.getStateInfo().setDelete(true);
 				}
 			}
@@ -91,6 +98,50 @@ public class ComGroupSettingContoller extends IWorkflow {
 		return createWebSocketResult(JsonConverter.create(ret), node);
 	}
 
+	public WebSocketResult applyEdit(WebSocketNode node) {
+		User user = getUserinfo(node.getSession()).getUser();
+		if (JsonConverter.parse(node.getData(), (data) -> {
+			if (!Util.JsonIsKey(data, "id") || Util.StringIsEmptyOrNull(data.getString("id"))) {
+				return false;
+			}
+			if (!Util.JsonIsKey(data, "company") || Util.StringIsEmptyOrNull(data.getString("company"))) {
+				return false;
+			}
+			if (!Util.JsonIsKey(data, "group") || Util.StringIsEmptyOrNull(data.getString("group"))) {
+				return false;
+			}
+			String[] index = data.getString("id").split("-");
+			Company com = FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(index[0]));
+			Group grp = com.<Company, Group>getLazyData(x -> x.getGroups()).stream().filter(x -> x.getId() == Integer.parseInt(index[1])).findFirst().get();
+			com.setName(data.getString("company"));
+			grp.setName(data.getString("group"));
+			com.getStateInfo().setLastUpdate(new Date());
+			com.getStateInfo().setLastUpdater(user.getId());
+			com.getStateInfo().setIsDelete(false);
+			grp.getStateInfo().setLastUpdate(new Date());
+			grp.getStateInfo().setLastUpdater(user.getId());
+			grp.getStateInfo().setIsDelete(false);
+			FactoryDao.getDao(CompanyDao.class).update(com);
+			return true;
+		})) {
+			return createWebSocketResult(createNotification(NotificationType.Success, "The company and group is modified."), node);
+		} else {
+			return createWebSocketResult(createNotification(NotificationType.Danger, "The company and group is fault to modified."), node);
+		}
+	}
+
+	public WebSocketResult initEdit(WebSocketNode node) {
+		String data = node.getData();
+		String[] index = data.split("-");
+		Company com = FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(index[0]));
+		Group grp = com.<Company, Group>getLazyData(x -> x.getGroups()).stream().filter(x -> x.getId() == Integer.parseInt(index[1])).findFirst().get();
+		CompanyBean bean = new CompanyBean();
+		bean.setId(data);
+		bean.setName(com.getName());
+		bean.setGroupname(grp.getName());
+		return createWebSocketResult(bean.toJson(), node);
+	}
+
 	public WebSocketResult applyAdd(WebSocketNode node) {
 		User user = getUserinfo(node.getSession()).getUser();
 		if (JsonConverter.parse(node.getData(), (data) -> {
@@ -120,7 +171,7 @@ public class ComGroupSettingContoller extends IWorkflow {
 		})) {
 			return createWebSocketResult(createNotification(NotificationType.Success, "The company and group is applied."), node);
 		} else {
-			return createWebSocketResult(createNotification(NotificationType.Success, "The company and group is fault to applied."), node);
+			return createWebSocketResult(createNotification(NotificationType.Danger, "The company and group is fault to applied."), node);
 		}
 	}
 

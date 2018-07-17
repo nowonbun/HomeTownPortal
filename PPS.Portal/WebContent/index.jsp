@@ -102,24 +102,5 @@
 	<!-- script src="./js/vendor/sb-admin-datatables.js" type="text/javascript"></script-->
 	
 	<script src="./js/common.js" type="text/javascript"></script>
-	<script src="./js/app.js" type="text/javascript"></script>
-	<script src="./js/service.js" type="text/javascript"></script>
-	<script src="./js/factory.js" type="text/javascript"></script>
-	
-	<script src="./js/controller/run.js" type="text/javascript"></script>
-	<script src="./js/controller/main.js" type="text/javascript"></script>
-	<script src="./js/controller/admin.js" type="text/javascript"></script>
-	<script src="./js/controller/card.js" type="text/javascript"></script>
-	<script src="./js/controller/datamastersetting.js" type="text/javascript"></script>
-	<script src="./js/controller/navigate.js" type="text/javascript"></script>
-	<script src="./js/controller/profile.js" type="text/javascript"></script>
-	<script src="./js/controller/useradd.js" type="text/javascript"></script>
-	<script src="./js/controller/useredit.js" type="text/javascript"></script>
-	<script src="./js/controller/usermanagement.js" type="text/javascript"></script>
-	<script src="./js/controller/cardmastersetting.js" type="text/javascript"></script>
-	<script src="./js/controller/cardmaster.js" type="text/javascript"></script>
-	<script src="./js/controller/actionrole.js" type="text/javascript"></script>
-	<script src="./js/controller/cardviewrole.js" type="text/javascript"></script>
-	<script src="./js/controller/comgroupsetting.js" type="text/javascript"></script>
-	<script src="./js/controller/comgroupadd.js" type="text/javascript"></script>
+	<script src="./js/main.js" type="text/javascript"></script>
 </html>

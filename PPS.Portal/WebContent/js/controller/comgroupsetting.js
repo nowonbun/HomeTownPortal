@@ -31,7 +31,7 @@ app.controller("comgroupsetting", [ '$scope', '_ws', '_loader', '_safeApply', '_
 			_extendModal.mainModal("./views/comgroupadd.tpl.jsp", "comgroupadd", $scope);
 		}
 		$scope.userEdit = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useredit",$scope);
+			_extendModal.mainModal("./views/comgroupedit.tpl.jsp", "comgroupedit", $scope);
 		}
 		$scope.userDelete = function() {
 			_loader.show();
@@ -39,6 +39,7 @@ app.controller("comgroupsetting", [ '$scope', '_ws', '_loader', '_safeApply', '_
 				var msg = JSON.parse(data);
 				_loader.hide();
 				_notification(msg.type, msg.msg);
+				$scope.reloadTable();
 				$("#deleteModal").modal("hide");
 			});
 		}

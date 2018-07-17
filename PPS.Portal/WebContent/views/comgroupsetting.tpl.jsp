@@ -14,7 +14,7 @@
 					<div class="row">
 						<div class="col align-self-end text-align-right">
 							<button type="button" id="addbtn" class="btn btn-success custom-button" ng-click="userAdd();">Add</button>
-							<button type="button" id="editbtn" class="btn btn-warning custom-button" disabled ng-click="">Edit</button>
+							<button type="button" id="editbtn" class="btn btn-warning custom-button" disabled ng-click="userEdit();">Edit</button>
 							<button type="button" id="deletebtn" class="btn btn-danger custom-button" disabled data-toggle="modal" data-target="#deleteModal">Delete</button>
 						</div>
 					</div>
