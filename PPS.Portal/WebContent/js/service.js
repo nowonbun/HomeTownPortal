@@ -265,7 +265,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 } ]);
 
 app.service('_table', [ '_safeApply', function(_safeApply) {
-	return function(option) {
+	return function(param) {
 		function convertColumn(val) {
 			if (val == null) {
 				return null;
@@ -280,19 +280,18 @@ app.service('_table', [ '_safeApply', function(_safeApply) {
 			}
 			return ret;
 		}
-
-		var table = $(option.element).DataTable({
+		var op = {
 			ajax : {
-				url : option.url,
+				url : param.url,
 				type : "POST",
 				complete : function() {
-					if (util.isFunction(option.complete)) {
-						option.complete.call(this);
+					if (util.isFunction(param.complete)) {
+						param.complete.call(this);
 					}
 				},
 				error : function(xhr, error, thrown) {
-					if (util.isFunction(option.error)) {
-						option.error.call(this, xhr, error, thrown);
+					if (util.isFunction(param.error)) {
+						param.error.call(this, xhr, error, thrown);
 					}
 				}
 			},
@@ -312,13 +311,17 @@ app.service('_table', [ '_safeApply', function(_safeApply) {
 					target : 0
 				}
 			},
-			columns : convertColumn(option.columns)
-		});
+			columns : convertColumn(param.columns)
+		};
+		if (param.option !== undefined) {
+			op = $.extend(op, param.option);
+		}
+		var table = $(param.element).DataTable(op);
 		table.on('select', function(e, dt, type, indexes) {
 			if (type === 'row') {
 				_safeApply(function() {
-					if (util.isFunction(option.select)) {
-						option.select.call(this, table, indexes);
+					if (util.isFunction(param.select)) {
+						param.select.call(this, table, indexes);
 					}
 				});
 			}
@@ -326,8 +329,8 @@ app.service('_table', [ '_safeApply', function(_safeApply) {
 		table.on('deselect', function(e, dt, type, indexes) {
 			if (type === 'row') {
 				_safeApply(function() {
-					if (util.isFunction(option.deselect)) {
-						option.deselect.call(this, table, indexes);
+					if (util.isFunction(param.deselect)) {
+						param.deselect.call(this, table, indexes);
 					}
 				});
 			}

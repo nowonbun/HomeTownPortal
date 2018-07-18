@@ -2,6 +2,7 @@
 
 body {
 	margin-bottom: 0px !important;
+	min-width: 350px;
 }
 
 body.sticky-footer .content-wrapper {
@@ -10,6 +11,7 @@ body.sticky-footer .content-wrapper {
 
 .content-wrapper {
 	margin: 0px;
+	min-width:350px;
 }
 
 .text-left {
@@ -51,6 +53,10 @@ body.sticky-footer .content-wrapper {
 
 .notification-zone span.glyphicon {
 	
+}
+
+.modal {
+	min-width:350px;
 }
 
 /*title*/

@@ -20,5 +20,10 @@ card maker - https://www.befunky.com/features/graphic-designer/
 compress
 https://code.i-harness.com/ko/q/541b35
 https://jscompress.com/
+
+datatale row add
+https://datatables.net/examples/api/add_row.html
+
+min_width:350px;
 </body>
 </html>

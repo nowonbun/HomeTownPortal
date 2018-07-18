@@ -1,7 +1,7 @@
-app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', function($scope, _ws, _loader, _table) {
+app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', '_extendModal', function($scope, _ws, _loader, _table, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "View role";
-	_ws.send("cardviewrole", "init", null, function(data){
+	_ws.send("cardviewrole", "init", null, function(data) {
 		var table = _table({
 			element : "#tablelist",
 			url : JSON.parse(data).data,
@@ -20,16 +20,18 @@ app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', function(
 			select : function(table, idx) {
 				$("#editbtn").prop("disabled", false);
 				$("#deletebtn").prop("disabled", false);
-				$scope.selectid = table.rows(idx).data().pluck('id')[0];
+				$scope.selectid = table.rows(idx).data().pluck('code')[0];
+				$scope.selectname = table.rows(idx).data().pluck('name')[0];
 			},
 			deselect : function(table, idx) {
 				$("#editbtn").prop("disabled", true);
 				$("#deletebtn").prop("disabled", true);
 				$scope.selectid = null;
+				$scope.selectname = null;
 			}
 		});
-		$scope.userEdit = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useredit",$scope);
+		$scope.roleedit = function() {
+			_extendModal.mainModal("./views/roleedit.tpl.jsp", "cardviewroleedit", $scope);
 		}
 		_loader.controller.show();
 	});

@@ -25,14 +25,15 @@ public class Group extends TransactionModel implements Serializable {
 	@JoinColumn(name = "COMPANY_ID")
 	private Company company;
 
+	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<User> users;
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "MAP_VIEW_ROLE_GROUP", joinColumns = { @JoinColumn(name = "GROUP_ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "CARD_CODE") })
+	@JoinTable(name = "MAP_VIEW_ROLE_GROUP", joinColumns = { @JoinColumn(name = "GROUP_ID") }, inverseJoinColumns = { @JoinColumn(name = "CARD_CODE") })
 	private List<Card> cards;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "MAP_ACTION_ROLE_GROUP", joinColumns = { @JoinColumn(name = "GROUP_ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "ROLE_CODE") })
+	@JoinTable(name = "MAP_ACTION_ROLE_GROUP", joinColumns = { @JoinColumn(name = "GROUP_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_CODE") })
 	private List<Role> roles;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -93,6 +94,14 @@ public class Group extends TransactionModel implements Serializable {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }

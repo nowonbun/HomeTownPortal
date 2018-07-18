@@ -9,10 +9,10 @@ app.config([ '$routeProvider', '$qProvider', function($routeProvider, $qProvider
 		templateUrl : "./views/cardmastersetting.tpl.jsp"
 	}).when("/cardviewrole", {
 		controller : "cardviewrole",
-		templateUrl : "./views/viewrole.tpl.jsp"
+		templateUrl : "./views/rolelist.tpl.jsp"
 	}).when("/actionrole", {
 		controller : "actionrole",
-		templateUrl : "./views/viewrole.tpl.jsp"
+		templateUrl : "./views/rolelist.tpl.jsp"
 	}).when("/comgroupsetting", {
 		controller : "comgroupsetting",
 		templateUrl : "./views/comgroupsetting.tpl.jsp"
