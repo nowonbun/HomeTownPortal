@@ -3,10 +3,14 @@ package contoller;
 import java.util.ArrayList;
 import java.util.List;
 import common.DBUtil;
+import common.FactoryDao;
 import common.IWorkflow;
 import common.JsonConverter;
 import common.Workflow;
+import dao.CompanyDao;
+import dao.GroupDao;
 import entity.NavigateNode;
+import entity.SelectNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.ObjectBean;
@@ -29,7 +33,7 @@ public class CardViewRoleContoller extends IWorkflow {
 		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 
-	public WebSocketResult editrole(WebSocketNode node) {
+	public WebSocketResult editRole(WebSocketNode node) {
 		String cardcode = node.getData();
 		Card card = CardMaster.getDao().getCard(cardcode);
 
@@ -87,6 +91,58 @@ public class CardViewRoleContoller extends IWorkflow {
 			}
 		}
 		return ret;
+	}
+
+	public WebSocketResult getCompany(WebSocketNode node) {
+		List<SelectNode> list = new ArrayList<>();
+		FactoryDao.getDao(CompanyDao.class).getCompanyAll().forEach(x -> {
+			SelectNode select = new SelectNode();
+			list.add(select);
+			select.setValue(String.valueOf(x.getId()));
+			select.setName(x.getName());
+		});
+		return createWebSocketResult(JsonConverter.create(list), node);
+	}
+
+	public WebSocketResult getGroup(WebSocketNode node) {
+		List<SelectNode> list = new ArrayList<>();
+		int key = Integer.parseInt(node.getData());
+		SelectNode select = new SelectNode();
+		list.add(select);
+		select.setValue("0");
+		select.setName("ALL");
+		if (key != 0) {
+			for (Group grp : FactoryDao.getDao(CompanyDao.class).getComany(key).getGroups()) {
+				select = new SelectNode();
+				list.add(select);
+				select.setValue(String.valueOf(grp.getId()));
+				select.setName(grp.getName());
+			}
+		}
+		return createWebSocketResult(JsonConverter.create(list), node);
+	}
+
+	public WebSocketResult getUser(WebSocketNode node) {
+		List<SelectNode> list = new ArrayList<>();
+		int key = Integer.parseInt(node.getData());
+		SelectNode select = new SelectNode();
+		list.add(select);
+		select.setValue("0");
+		select.setName("ALL");
+		if (key != 0) {
+			for (User usr : FactoryDao.getDao(GroupDao.class).getGroup(key).getUsers()) {
+				select = new SelectNode();
+				list.add(select);
+				select.setValue(usr.getId());
+				select.setName(usr.getName());
+			}
+		}
+		return createWebSocketResult(JsonConverter.create(list), node);
+	}
+
+	public WebSocketResult saveRole(WebSocketNode node) {
+		System.out.println(node.getData());
+		return createWebSocketResult(node);
 	}
 
 	@Override

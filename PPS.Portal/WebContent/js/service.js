@@ -252,6 +252,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 			if (data === undefined || data === null) {
 				data = "";
 			}
+			data += "";
 			if (util.isFunction(func)) {
 				define2("message", control, action, func, cb);
 			}

@@ -1,11 +1,28 @@
 <%@page import="authentication.AuthServlet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%AuthServlet.auth(request, response);%>
+<%
+	AuthServlet.auth(request, response);
+%>
 <style>
-.grid-table div{
+.grid-table div {
 	font-weight: bold;
-    font-size: 15pt;
-    text-align: center;
+	font-size: 15pt;
+	text-align: center;
+}
+
+.browser-default {
+	width: 100%;
+	margin: 10px;
+}
+
+.row-button {
+	height: 30px;
+	padding: 0px;
+}
+
+.error-row {
+	border: red 1px solid;
+	box-shadow: 0px 1.1px 1px 1.2px rgba(255, 0, 0, 0.1), 0px 1.2px 2px 1.4px rgba(255, 0, 0, 0.1), 0px 1.4px 3px 1.6px rgba(255, 0, 0, 0.1);
 }
 </style>
 <div class="modal fade top" id="roleEditModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
@@ -28,18 +45,19 @@
 								<div>
 									<div class="row">
 										<div class="col align-self-end text-align-right">
-											<button type="button" id="" class="btn btn-success custom-button" ng-click="addRow();">Add</button>
+											<button type="button" id="" class="btn btn-success custom-button" ng-click="addRow(true);">Add</button>
 
 										</div>
 									</div>
 								</div>
-								<div class="pps-body">
-									<div class="row grid-table box-shadow-1">
-										<div class="col-sm-12 col-md-6 col-lg-3 box-shadow-0">Company</div>
-										<div class="col-sm-12 col-md-6 col-lg-3 box-shadow-0">Group</div>
-										<div class="col-sm-12 col-md-6 col-lg-3 box-shadow-0">User</div>
-										<div class="col-sm-12 col-md-6 col-lg-3 box-shadow-0"></div>
+								<div class="pps-body box-shadow-0">
+									<div class="row grid-table" style="margin: 0px">
+										<div class="col-sm-12 col-md-6 col-lg-3">Company</div>
+										<div class="col-sm-12 col-md-6 col-lg-3">Group</div>
+										<div class="col-sm-12 col-md-6 col-lg-3">User</div>
+										<div class="col-sm-12 col-md-6 col-lg-3"></div>
 									</div>
+									<div id="tableList"></div>
 								</div>
 							</div>
 						</div>
@@ -47,7 +65,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success float-right" ng-click="">Save</button>
+				<button type="button" class="btn btn-success float-right" ng-click="roleSave();">Save</button>
 			</div>
 		</div>
 	</div>
