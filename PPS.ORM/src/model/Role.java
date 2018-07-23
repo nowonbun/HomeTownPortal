@@ -5,9 +5,14 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 @Entity
 @Table(name = "MST_ROLE")
 @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
 

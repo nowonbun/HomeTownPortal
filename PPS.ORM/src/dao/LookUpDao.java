@@ -2,10 +2,8 @@ package dao;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import common.Manager;
 import common.MasterDao;
 import model.LookUp;
 
@@ -18,9 +16,9 @@ public class LookUpDao extends MasterDao<LookUp> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<LookUp> getDataList() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
-				Query query = Manager.get().createNamedQuery("LookUp.findAll", LookUp.class);
+				Query query = em.createNamedQuery("LookUp.findAll", LookUp.class);
 				return (List<LookUp>) query.getResultList();
 			} catch (NoResultException e) {
 				return null;

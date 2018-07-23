@@ -3,10 +3,8 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import common.Manager;
 import common.MasterDao;
 import common.Permission;
 import model.Role;
@@ -20,9 +18,9 @@ public class RoleDao extends MasterDao<Role> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<Role> getDataList() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
-				Query query = Manager.get().createNamedQuery("Role.findAll", Role.class);
+				Query query = em.createNamedQuery("Role.findAll", Role.class);
 				return (List<Role>) query.getResultList();
 			} catch (NoResultException e) {
 				return null;
@@ -37,14 +35,14 @@ public class RoleDao extends MasterDao<Role> {
 			return null;
 		}
 	}
-	
+
 	public List<Role> getRoleAll() {
 		return getData();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Permission> getPermission() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
 				StringBuffer sb = new StringBuffer();
 				sb.append(" SELECT a.ROLE, b.COMPANY_ID, c.GROUP_ID, d.USER_ID FROM ");
@@ -55,7 +53,7 @@ public class RoleDao extends MasterDao<Role> {
 				sb.append(" ON a.ROLE = c.ROLE_CODE ");
 				sb.append(" LEFT OUTER JOIN MAP_ACTION_ROLE_USER d ");
 				sb.append(" ON a.ROLE = d.ROLE_CODE ");
-				Query query = Manager.get().createNativeQuery(sb.toString());
+				Query query = em.createNativeQuery(sb.toString());
 				List<Permission> ret = new ArrayList<>();
 				List<Object[]> roles = query.getResultList();
 				for (Object[] node : roles) {

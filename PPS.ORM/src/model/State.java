@@ -2,11 +2,17 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import java.util.List;
 
 @Entity
 @Table(name = "MST_STATE")
 @NamedQuery(name = "State.findAll", query = "SELECT s FROM State s")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class State implements Serializable {
 	private static final long serialVersionUID = 1L;
 

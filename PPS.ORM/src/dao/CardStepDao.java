@@ -2,10 +2,8 @@ package dao;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import common.Manager;
 import common.MasterDao;
 import model.CardStep;
 
@@ -18,9 +16,9 @@ public class CardStepDao extends MasterDao<CardStep> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<CardStep> getDataList() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
-				Query query = Manager.get().createNamedQuery("CardStep.findAll", CardStep.class);
+				Query query = em.createNamedQuery("CardStep.findAll", CardStep.class);
 				return (List<CardStep>) query.getResultList();
 			} catch (NoResultException e) {
 				return null;

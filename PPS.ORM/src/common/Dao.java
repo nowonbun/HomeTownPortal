@@ -2,7 +2,14 @@ package common;
 
 import java.io.Serializable;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
 public abstract class Dao<T extends Serializable> {
+
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("portal");
 	private Class<T> clazz;
 
 	protected Dao(Class<T> clazz) {
@@ -18,26 +25,88 @@ public abstract class Dao<T extends Serializable> {
 	}
 
 	public T findOne(Object id) {
-		return Manager.transaction(() -> {
-			return Manager.get().find(clazz, id);
+		return transaction((em) -> {
+			return em.find(clazz, id);
 		});
 	}
 
 	public void create(T entity) {
-		Manager.transaction(() -> {
-			Manager.get().persist(entity);
+		transaction((em) -> {
+			em.persist(entity);
+			// Manager.get().flush();
 		});
 	}
 
 	public T update(T entity) {
-		return Manager.transaction(() -> {
-			return Manager.get().merge(entity);
+		return transaction((em) -> {
+			T ret = em.merge(entity);
+			// Manager.get().flush();
+			return ret;
 		});
 	}
 
 	public void delete(T entity) {
-		Manager.transaction(() -> {
-			Manager.get().remove(entity);
+		transaction((em) -> {
+			em.remove(entity);
+			// Manager.get().flush();
 		});
+	}
+
+	protected <V> V transaction(EntityManagerCallable<V> callable) {
+		return transaction(callable, false);
+	}
+
+	// TODO: Have to think the performance;
+	protected <V> V transaction(EntityManagerCallable<V> callable, boolean readonly) {
+		// EntityManagerFactory emf = Persistence.createEntityManagerFactory("portal");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		try {
+			V ret = callable.run(em);
+			if (readonly) {
+				transaction.rollback();
+			} else {
+				transaction.commit();
+			}
+			return ret;
+		} catch (Throwable e) {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			throw new RuntimeException(e);
+		} finally {
+			em.clear();
+			em.close();
+			// emf.close();
+		}
+	}
+
+	protected void transaction(EntityManagerRunable runnable) {
+		transaction(runnable, false);
+	}
+
+	protected void transaction(EntityManagerRunable runnable, boolean readonly) {
+		// EntityManagerFactory emf = Persistence.createEntityManagerFactory("portal");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		try {
+			runnable.run(em);
+			if (readonly) {
+				transaction.rollback();
+			} else {
+				transaction.commit();
+			}
+		} catch (Throwable e) {
+			if (transaction.isActive()) {
+				transaction.rollback();
+			}
+			throw new RuntimeException(e);
+		} finally {
+			em.clear();
+			em.close();
+			// emf.close();
+		}
 	}
 }

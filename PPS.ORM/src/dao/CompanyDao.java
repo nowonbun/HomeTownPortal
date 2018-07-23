@@ -1,12 +1,9 @@
 package dao;
 
 import java.util.List;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
 import common.FactoryDao;
-import common.Manager;
 import common.TransactionDao;
 import model.Company;
 
@@ -25,10 +22,10 @@ public class CompanyDao extends TransactionDao<Company> {
 
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanyAll() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
 				String qy = "SELECT c FROM Company c WHERE c.stateInfo.isDelete = false";
-				Query query = Manager.get().createQuery(qy);
+				Query query = em.createQuery(qy);
 				return (List<Company>) query.getResultList();
 			} catch (NoResultException e) {
 				return null;
@@ -38,10 +35,10 @@ public class CompanyDao extends TransactionDao<Company> {
 
 	@SuppressWarnings("unchecked")
 	public List<Company> getCompanyAllIncludeDelete() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
 				String qy = "SELECT c FROM Company c";
-				Query query = Manager.get().createQuery(qy);
+				Query query = em.createQuery(qy);
 				return (List<Company>) query.getResultList();
 			} catch (NoResultException e) {
 				return null;
@@ -50,10 +47,10 @@ public class CompanyDao extends TransactionDao<Company> {
 	}
 
 	public Company getCompanyByName(String name) {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
 				String qy = "SELECT c FROM Company c WHERE c.name = :name AND c.stateInfo.isDelete = false";
-				Query query = Manager.get().createQuery(qy);
+				Query query = em.createQuery(qy);
 				query.setParameter("name", name);
 				return (Company) query.getSingleResult();
 			} catch (NoResultException e) {

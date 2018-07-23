@@ -1,12 +1,9 @@
 package dao;
 
 import java.util.List;
-
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
 import common.FactoryDao;
-import common.Manager;
 import common.TransactionDao;
 import model.Group;
 
@@ -26,23 +23,23 @@ public class GroupDao extends TransactionDao<Group> {
 
 	@SuppressWarnings("unchecked")
 	public List<Group> getGroupAll() {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
 				String qy = "SELECT g FROM Group g WHERE g.stateInfo.isDelete = false";
-				Query query = Manager.get().createQuery(qy);
+				Query query = em.createQuery(qy);
 				return (List<Group>) query.getResultList();
 			} catch (NoResultException e) {
 				return null;
 			}
 		});
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<Group> getGroupByCompany(int companyId){
-		return Manager.transaction(() -> {
+	public List<Group> getGroupByCompany(int companyId) {
+		return transaction((em) -> {
 			try {
 				String qy = "SELECT g FROM Group g WHERE g.company.id = :companyId AND g.stateInfo.isDelete = false";
-				Query query = Manager.get().createQuery(qy);
+				Query query = em.createQuery(qy);
 				query.setParameter("companyId", companyId);
 				return (List<Group>) query.getResultList();
 			} catch (NoResultException e) {

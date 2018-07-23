@@ -3,11 +3,16 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import java.util.Date;
 
 @Entity
 @Table(name = "TSN_STATE_INFO")
 @NamedQuery(name = "StateInfo.findAll", query = "SELECT s FROM StateInfo s where s.isDelete = false")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class StateInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

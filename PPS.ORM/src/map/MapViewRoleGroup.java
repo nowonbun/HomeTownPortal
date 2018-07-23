@@ -2,11 +2,17 @@ package map;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import model.*;
 
 @Entity
 @Table(name = "MAP_VIEW_ROLE_GROUP")
 @NamedQuery(name = "MapViewRoleGroup.findAll", query = "SELECT m FROM MapViewRoleGroup m")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class MapViewRoleGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 

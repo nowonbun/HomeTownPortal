@@ -314,55 +314,95 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 	function createColDiv() {
 		return $("<div></div>").addClass("col-sm-12 col-md-6 col-lg-3");
 	}
-	$scope.setValue = function(idx, com, grp, usr) {
-		var row;
+	function getRow(idx) {
 		if (idx < $("#tableList").children().length) {
-			row = $($("#tableList").children()[idx]);
+			return $($("#tableList").children()[idx]);
 		} else {
 			$scope.addRow(true);
-			row = $($("#tableList").children()[$("#tableList").children().length - 1]);
+			return $($("#tableList").children()[$("#tableList").children().length - 1]);
 		}
-		_ws.send("cardviewrole", "getCompany", null, function(data) {
+	}
+	$scope.setValue = function(idx, com, grp, usr) {
+		if (com === null) {
+			com = 0;
+		}
+		if (grp === null) {
+			grp = 0;
+		}
+		if (usr === null) {
+			usr = 0;
+		}
+
+		_ws.send("cardviewrole", "getCompany", JSON.stringify({
+			key : null,
+			val : com,
+			idx : idx
+		}), function(data) {
+			var node = JSON.parse(data);
+			var row = getRow(node.data3);
 			row.find(".company-select").children().remove();
-			var list = JSON.parse(data);
+			var list = node.data2;
+			var select = row.find(".company-select");
+			select.append(createOption(0, "ALL"));
 			for (var i = 0; i < list.length; i++) {
-				row.find(".company-select").append(createOption(list[i].value, list[i].name));
+				select.append(createOption(list[i].value, list[i].name));
 			}
-			row.find(".company-select").val(com);
+			select.val(node.data);
 		});
-		_ws.send("cardviewrole", "getGroup", com, function(data) {
+		_ws.send("cardviewrole", "getGroup", JSON.stringify({
+			key : com,
+			val : grp,
+			idx : idx
+		}), function(data) {
+			var node = JSON.parse(data);
+			var row = getRow(node.data3);
 			row.find(".group-select").children().remove();
-			var list = JSON.parse(data);
+			var list = node.data2;
+			var select = row.find(".group-select");
+			select.append(createOption(0, "ALL"));
 			for (var i = 0; i < list.length; i++) {
-				row.find(".group-select").append(createOption(list[i].value, list[i].name));
+				select.append(createOption(list[i].value, list[i].name));
 			}
-			row.find(".group-select").val(grp);
+			select.val(node.data);
 		});
-		_ws.send("cardviewrole", "getUser", grp, function(data) {
+		_ws.send("cardviewrole", "getUser", JSON.stringify({
+			key : grp,
+			val : usr,
+			idx : idx
+		}), function(data) {
+			var node = JSON.parse(data);
+			var row = getRow(node.data3);
 			row.find(".user-select").children().remove();
-			var list = JSON.parse(data);
+			var list = node.data2;
+			var select = row.find(".user-select");
+			select.append(createOption(0, "ALL"));
 			for (var i = 0; i < list.length; i++) {
-				row.find(".user-select").append(createOption(list[i].value, list[i].name));
+				select.append(createOption(list[i].value, list[i].name));
 			}
-			row.find(".user-select").val(usr);
+			select.val(node.data);
 		});
 	}
 	$scope.addRow = function(isBtn) {
 		var comSel = createSelect("company-select");
-		_ws.send("cardviewrole", "getCompany", null, function(data) {
-			var list = JSON.parse(data);
+		_ws.send("cardviewrole", "getCompany", JSON.stringify({}), function(data) {
+			var node = JSON.parse(data);
+			var list = node.data2;
 			for (var i = 0; i < list.length; i++) {
 				comSel.append(createOption(list[i].value, list[i].name));
 			}
 		});
 		comSel.on("change", function() {
 			var _this = $(this);
-			_ws.send("cardviewrole", "getGroup", _this.val(), function(data) {
-				var grpSel = _this.parent().parent().find(".group-select");
-				grpSel.children().remove();
-				var list = JSON.parse(data);
+			_ws.send("cardviewrole", "getGroup", JSON.stringify({
+				key : Number(_this.val())
+			}), function(data) {
+				var select = _this.parent().parent().find(".group-select");
+				select.children().remove();
+				var node = JSON.parse(data);
+				var list = node.data2;
+				select.append(createOption(0, "ALL"));
 				for (var i = 0; i < list.length; i++) {
-					grpSel.append(createOption(list[i].value, list[i].name));
+					select.append(createOption(list[i].value, list[i].name));
 				}
 			});
 		});
@@ -370,12 +410,16 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 		var grpSel = createSelect("group-select");
 		grpSel.on("change", function() {
 			var _this = $(this);
-			_ws.send("cardviewrole", "getUser", _this.val(), function(data) {
-				var usrSel = _this.parent().parent().find(".user-select");
-				usrSel.children().remove();
-				var list = JSON.parse(data);
+			_ws.send("cardviewrole", "getUser", JSON.stringify({
+				key : Number(_this.val())
+			}), function(data) {
+				var select = _this.parent().parent().find(".user-select");
+				select.children().remove();
+				var node = JSON.parse(data);
+				var list = node.data2;
+				select.append(createOption(0, "ALL"));
 				for (var i = 0; i < list.length; i++) {
-					usrSel.append(createOption(list[i].value, list[i].name));
+					select.append(createOption(list[i].value, list[i].name));
 				}
 			});
 		});
@@ -463,8 +507,12 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 				}
 			}
 		}
-		_ws.send("cardviewrole", "saveRole", JSON.stringify(list), function(data) {
-			debugger;
+		_ws.send("cardviewrole", "saveRole", JSON.stringify({
+			key : $scope.selectid,
+			data : list
+		}), function(data) {
+			var msg = JSON.parse(data);
+			_notification(msg.type, msg.msg);
 		});
 
 	}
@@ -1389,6 +1437,29 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		error : [],
 		message : []
 	};
+	var delegate2 = [];
+	function executeDelegate2(msg) {
+		var item = null;
+		var node = JSON.parse(msg.data);
+		for (var i = 0; i < delegate2.length; i++) {
+			if (node.control === delegate2[i].control && node.action === delegate2[i].action) {
+				item = delegate2[i];
+				delegate2.splice(i, 1);
+				break;
+			}
+		}
+		if (item === null) {
+			return;
+		}
+
+		_safeApply(function() {
+			item.func.call(this, node.data);
+		});
+		if (util.isFunction(item.cb)) {
+			item.cb.call(this);
+		}
+	}
+
 	socket.onopen = function(msg) {
 		if (delegate.open === null) {
 			return;
@@ -1412,9 +1483,10 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		}
 	};
 	socket.onerror = function(msg) {
+		executeDelegate2(msg);
 		var item = null;
 		var node = JSON.parse(msg.data);
-		for ( var i in delegate.error) {
+		for (var i = 0; i < delegate.error.length; i++) {
 			if (node.control === delegate.error[i].control && node.action === delegate.error[i].action) {
 				item = delegate.error[i];
 				break;
@@ -1429,11 +1501,13 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		if (util.isFunction(item.cb)) {
 			item.cb.call(this);
 		}
+
 	};
 	socket.onmessage = function(msg) {
+		executeDelegate2(msg);
 		var item = null;
 		var node = JSON.parse(msg.data);
-		for ( var i in delegate.message) {
+		for (var i = 0; i < delegate.message.length; i++) {
 			if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
 				item = delegate.message[i];
 				break;
@@ -1485,6 +1559,19 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 				control : control,
 				action : action,
 				func : func,
+				cb : cb,
+				type : 2,
+			});
+			return;
+		}
+		console.error("It's not defined because not function method.");
+	}
+	function define3(control, action, func, cb) {
+		if (util.isFunction(func)) {
+			delegate2.push({
+				control : control,
+				action : action,
+				func : func,
 				cb : cb
 			});
 			return;
@@ -1510,7 +1597,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 			}
 			data += "";
 			if (util.isFunction(func)) {
-				define2("message", control, action, func, cb);
+				define3(control, action, func, cb);
 			}
 			sendNode(JSON.stringify({
 				control : control,

@@ -133,6 +133,29 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		error : [],
 		message : []
 	};
+	var delegate2 = [];
+	function executeDelegate2(msg) {
+		var item = null;
+		var node = JSON.parse(msg.data);
+		for (var i = 0; i < delegate2.length; i++) {
+			if (node.control === delegate2[i].control && node.action === delegate2[i].action) {
+				item = delegate2[i];
+				delegate2.splice(i, 1);
+				break;
+			}
+		}
+		if (item === null) {
+			return;
+		}
+
+		_safeApply(function() {
+			item.func.call(this, node.data);
+		});
+		if (util.isFunction(item.cb)) {
+			item.cb.call(this);
+		}
+	}
+
 	socket.onopen = function(msg) {
 		if (delegate.open === null) {
 			return;
@@ -156,9 +179,10 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		}
 	};
 	socket.onerror = function(msg) {
+		executeDelegate2(msg);
 		var item = null;
 		var node = JSON.parse(msg.data);
-		for ( var i in delegate.error) {
+		for (var i = 0; i < delegate.error.length; i++) {
 			if (node.control === delegate.error[i].control && node.action === delegate.error[i].action) {
 				item = delegate.error[i];
 				break;
@@ -175,9 +199,10 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		}
 	};
 	socket.onmessage = function(msg) {
+		executeDelegate2(msg);
 		var item = null;
 		var node = JSON.parse(msg.data);
-		for ( var i in delegate.message) {
+		for (var i = 0; i < delegate.message.length; i++) {
 			if (node.control === delegate.message[i].control && node.action === delegate.message[i].action) {
 				item = delegate.message[i];
 				break;
@@ -229,6 +254,19 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 				control : control,
 				action : action,
 				func : func,
+				cb : cb,
+				type : 2,
+			});
+			return;
+		}
+		console.error("It's not defined because not function method.");
+	}
+	function define3(control, action, func, cb) {
+		if (util.isFunction(func)) {
+			delegate2.push({
+				control : control,
+				action : action,
+				func : func,
 				cb : cb
 			});
 			return;
@@ -254,7 +292,7 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 			}
 			data += "";
 			if (util.isFunction(func)) {
-				define2("message", control, action, func, cb);
+				define3(control, action, func, cb);
 			}
 			sendNode(JSON.stringify({
 				control : control,

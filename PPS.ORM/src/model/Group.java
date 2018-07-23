@@ -5,11 +5,16 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import common.TransactionModel;
 
 @Entity
 @Table(name = "TSN_GROUP")
 @NamedQuery(name = "Group.findAll", query = "SELECT g FROM Group g")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class Group extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -2,12 +2,18 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import common.TransactionModel;
 import java.util.List;
 
 @Entity
 @Table(name = "TSN_USER")
 @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u where u.stateInfo.isDelete = false")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class User extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -49,13 +55,11 @@ public class User extends TransactionModel implements Serializable {
 	private Group group;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "MAP_VIEW_ROLE_USER", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "CARD_CODE") })
+	@JoinTable(name = "MAP_VIEW_ROLE_USER", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "CARD_CODE") })
 	private List<Card> cards;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "MAP_ACTION_ROLE_USER", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "ROLE_CODE") })
+	@JoinTable(name = "MAP_ACTION_ROLE_USER", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_CODE") })
 	private List<Role> roles;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

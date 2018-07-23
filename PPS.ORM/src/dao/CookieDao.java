@@ -2,7 +2,6 @@ package dao;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import common.Manager;
 import common.TransactionDao;
 import model.Cookie;
 import model.CookiePK;
@@ -18,9 +17,9 @@ public class CookieDao extends TransactionDao<Cookie> {
 	}
 
 	public Cookie getEntity(String id, String cookiekey) {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
-				Query query = Manager.get().createQuery("SELECT c FROM Cookie c WHERE c.id.id = :id and c.id.cookiekey = :cookiekey");
+				Query query = em.createQuery("SELECT c FROM Cookie c WHERE c.id.id = :id and c.id.cookiekey = :cookiekey");
 				query.setParameter("id", id);
 				query.setParameter("cookiekey", cookiekey);
 				return (Cookie) query.getSingleResult();
@@ -31,10 +30,10 @@ public class CookieDao extends TransactionDao<Cookie> {
 	}
 
 	public Cookie getEntityByCookiekey(String cookiekey) {
-		return Manager.transaction(() -> {
+		return transaction((em) -> {
 			try {
 				String qy = "SELECT c FROM Cookie c WHERE c.id.cookiekey = :cookiekey and c.stateInfo.isDelete = false";
-				Query query = Manager.get().createQuery(qy);
+				Query query = em.createQuery(qy);
 				query.setParameter("cookiekey", cookiekey);
 				return (Cookie) query.getSingleResult();
 			} catch (NoResultException e) {

@@ -3,11 +3,16 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import common.TransactionModel;
 
 @Entity
 @Table(name = "TSN_PASSWORD")
 @NamedQuery(name = "Password.findAll", query = "SELECT p FROM Password p where p.stateInfo.isDelete = false")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class Password extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 

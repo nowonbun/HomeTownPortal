@@ -3,6 +3,9 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import common.TransactionModel;
 
 import java.util.Date;
@@ -10,6 +13,8 @@ import java.util.Date;
 @Entity
 @Table(name = "TSN_COOKIE")
 @NamedQuery(name = "Cookie.findAll", query = "SELECT c FROM Cookie c where c.stateInfo.isDelete = false")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class Cookie extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 

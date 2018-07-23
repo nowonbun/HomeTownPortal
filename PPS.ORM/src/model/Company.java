@@ -3,6 +3,9 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.config.CacheIsolationType;
+
 import common.TransactionModel;
 
 import java.util.List;
@@ -10,6 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "TSN_COMPANY")
 @NamedQuery(name = "Company.findAll", query = "SELECT c FROM Company c")
+@Cacheable(false)
+@Cache(alwaysRefresh = true, isolation = CacheIsolationType.ISOLATED, size = 0, expiry = 0)
 public class Company extends TransactionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,13 +34,11 @@ public class Company extends TransactionModel implements Serializable {
 	private List<Group> groups;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "MAP_VIEW_ROLE_COMPANY", joinColumns = {
-			@JoinColumn(name = "COMPANY_ID") }, inverseJoinColumns = { @JoinColumn(name = "CARD_CODE") })
+	@JoinTable(name = "MAP_VIEW_ROLE_COMPANY", joinColumns = { @JoinColumn(name = "COMPANY_ID") }, inverseJoinColumns = { @JoinColumn(name = "CARD_CODE") })
 	private List<Card> cards;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "MAP_ACTION_ROLE_COMPANY", joinColumns = {
-			@JoinColumn(name = "COMPANY_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_CODE") })
+	@JoinTable(name = "MAP_ACTION_ROLE_COMPANY", joinColumns = { @JoinColumn(name = "COMPANY_ID") }, inverseJoinColumns = { @JoinColumn(name = "ROLE_CODE") })
 	private List<Role> roles;
 
 	@SuppressWarnings("unused")
