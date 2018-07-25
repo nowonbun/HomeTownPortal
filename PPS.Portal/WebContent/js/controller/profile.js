@@ -41,6 +41,18 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				_safeApply(function() {
 					$scope.company = $("#company").val();
 				});
+				if ($scope.canModifyGroup) {
+					_ws.send("profile", "getGroup", JSON.stringify({
+						key : Number($scope.company)
+					}), function(data) {
+						var node = JSON.parse(data);
+						$scope.groupList = node.data;
+						_loader.ready(function() {
+							$('.mdb-select').material_select('destroy');
+							$('.mdb-select').material_select();
+						});
+					});
+				}
 			});
 		}
 		$scope.canModifyGroup = node.canModifyGroup;
@@ -69,14 +81,13 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		});
 		_loader.controller.show();
 	});
-	_ws.message("profile", "apply", function(data) {
-		var msg = JSON.parse(data);
-		_loader.hide();
-		_notification(msg.type, msg.msg);
-	});
 
 	$scope.fileupload = function() {
 		var file = _filereader.getFile($("#img_file"));
+		if (file.size > CARD_FILE_SIZE_LIMIT) {
+			_notification("danger", "The file maximum size has been exceeded. max-size : 60KB");
+			return;
+		}
 		_filereader.readFile(file, function(node) {
 			$scope.img_url = node.binary;
 			$scope.is_img_blob = true;
@@ -191,7 +202,14 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			group : $scope.group
 		};
 		_loader.show();
-		_ws.send("profile", "apply", JSON.stringify(data));
+		_ws.send("profile", "apply", JSON.stringify(data),function(data) {
+			var msg = JSON.parse(data);
+			_loader.hide();
+			_notification(msg.type, msg.msg);
+			if (msg.type === "success") {
+				$("#profileModal").modal("hide");
+			}
+		});
 		return;
 	}
 } ]);

@@ -36,6 +36,9 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_e
 		$scope.userDelete = function() {
 			// location.href = "./#!/userdelete/" + $scope.selectid;
 		}
+		$scope.reloadTable = function() {
+			table.ajax.reload();
+		}
 		_loader.controller.show();
 
 	});

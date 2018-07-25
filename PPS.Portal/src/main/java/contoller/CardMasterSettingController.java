@@ -1,13 +1,9 @@
 package contoller;
 
 import java.util.ArrayList;
-
-import org.apache.log4j.Logger;
-
+import common.Controller;
 import common.FactoryDao;
-import common.IWorkflow;
 import common.JsonConverter;
-import common.LoggerManager;
 import common.NotificationType;
 import common.Util;
 import common.Workflow;
@@ -22,13 +18,18 @@ import reference.CardMaster;
 import reference.CardTypeMaster;
 
 @Workflow(name = "cardmastersetting", cardrole = CardMaster.CARD_MASTER_SETTING)
-public class CardMasterSettingController extends IWorkflow {
+public class CardMasterSettingController extends Controller {
 
-	Logger logger = LoggerManager.getLogger(CardMasterSettingController.class);
-	private static NavigateNode[] navi = new NavigateNode[] {
-			new NavigateNode(CardMaster.getAdminCard()), 
-			new NavigateNode(CardMaster.getDataMasterSettingCard()), 
-			new NavigateNode(CardMaster.getCardMasterSettingCard()) };
+	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode(CardMaster.getAdminCard()), new NavigateNode(CardMaster.getDataMasterSettingCard()), new NavigateNode(CardMaster.getCardMasterSettingCard()) };
+
+	protected Class<?> setLogClass() {
+		return CardMasterSettingController.class;
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return navi;
+	}
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
@@ -89,7 +90,7 @@ public class CardMasterSettingController extends IWorkflow {
 	public WebSocketResult applyEdit(WebSocketNode node) {
 		try {
 			CardBean bean = new CardBean();
-			JsonConverter.parse(node.getData(), (data) -> {
+			JsonConverter.parseObject(node.getData(), (data) -> {
 				bean.setCode(Util.JsonString(data, "code"));
 				bean.setName(Util.JsonString(data, "name"));
 				bean.setSeq(Util.JsonInteger(data, "seq"));
@@ -106,21 +107,16 @@ public class CardMasterSettingController extends IWorkflow {
 			entity.setTitle(bean.getTitle());
 			entity.setIcon(bean.getIcon());
 			entity.setColor(bean.getColor());
-			if(bean.getImg() != null) {
-				entity.setImg(bean.getImg().getBytes());	
+			if (bean.getImg() != null) {
+				entity.setImg(bean.getImg().getBytes());
 			}
 			CardMaster.getDao().update(entity);
 			CardMaster.getDao().reset();
 			return createWebSocketResult(createNotification(NotificationType.Success, "The card-master is updated"), node);
 		} catch (Throwable e) {
-			logger.error(e);
+			getLogger().error(e);
 			return createWebSocketError(node);
 		}
-	}
-
-	@Override
-	protected NavigateNode[] navigation() {
-		return navi;
 	}
 
 }

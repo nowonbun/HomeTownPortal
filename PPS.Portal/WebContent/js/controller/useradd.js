@@ -1,4 +1,4 @@
-app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApply', '_notification', function($scope, _ws, _loader, _filereader, _safeApply, _notification) {
+app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApply', '_notification', '_extendModal', function($scope, _ws, _loader, _filereader, _safeApply, _notification, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canUserId = true;
@@ -14,6 +14,16 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 		$(document).off("change", "#company").on("change", "#company", function() {
 			_safeApply(function() {
 				$scope.company = $("#company").val();
+			});
+			_ws.send("usermanagement", "getGroup", JSON.stringify({
+				key : Number($scope.company)
+			}), function(data) {
+				var node = JSON.parse(data);
+				$scope.groupList = node.data;
+				_loader.ready(function() {
+					$('.mdb-select').material_select('destroy');
+					$('.mdb-select').material_select();
+				});
 			});
 		});
 		$scope.groupList = node.groupList;
@@ -150,7 +160,10 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 			var msg = JSON.parse(data);
 			_loader.hide();
 			_notification(msg.type, msg.msg);
-			location.href = "./#!/usermanagement";
+			if (msg.type === "success") {
+				$scope.reloadTable();
+				$("#profileModal").modal("hide");
+			}
 		});
 		return;
 	}

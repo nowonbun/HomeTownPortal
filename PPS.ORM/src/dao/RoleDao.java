@@ -39,6 +39,46 @@ public class RoleDao extends MasterDao<Role> {
 	public List<Role> getRoleAll() {
 		return getData();
 	}
+	
+	public void deleteRole(String code) {
+		transaction((em) -> {
+			Query query = em.createNativeQuery(" DELETE FROM MAP_ACTION_ROLE_COMPANY WHERE ROLE_CODE = ?");
+			query.setParameter(1, code);
+			query.executeUpdate();
+
+			query = em.createNativeQuery(" DELETE FROM MAP_ACTION_ROLE_GROUP WHERE ROLE_CODE = ?");
+			query.setParameter(1, code);
+			query.executeUpdate();
+
+			query = em.createNativeQuery(" DELETE FROM MAP_ACTION_ROLE_USER WHERE ROLE_CODE = ?");
+			query.setParameter(1, code);
+			query.executeUpdate();
+		});
+	}
+
+	public void setRole(String code, List<Integer> coms, List<Integer> grps, List<String> usrs) {
+		transaction((em) -> {
+			Query query = null;
+			for (Integer com : coms) {
+				query = em.createNativeQuery(" INSERT INTO MAP_ACTION_ROLE_COMPANY (ROLE_CODE, COMPANY_ID) VALUES(?, ?)");
+				query.setParameter(1, code);
+				query.setParameter(2, com);
+				query.executeUpdate();
+			}
+			for (Integer grp : grps) {
+				query = em.createNativeQuery(" INSERT INTO MAP_ACTION_ROLE_GROUP (ROLE_CODE, GROUP_ID) VALUES(?, ?)");
+				query.setParameter(1, code);
+				query.setParameter(2, grp);
+				query.executeUpdate();
+			}
+			for (String usr : usrs) {
+				query = em.createNativeQuery(" INSERT INTO MAP_ACTION_ROLE_USER (ROLE_CODE, USER_ID) VALUES(?, ?)");
+				query.setParameter(1, code);
+				query.setParameter(2, usr);
+				query.executeUpdate();
+			}
+		});
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<Permission> getPermission() {

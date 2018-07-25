@@ -2,7 +2,7 @@ package contoller;
 
 import java.util.ArrayList;
 import java.util.List;
-import common.IWorkflow;
+import common.Controller;
 import common.JsonConverter;
 import common.Util;
 import common.Workflow;
@@ -17,7 +17,16 @@ import reference.CardStepMaster;
 import reference.CardTypeMaster;
 
 @Workflow(name = "admin", cardrole = CardMaster.ADMIN)
-public class AdminContoller extends IWorkflow {
+public class AdminContoller extends Controller {
+
+	protected Class<?> setLogClass() {
+		return AdminContoller.class;
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return null;
+	}
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
@@ -36,11 +45,5 @@ public class AdminContoller extends IWorkflow {
 			}
 		}
 		return createWebSocketResult(JsonConverter.create(data), node);
-
-	}
-
-	@Override
-	protected NavigateNode[] navigation() {
-		return null;
 	}
 }

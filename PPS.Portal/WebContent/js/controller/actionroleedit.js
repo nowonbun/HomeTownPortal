@@ -1,6 +1,6 @@
-app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_extendModal', '_notification', '$timeout', function($scope, _ws, _loader, $http, _extendModal, _notification, $timeout) {
+app.controller("actionroleedit", [ '$scope', '_ws', '_loader', '$http', '_extendModal', '_notification', '$timeout', function($scope, _ws, _loader, $http, _extendModal, _notification, $timeout) {
 	_loader.controller.hide();
-	$scope.title = "Card view role edit";
+	$scope.title = "Action view role edit";
 	function createSelect(id) {
 		var select = $("<select></select>").addClass("browser-default").addClass(id);
 		select.append(createOption(0, "ALL"));
@@ -35,7 +35,7 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 			usr = 0;
 		}
 
-		_ws.send("cardviewrole", "getCompany", JSON.stringify({
+		_ws.send("actionrole", "getCompany", JSON.stringify({
 			key : null,
 			val : com,
 			idx : idx
@@ -51,7 +51,7 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 			}
 			select.val(node.data);
 		});
-		_ws.send("cardviewrole", "getGroup", JSON.stringify({
+		_ws.send("actionrole", "getGroup", JSON.stringify({
 			key : com,
 			val : grp,
 			idx : idx
@@ -67,7 +67,7 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 			}
 			select.val(node.data);
 		});
-		_ws.send("cardviewrole", "getUser", JSON.stringify({
+		_ws.send("actionrole", "getUser", JSON.stringify({
 			key : grp,
 			val : usr,
 			idx : idx
@@ -86,7 +86,7 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 	}
 	$scope.addRow = function(isBtn) {
 		var comSel = createSelect("company-select");
-		_ws.send("cardviewrole", "getCompany", JSON.stringify({}), function(data) {
+		_ws.send("actionrole", "getCompany", JSON.stringify({}), function(data) {
 			var node = JSON.parse(data);
 			var list = node.data2;
 			for (var i = 0; i < list.length; i++) {
@@ -209,7 +209,7 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 				}
 			}
 		}
-		_ws.send("cardviewrole", "saveRole", JSON.stringify({
+		_ws.send("actionrole", "saveRole", JSON.stringify({
 			key : $scope.selectid,
 			data : list
 		}), function(data) {
@@ -223,7 +223,7 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 
 	}
 	$scope.addRow(false);
-	_ws.send("cardviewrole", "editRole", $scope.selectid, function(data) {
+	_ws.send("actionrole", "editRole", $scope.selectid, function(data) {
 		var node = JSON.parse(data);
 		_loader.ready(function() {
 			for (var i = 0; i < node.length; i++) {

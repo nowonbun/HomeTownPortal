@@ -11,7 +11,7 @@ public class UserBean extends ObjectBean {
 	private String nick_name;
 	private boolean is_img_blob;
 	private String img_url;
-	private byte[] img_blob;
+	private String img_blob;
 	private boolean canModifyPassword;
 	private boolean canModifyCompany;
 	private boolean canModifyGroup;
@@ -98,11 +98,11 @@ public class UserBean extends ObjectBean {
 		this.img_url = img_url;
 	}
 
-	public byte[] getImg_blob() {
+	public String getImg_blob() {
 		return img_blob;
 	}
 
-	public void setImg_blob(byte[] img_blob) {
+	public void setImg_blob(String img_blob) {
 		this.img_blob = img_blob;
 	}
 

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -31,7 +32,23 @@ public class JsonConverter {
 		}
 	}
 
-	public static void parse(String json, ActionExpression<JsonObject> func) {
+	public static void parseArray(String json, ActionExpression<JsonArray> func) {
+		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
+			func.run(jsonReader.readArray());
+		} catch (JsonParsingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T> T parseArray(String json, LambdaExpression<JsonArray, T> func) {
+		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
+			return func.run(jsonReader.readArray());
+		} catch (JsonParsingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void parseObject(String json, ActionExpression<JsonObject> func) {
 		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
 			func.run(jsonReader.readObject());
 		} catch (JsonParsingException e) {
@@ -39,7 +56,7 @@ public class JsonConverter {
 		}
 	}
 
-	public static boolean parse(String json, LambdaExpression<JsonObject, Boolean> func) {
+	public static <T> T parseObject(String json, LambdaExpression<JsonObject, T> func) {
 		try (JsonReader jsonReader = Json.createReader(new StringReader(json))) {
 			return func.run(jsonReader.readObject());
 		} catch (JsonParsingException e) {

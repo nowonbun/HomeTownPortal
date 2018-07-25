@@ -3,13 +3,9 @@ package contoller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-
+import common.Controller;
 import common.FactoryDao;
-import common.IWorkflow;
 import common.JsonConverter;
-import common.LoggerManager;
 import common.NotificationType;
 import common.Util;
 import common.Workflow;
@@ -28,10 +24,18 @@ import reference.CardMaster;
 import reference.StateMaster;
 
 @Workflow(name = "comgroupsetting", cardrole = CardMaster.COMPANY_N_GROUP_SETTING)
-public class ComGroupSettingContoller extends IWorkflow {
+public class ComGroupSettingContoller extends Controller {
 
-	Logger logger = LoggerManager.getLogger(ComGroupSettingContoller.class);
 	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode(CardMaster.getAdminCard()), new NavigateNode(CardMaster.getCompanyNGroupSettingCard()) };
+
+	protected Class<?> setLogClass() {
+		return ComGroupSettingContoller.class;
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return navi;
+	}
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
@@ -66,8 +70,8 @@ public class ComGroupSettingContoller extends IWorkflow {
 			FactoryDao.getDao(CompanyDao.class).update(com);
 			return createNotificationResult(NotificationType.Success, "The data was updated.", node);
 		} catch (Throwable e) {
-			logger.error(e);
-			logger.error("Data value : " + node.getData());
+			getLogger().error(e);
+			getLogger().error("Data value : " + node.getData());
 			return createNotificationResult(NotificationType.Danger, "The key data is wrong.", node);
 		}
 
@@ -100,7 +104,7 @@ public class ComGroupSettingContoller extends IWorkflow {
 
 	public WebSocketResult applyEdit(WebSocketNode node) {
 		User user = getUserinfo(node.getSession()).getUser();
-		if (JsonConverter.parse(node.getData(), (data) -> {
+		if (JsonConverter.parseObject(node.getData(), (data) -> {
 			if (!Util.JsonIsKey(data, "id") || Util.StringIsEmptyOrNull(data.getString("id"))) {
 				return false;
 			}
@@ -144,7 +148,7 @@ public class ComGroupSettingContoller extends IWorkflow {
 
 	public WebSocketResult applyAdd(WebSocketNode node) {
 		User user = getUserinfo(node.getSession()).getUser();
-		if (JsonConverter.parse(node.getData(), (data) -> {
+		if (JsonConverter.parseObject(node.getData(), (data) -> {
 			if (!Util.JsonIsKey(data, "company") || Util.StringIsEmptyOrNull(data.getString("company"))) {
 				return false;
 			}
@@ -175,8 +179,4 @@ public class ComGroupSettingContoller extends IWorkflow {
 		}
 	}
 
-	@Override
-	protected NavigateNode[] navigation() {
-		return navi;
-	}
 }

@@ -33,6 +33,9 @@ app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', '_extendM
 		$scope.roleedit = function() {
 			_extendModal.mainModal("./views/roleedit.tpl.jsp", "cardviewroleedit", $scope);
 		}
+		$scope.reloadTable = function() {
+			table.ajax.reload();
+		}
 		_loader.controller.show();
 	});
 } ]);

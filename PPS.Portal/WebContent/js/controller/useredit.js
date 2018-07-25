@@ -40,6 +40,18 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 				_safeApply(function() {
 					$scope.company = $("#company").val();
 				});
+				if ($scope.canModifyGroup) {
+					_ws.send("usermanagement", "getGroup", JSON.stringify({
+						key : Number($scope.company)
+					}), function(data) {
+						var node = JSON.parse(data);
+						$scope.groupList = node.data;
+						_loader.ready(function() {
+							$('.mdb-select').material_select('destroy');
+							$('.mdb-select').material_select();
+						});
+					});
+				}
 			});
 		}
 		$scope.canModifyGroup = node.canModifyGroup;
@@ -67,4 +79,120 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 		});
 		_loader.controller.show();
 	});
+	
+	$scope.checkPassword = function() {
+		if ($.trim($scope.password) !== $.trim($scope.password_confirm)) {
+			$scope.isPasswordError = true;
+			$("#password").addClass('error-focus');
+			$("#password_confirm").addClass('error-focus');
+			return;
+		}
+		$scope.isPasswordError = false;
+		$("#password").removeClass('error-focus');
+		$("#password_confirm").removeClass('error-focus');
+	}
+	
+	$scope.apply = function() {
+		if ($.trim($scope.given_name) === "") {
+			_notification("danger", "Please input the text of 'Given name'", function() {
+				$("#given_name").removeClass('error-focus');
+			});
+			$("#given_name").addClass('error-focus');
+			return;
+		}
+		$("#given_name").removeClass('error-focus');
+
+		if ($.trim($scope.name) === "") {
+			_notification("danger", "Please input the text of 'name'", function() {
+				$("#name").removeClass('error-focus');
+			});
+			$("#name").addClass('error-focus');
+			return;
+		}
+		$("#name").removeClass('error-focus');
+
+		if ($.trim($scope.nick_name) === "") {
+			_notification("danger", "Please input the text of 'Nick name'", function() {
+				$("#nick_name").removeClass('error-focus');
+			});
+			$("#nick_name").addClass('error-focus');
+			return;
+		}
+		$("#nick_name").removeClass('error-focus');
+
+		if ($scope.canModifyPassword) {
+			var noChangePassword = true;
+			if ($.trim($scope.current_password) === "") {
+				noChangePassword = false;
+			}
+			if ($.trim($scope.password) === "" && noChangePassword) {
+				_notification("danger", "Please input the text of 'Password'", function() {
+					$("#password").removeClass('error-focus');
+				});
+				$("#password").addClass('error-focus');
+				return;
+			}
+			$("#password").removeClass('error-focus');
+			if ($.trim($scope.password_confirm) === "" && noChangePassword) {
+				_notification("danger", "Please input the text of 'Password confirm'", function() {
+					$("#password_confirm").removeClass('error-focus');
+				});
+				$("#password_confirm").addClass('error-focus');
+				return;
+			}
+			$("#password_confirm").removeClass('error-focus');
+			if ($.trim($scope.password) !== $.trim($scope.password_confirm) && noChangePassword) {
+				_notification("danger", "Please input the text of 'Password is incorrect'", function() {
+					$("#password").removeClass('error-focus');
+					$("#password_confirm").removeClass('error-focus');
+				});
+				$("#password").addClass('error-focus');
+				$("#password_confirm").addClass('error-focus');
+				return;
+			}
+			$("#password").removeClass('error-focus');
+			$("#password_confirm").removeClass('error-focus');
+		}
+
+		if ($scope.canModifyCompany) {
+			if ($.trim($scope.company) === "") {
+				_notification("danger", "Please select the value of 'company'", function() {
+					$("#company").removeClass('error-focus');
+				});
+				$("#company").addClass('error-focus');
+				return;
+			}
+			$("#company").removeClass('error-focus');
+		}
+
+		if ($scope.canModifyGroup) {
+			if ($.trim($scope.group) === "") {
+				_notification("danger", "Please select the value of 'group'", function() {
+					$("#group").removeClass('error-focus');
+				});
+				$("#group").addClass('error-focus');
+				return;
+			}
+			$("#group").removeClass('error-focus');
+		}
+
+		var data = {
+			given_name : $scope.given_name,
+			name : $scope.name,
+			nick_name : $scope.nick_name,
+			img_url : $scope.img_url,
+			is_img_blob : $scope.is_img_blob,
+			current_password : $scope.current_password,
+			password : $scope.password,
+			company : $scope.company,
+			group : $scope.group
+		};
+		_loader.show();
+		_ws.send("usermanagement", "applyEdit", JSON.stringify(data),function(data) {
+			var msg = JSON.parse(data);
+			_loader.hide();
+			_notification(msg.type, msg.msg);
+		});
+		return;
+	}
 } ]);

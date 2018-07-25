@@ -44,7 +44,7 @@ app.filter('trusted', [ '$sce', function($sce) {
 	}
 } ]);
 
-app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', function($scope, _ws, _loader, _table) {
+app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', '_extendModal', function($scope, _ws, _loader, _table, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "Action role";
 	_ws.send("actionrole", "init", null, function(data) {
@@ -66,23 +66,261 @@ app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', function($s
 			select : function(table, idx) {
 				$("#editbtn").prop("disabled", false);
 				$("#deletebtn").prop("disabled", false);
-				$scope.selectid = table.rows(idx).data().pluck('id')[0];
+				$scope.selectid = table.rows(idx).data().pluck('code')[0];
+				$scope.selectname = table.rows(idx).data().pluck('name')[0];
 			},
 			deselect : function(table, idx) {
 				$("#editbtn").prop("disabled", true);
 				$("#deletebtn").prop("disabled", true);
 				$scope.selectid = null;
+				$scope.selectname = null;
 			}
 		});
-		$scope.userAdd = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useradd",$scope);
+		$scope.reloadTable = function() {
+			table.ajax.reload();
 		}
-		$scope.userEdit = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useredit",$scope);
+		_loader.controller.show();
+	});
+	$scope.roleedit = function() {
+		_extendModal.mainModal("./views/roleedit.tpl.jsp", "actionroleedit", $scope);
+	}
+} ]);
+app.controller("actionroleedit", [ '$scope', '_ws', '_loader', '$http', '_extendModal', '_notification', '$timeout', function($scope, _ws, _loader, $http, _extendModal, _notification, $timeout) {
+	_loader.controller.hide();
+	$scope.title = "Action view role edit";
+	function createSelect(id) {
+		var select = $("<select></select>").addClass("browser-default").addClass(id);
+		select.append(createOption(0, "ALL"));
+		return select;
+	}
+	function createOption(value, text) {
+		var option = $("<option></option>").prop("value", value).text(text);
+		return option;
+	}
+	function createRowDiv() {
+		return $("<div></div>").addClass("row grid-table").css("margin", "0px");
+	}
+	function createColDiv() {
+		return $("<div></div>").addClass("col-sm-12 col-md-6 col-lg-3");
+	}
+	function getRow(idx) {
+		if (idx < $("#tableList").children().length) {
+			return $($("#tableList").children()[idx]);
+		} else {
+			$scope.addRow(true);
+			return $($("#tableList").children()[$("#tableList").children().length - 1]);
 		}
-		$scope.userDelete = function() {
-			// location.href = "./#!/userdelete/" + $scope.selectid;
+	}
+	$scope.setValue = function(idx, com, grp, usr) {
+		if (com === null) {
+			com = 0;
 		}
+		if (grp === null) {
+			grp = 0;
+		}
+		if (usr === null) {
+			usr = 0;
+		}
+
+		_ws.send("actionrole", "getCompany", JSON.stringify({
+			key : null,
+			val : com,
+			idx : idx
+		}), function(data) {
+			var node = JSON.parse(data);
+			var row = getRow(node.data3);
+			row.find(".company-select").children().remove();
+			var list = node.data2;
+			var select = row.find(".company-select");
+			select.append(createOption(0, "ALL"));
+			for (var i = 0; i < list.length; i++) {
+				select.append(createOption(list[i].value, list[i].name));
+			}
+			select.val(node.data);
+		});
+		_ws.send("actionrole", "getGroup", JSON.stringify({
+			key : com,
+			val : grp,
+			idx : idx
+		}), function(data) {
+			var node = JSON.parse(data);
+			var row = getRow(node.data3);
+			row.find(".group-select").children().remove();
+			var list = node.data2;
+			var select = row.find(".group-select");
+			select.append(createOption(0, "ALL"));
+			for (var i = 0; i < list.length; i++) {
+				select.append(createOption(list[i].value, list[i].name));
+			}
+			select.val(node.data);
+		});
+		_ws.send("actionrole", "getUser", JSON.stringify({
+			key : grp,
+			val : usr,
+			idx : idx
+		}), function(data) {
+			var node = JSON.parse(data);
+			var row = getRow(node.data3);
+			row.find(".user-select").children().remove();
+			var list = node.data2;
+			var select = row.find(".user-select");
+			select.append(createOption(0, "ALL"));
+			for (var i = 0; i < list.length; i++) {
+				select.append(createOption(list[i].value, list[i].name));
+			}
+			select.val(node.data);
+		});
+	}
+	$scope.addRow = function(isBtn) {
+		var comSel = createSelect("company-select");
+		_ws.send("actionrole", "getCompany", JSON.stringify({}), function(data) {
+			var node = JSON.parse(data);
+			var list = node.data2;
+			for (var i = 0; i < list.length; i++) {
+				comSel.append(createOption(list[i].value, list[i].name));
+			}
+		});
+		comSel.on("change", function() {
+			var _this = $(this);
+			_ws.send("cardviewrole", "getGroup", JSON.stringify({
+				key : Number(_this.val())
+			}), function(data) {
+				var select = _this.parent().parent().find(".group-select");
+				select.children().remove();
+				var node = JSON.parse(data);
+				var list = node.data2;
+				select.append(createOption(0, "ALL"));
+				for (var i = 0; i < list.length; i++) {
+					select.append(createOption(list[i].value, list[i].name));
+				}
+			});
+		});
+
+		var grpSel = createSelect("group-select");
+		grpSel.on("change", function() {
+			var _this = $(this);
+			_ws.send("cardviewrole", "getUser", JSON.stringify({
+				key : Number(_this.val())
+			}), function(data) {
+				var select = _this.parent().parent().find(".user-select");
+				select.children().remove();
+				var node = JSON.parse(data);
+				var list = node.data2;
+				select.append(createOption(0, "ALL"));
+				for (var i = 0; i < list.length; i++) {
+					select.append(createOption(list[i].value, list[i].name));
+				}
+			});
+		});
+		var usrSel = createSelect("user-select");
+
+		var dom = createRowDiv();
+		dom.append(createColDiv().append(comSel));
+		dom.append(createColDiv().append(grpSel));
+		dom.append(createColDiv().append(usrSel));
+		if (isBtn) {
+			var btn = $("<button></button>").addClass("btn btn-danger custom-button row-button").text("Delete");
+			btn.on("click", function() {
+				$(this).parent().parent().remove();
+			});
+			dom.append(createColDiv().append(btn));
+		}
+		$("#tableList").append(dom);
+	}
+	$scope.roleSave = function() {
+		var list = [];
+		function checkGroupAll(com, grp, idx) {
+			for (var i = 0; i < list.length; i++) {
+				if (i === idx) {
+					continue;
+				}
+				if (list[i].com === com) {
+					if (list[i].grp === "0" || list[i].grp === grp) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		function checkUserAll(com, grp, usr, idx) {
+			for (var i = 0; i < list.length; i++) {
+				if (i === idx) {
+					continue;
+				}
+				if (list[i].com === com && list[i].grp === grp) {
+					if (list[i].usr === "0" || list[i].usr === usr) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		$(".company-select").each(function() {
+			list.push({
+				com : $(this).val(),
+				grp : $(this).parent().parent().find(".group-select").val(),
+				usr : $(this).parent().parent().find(".user-select").val()
+			});
+		});
+		if (list.length > 1) {
+			for (var i = 0; i < list.length; i++) {
+				if (list[i].com === "0") {
+					_notification("danger", "The role expression is incorrect.");
+					$($("#tableList").children()[i]).addClass("error-row");
+					$timeout(function() {
+						$("#tableList").children().each(function() {
+							$(this).removeClass("error-row");
+						});
+					}, 3000, true);
+					return;
+				}
+				if (!checkGroupAll(list[i].com, list[i].grp, i)) {
+					_notification("danger", "The role expression is incorrect.");
+					$($("#tableList").children()[i]).addClass("error-row");
+					$timeout(function() {
+						$("#tableList").children().each(function() {
+							$(this).removeClass("error-row");
+						});
+					}, 3000, true);
+					return;
+				}
+				if (!checkUserAll(list[i].com, list[i].grp, list[i].usr, i)) {
+					_notification("danger", "The role expression is incorrect.");
+					$($("#tableList").children()[i]).addClass("error-row");
+					$timeout(function() {
+						$("#tableList").children().each(function() {
+							$(this).removeClass("error-row");
+						});
+					}, 3000, true);
+					return;
+				}
+			}
+		}
+		_ws.send("actionrole", "saveRole", JSON.stringify({
+			key : $scope.selectid,
+			data : list
+		}), function(data) {
+			var msg = JSON.parse(data);
+			_notification(msg.type, msg.msg);
+			if (msg.type === "success") {
+				$scope.reloadTable();
+				$("#roleEditModal").modal("hide");
+			}
+		});
+
+	}
+	$scope.addRow(false);
+	_ws.send("actionrole", "editRole", $scope.selectid, function(data) {
+		var node = JSON.parse(data);
+		_loader.ready(function() {
+			for (var i = 0; i < node.length; i++) {
+				$scope.setValue(i, node[i].company, node[i].group, node[i].user);
+			}
+			$("#roleEditModal").modal("show");
+			$('#roleEditModal').on('hidden.bs.modal', function() {
+				_extendModal.mainModal();
+			});
+		});
 		_loader.controller.show();
 	});
 } ]);
@@ -292,6 +530,9 @@ app.controller("cardviewrole", [ '$scope', '_ws', '_loader', '_table', '_extendM
 		});
 		$scope.roleedit = function() {
 			_extendModal.mainModal("./views/roleedit.tpl.jsp", "cardviewroleedit", $scope);
+		}
+		$scope.reloadTable = function() {
+			table.ajax.reload();
 		}
 		_loader.controller.show();
 	});
@@ -513,6 +754,10 @@ app.controller("cardviewroleedit", [ '$scope', '_ws', '_loader', '$http', '_exte
 		}), function(data) {
 			var msg = JSON.parse(data);
 			_notification(msg.type, msg.msg);
+			if (msg.type === "success") {
+				$scope.reloadTable();
+				$("#roleEditModal").modal("hide");
+			}
 		});
 
 	}
@@ -770,6 +1015,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 	$scope.title = "Profile";
 	$scope.canUserId = false;
 	_ws.send("profile", "init", null, function(data) {
+		debugger;
 		var node = JSON.parse(data);
 		$scope.given_name = node.given_name;
 		if ($scope.given_name !== null) {
@@ -808,6 +1054,18 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 				_safeApply(function() {
 					$scope.company = $("#company").val();
 				});
+				if ($scope.canModifyGroup) {
+					_ws.send("profile", "getGroup", JSON.stringify({
+						key : Number($scope.company)
+					}), function(data) {
+						var node = JSON.parse(data);
+						$scope.groupList = node.data;
+						_loader.ready(function() {
+							$('.mdb-select').material_select('destroy');
+							$('.mdb-select').material_select();
+						});
+					});
+				}
 			});
 		}
 		$scope.canModifyGroup = node.canModifyGroup;
@@ -836,14 +1094,13 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		});
 		_loader.controller.show();
 	});
-	_ws.message("profile", "apply", function(data) {
-		var msg = JSON.parse(data);
-		_loader.hide();
-		_notification(msg.type, msg.msg);
-	});
 
 	$scope.fileupload = function() {
 		var file = _filereader.getFile($("#img_file"));
+		if (file.size > CARD_FILE_SIZE_LIMIT) {
+			_notification("danger", "The file maximum size has been exceeded. max-size : 60KB");
+			return;
+		}
 		_filereader.readFile(file, function(node) {
 			$scope.img_url = node.binary;
 			$scope.is_img_blob = true;
@@ -958,7 +1215,14 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			group : $scope.group
 		};
 		_loader.show();
-		_ws.send("profile", "apply", JSON.stringify(data));
+		_ws.send("profile", "apply", JSON.stringify(data),function(data) {
+			var msg = JSON.parse(data);
+			_loader.hide();
+			_notification(msg.type, msg.msg);
+			if (msg.type === "success") {
+				$("#profileModal").modal("hide");
+			}
+		});
 		return;
 	}
 } ]);
@@ -998,7 +1262,7 @@ app.run([ '$rootScope', '_ws', '_loader', '_notification', '_extendModal', '$tim
 		_extendModal.menuModal(template, control);
 	}
 } ]);
-app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApply', '_notification', function($scope, _ws, _loader, _filereader, _safeApply, _notification) {
+app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApply', '_notification', '_extendModal', function($scope, _ws, _loader, _filereader, _safeApply, _notification, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canUserId = true;
@@ -1014,6 +1278,16 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 		$(document).off("change", "#company").on("change", "#company", function() {
 			_safeApply(function() {
 				$scope.company = $("#company").val();
+			});
+			_ws.send("usermanagement", "getGroup", JSON.stringify({
+				key : Number($scope.company)
+			}), function(data) {
+				var node = JSON.parse(data);
+				$scope.groupList = node.data;
+				_loader.ready(function() {
+					$('.mdb-select').material_select('destroy');
+					$('.mdb-select').material_select();
+				});
 			});
 		});
 		$scope.groupList = node.groupList;
@@ -1150,7 +1424,10 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 			var msg = JSON.parse(data);
 			_loader.hide();
 			_notification(msg.type, msg.msg);
-			location.href = "./#!/usermanagement";
+			if (msg.type === "success") {
+				$scope.reloadTable();
+				$("#profileModal").modal("hide");
+			}
 		});
 		return;
 	}
@@ -1197,6 +1474,18 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 				_safeApply(function() {
 					$scope.company = $("#company").val();
 				});
+				if ($scope.canModifyGroup) {
+					_ws.send("usermanagement", "getGroup", JSON.stringify({
+						key : Number($scope.company)
+					}), function(data) {
+						var node = JSON.parse(data);
+						$scope.groupList = node.data;
+						_loader.ready(function() {
+							$('.mdb-select').material_select('destroy');
+							$('.mdb-select').material_select();
+						});
+					});
+				}
 			});
 		}
 		$scope.canModifyGroup = node.canModifyGroup;
@@ -1224,6 +1513,122 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 		});
 		_loader.controller.show();
 	});
+	
+	$scope.checkPassword = function() {
+		if ($.trim($scope.password) !== $.trim($scope.password_confirm)) {
+			$scope.isPasswordError = true;
+			$("#password").addClass('error-focus');
+			$("#password_confirm").addClass('error-focus');
+			return;
+		}
+		$scope.isPasswordError = false;
+		$("#password").removeClass('error-focus');
+		$("#password_confirm").removeClass('error-focus');
+	}
+	
+	$scope.apply = function() {
+		if ($.trim($scope.given_name) === "") {
+			_notification("danger", "Please input the text of 'Given name'", function() {
+				$("#given_name").removeClass('error-focus');
+			});
+			$("#given_name").addClass('error-focus');
+			return;
+		}
+		$("#given_name").removeClass('error-focus');
+
+		if ($.trim($scope.name) === "") {
+			_notification("danger", "Please input the text of 'name'", function() {
+				$("#name").removeClass('error-focus');
+			});
+			$("#name").addClass('error-focus');
+			return;
+		}
+		$("#name").removeClass('error-focus');
+
+		if ($.trim($scope.nick_name) === "") {
+			_notification("danger", "Please input the text of 'Nick name'", function() {
+				$("#nick_name").removeClass('error-focus');
+			});
+			$("#nick_name").addClass('error-focus');
+			return;
+		}
+		$("#nick_name").removeClass('error-focus');
+
+		if ($scope.canModifyPassword) {
+			var noChangePassword = true;
+			if ($.trim($scope.current_password) === "") {
+				noChangePassword = false;
+			}
+			if ($.trim($scope.password) === "" && noChangePassword) {
+				_notification("danger", "Please input the text of 'Password'", function() {
+					$("#password").removeClass('error-focus');
+				});
+				$("#password").addClass('error-focus');
+				return;
+			}
+			$("#password").removeClass('error-focus');
+			if ($.trim($scope.password_confirm) === "" && noChangePassword) {
+				_notification("danger", "Please input the text of 'Password confirm'", function() {
+					$("#password_confirm").removeClass('error-focus');
+				});
+				$("#password_confirm").addClass('error-focus');
+				return;
+			}
+			$("#password_confirm").removeClass('error-focus');
+			if ($.trim($scope.password) !== $.trim($scope.password_confirm) && noChangePassword) {
+				_notification("danger", "Please input the text of 'Password is incorrect'", function() {
+					$("#password").removeClass('error-focus');
+					$("#password_confirm").removeClass('error-focus');
+				});
+				$("#password").addClass('error-focus');
+				$("#password_confirm").addClass('error-focus');
+				return;
+			}
+			$("#password").removeClass('error-focus');
+			$("#password_confirm").removeClass('error-focus');
+		}
+
+		if ($scope.canModifyCompany) {
+			if ($.trim($scope.company) === "") {
+				_notification("danger", "Please select the value of 'company'", function() {
+					$("#company").removeClass('error-focus');
+				});
+				$("#company").addClass('error-focus');
+				return;
+			}
+			$("#company").removeClass('error-focus');
+		}
+
+		if ($scope.canModifyGroup) {
+			if ($.trim($scope.group) === "") {
+				_notification("danger", "Please select the value of 'group'", function() {
+					$("#group").removeClass('error-focus');
+				});
+				$("#group").addClass('error-focus');
+				return;
+			}
+			$("#group").removeClass('error-focus');
+		}
+
+		var data = {
+			given_name : $scope.given_name,
+			name : $scope.name,
+			nick_name : $scope.nick_name,
+			img_url : $scope.img_url,
+			is_img_blob : $scope.is_img_blob,
+			current_password : $scope.current_password,
+			password : $scope.password,
+			company : $scope.company,
+			group : $scope.group
+		};
+		_loader.show();
+		_ws.send("usermanagement", "applyEdit", JSON.stringify(data),function(data) {
+			var msg = JSON.parse(data);
+			_loader.hide();
+			_notification(msg.type, msg.msg);
+		});
+		return;
+	}
 } ]);
 app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_notification', '_table', function($scope, _ws, _loader, _safeApply, _extendModal, _notification, _table) {
 	_loader.controller.hide();
@@ -1262,6 +1667,9 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_e
 		}
 		$scope.userDelete = function() {
 			// location.href = "./#!/userdelete/" + $scope.selectid;
+		}
+		$scope.reloadTable = function() {
+			table.ajax.reload();
 		}
 		_loader.controller.show();
 
@@ -1501,7 +1909,6 @@ app.service('_ws', [ '$rootScope', '_safeApply', function($rootScope, _safeApply
 		if (util.isFunction(item.cb)) {
 			item.cb.call(this);
 		}
-
 	};
 	socket.onmessage = function(msg) {
 		executeDelegate2(msg);

@@ -1,4 +1,4 @@
-app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', function($scope, _ws, _loader, _table) {
+app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', '_extendModal', function($scope, _ws, _loader, _table, _extendModal) {
 	_loader.controller.hide();
 	$scope.title = "Action role";
 	_ws.send("actionrole", "init", null, function(data) {
@@ -20,23 +20,22 @@ app.controller("actionrole", [ '$scope', '_ws', '_loader', '_table', function($s
 			select : function(table, idx) {
 				$("#editbtn").prop("disabled", false);
 				$("#deletebtn").prop("disabled", false);
-				$scope.selectid = table.rows(idx).data().pluck('id')[0];
+				$scope.selectid = table.rows(idx).data().pluck('code')[0];
+				$scope.selectname = table.rows(idx).data().pluck('name')[0];
 			},
 			deselect : function(table, idx) {
 				$("#editbtn").prop("disabled", true);
 				$("#deletebtn").prop("disabled", true);
 				$scope.selectid = null;
+				$scope.selectname = null;
 			}
 		});
-		$scope.userAdd = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useradd",$scope);
-		}
-		$scope.userEdit = function() {
-			// _extendModal.mainModal("./views/profile.tpl.jsp","useredit",$scope);
-		}
-		$scope.userDelete = function() {
-			// location.href = "./#!/userdelete/" + $scope.selectid;
+		$scope.reloadTable = function() {
+			table.ajax.reload();
 		}
 		_loader.controller.show();
 	});
+	$scope.roleedit = function() {
+		_extendModal.mainModal("./views/roleedit.tpl.jsp", "actionroleedit", $scope);
+	}
 } ]);

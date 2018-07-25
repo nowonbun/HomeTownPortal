@@ -2,10 +2,8 @@ package contoller;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
-import common.IWorkflow;
+import common.Controller;
 import common.JsonConverter;
-import common.LoggerManager;
 import common.Util;
 import common.Workflow;
 import entity.NavigateNode;
@@ -18,15 +16,22 @@ import reference.CardStepMaster;
 import reference.CardTypeMaster;
 
 @Workflow(name = "card", cardrole = "")
-public class CardContoller extends IWorkflow {
+public class CardContoller extends Controller {
 
-	Logger logger = LoggerManager.getLogger(CardContoller.class);
+	protected Class<?> setLogClass() {
+		return CardContoller.class;
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return null;
+	}
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
 		User user = super.getUserinfo(node.getSession()).getUser();
-		logger.debug("user - " + user.getGivenName());
-		logger.debug(user.getGivenName());
+		getLogger().debug("user - " + user.getGivenName());
+		getLogger().debug(user.getGivenName());
 		List<TileBean> data = new ArrayList<>();
 		for (model.Card card : CardRoleCache.getCardByUser(user)) {
 			if (!Util.StringEquals(CardStepMaster.HOME, card.getCardStep().getStep())) {
@@ -35,7 +40,7 @@ public class CardContoller extends IWorkflow {
 			if (Util.StringEquals(CardTypeMaster.MOMAL_CARD, card.getCardType().getCardType())) {
 				continue;
 			}
-			logger.debug("card - " + card.getName());
+			getLogger().debug("card - " + card.getName());
 
 			TileBean entity = createTile(card);
 			if (entity != null) {
@@ -44,10 +49,4 @@ public class CardContoller extends IWorkflow {
 		}
 		return createWebSocketResult(JsonConverter.create(data), node);
 	}
-
-	@Override
-	protected NavigateNode[] navigation() {
-		return null;
-	}
-
 }

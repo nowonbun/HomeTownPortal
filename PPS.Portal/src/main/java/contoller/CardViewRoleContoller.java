@@ -5,18 +5,13 @@ import java.util.List;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue.ValueType;
-
+import common.Controller;
 import common.DBUtil;
-import common.FactoryDao;
-import common.IWorkflow;
 import common.JsonConverter;
 import common.NotificationType;
 import common.Util;
 import common.Workflow;
-import dao.CompanyDao;
-import dao.GroupDao;
 import entity.NavigateNode;
-import entity.SelectNode;
 import entity.WebSocketNode;
 import entity.WebSocketResult;
 import entity.bean.ObjectBean;
@@ -28,9 +23,18 @@ import model.User;
 import reference.CardMaster;
 
 @Workflow(name = "cardviewrole", cardrole = CardMaster.VIEW_ROLE)
-public class CardViewRoleContoller extends IWorkflow {
+public class CardViewRoleContoller extends Controller {
 
 	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode(CardMaster.getAdminCard()), new NavigateNode(CardMaster.getViewRoleCard()) };
+
+	protected Class<?> setLogClass() {
+		return CardViewRoleContoller.class;
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return navi;
+	}
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
@@ -79,29 +83,9 @@ public class CardViewRoleContoller extends IWorkflow {
 		return createWebSocketResult(JsonConverter.create(data), node);
 	}
 
-	private List<Group> getRoleGroup(List<Group> list, List<Group> role) {
-		List<Group> ret = new ArrayList<>();
-		for (Group grp : list) {
-			if (role.contains(grp)) {
-				ret.add(grp);
-			}
-		}
-		return ret;
-	}
-
-	private List<User> getRoleUser(List<User> list, List<User> role) {
-		List<User> ret = new ArrayList<>();
-		for (User usr : list) {
-			if (role.contains(usr)) {
-				ret.add(usr);
-			}
-		}
-		return ret;
-	}
-
 	public WebSocketResult getCompany(WebSocketNode node) {
 		ObjectBean bean = new ObjectBean();
-		JsonConverter.parse(node.getData(), (data) -> {
+		JsonConverter.parseObject(node.getData(), (data) -> {
 			if (Util.JsonIsKey(data, "val") && !data.isNull("val")) {
 				bean.setData(data.getInt("val"));
 			}
@@ -109,21 +93,13 @@ public class CardViewRoleContoller extends IWorkflow {
 				bean.setData3(data.getInt("idx"));
 			}
 		});
-		List<SelectNode> list = new ArrayList<>();
-		for (Company com : FactoryDao.getDao(CompanyDao.class).getCompanyAll()) {
-			SelectNode select = new SelectNode();
-			list.add(select);
-			select.setValue(String.valueOf(com.getId()));
-			select.setName(com.getName());
-		}
-		bean.setData2(list);
-
+		bean.setData2(getSelectCompany());
 		return createWebSocketResult(bean.toJson(), node);
 	}
 
 	public WebSocketResult getGroup(WebSocketNode node) {
 		ObjectBean bean = new ObjectBean();
-		JsonConverter.parse(node.getData(), (data) -> {
+		JsonConverter.parseObject(node.getData(), (data) -> {
 			if (Util.JsonIsKey(data, "val") && !data.isNull("val")) {
 				bean.setData(data.getInt("val"));
 			}
@@ -132,23 +108,14 @@ public class CardViewRoleContoller extends IWorkflow {
 			}
 			bean.setData2(data.getInt("key"));
 		});
-		List<SelectNode> list = new ArrayList<>();
 		int key = (int) bean.getData2();
-		if (key != 0) {
-			for (Group grp : FactoryDao.getDao(CompanyDao.class).getComany(key).getGroups()) {
-				SelectNode select = new SelectNode();
-				list.add(select);
-				select.setValue(String.valueOf(grp.getId()));
-				select.setName(grp.getName());
-			}
-		}
-		bean.setData2(list);
+		bean.setData2(key != 0 ? getSelectGroup(key) : new ArrayList<>());
 		return createWebSocketResult(bean.toJson(), node);
 	}
 
 	public WebSocketResult getUser(WebSocketNode node) {
 		ObjectBean bean = new ObjectBean();
-		JsonConverter.parse(node.getData(), (data) -> {
+		JsonConverter.parseObject(node.getData(), (data) -> {
 			if (Util.JsonIsKey(data, "val") && !data.isNull("val")) {
 				if (data.getValueType() == ValueType.STRING) {
 					bean.setData(data.getString("val"));
@@ -161,24 +128,15 @@ public class CardViewRoleContoller extends IWorkflow {
 			}
 			bean.setData2(data.getInt("key"));
 		});
-		List<SelectNode> list = new ArrayList<>();
 		int key = (int) bean.getData2();
-		if (key != 0) {
-			for (User usr : FactoryDao.getDao(GroupDao.class).getGroup(key).getUsers()) {
-				SelectNode select = new SelectNode();
-				list.add(select);
-				select.setValue(usr.getId());
-				select.setName(usr.getName());
-			}
-		}
-		bean.setData2(list);
+		bean.setData2(key != 0 ? getSelectUser(key) : new ArrayList<>());
 		return createWebSocketResult(bean.toJson(), node);
 	}
 
 	public WebSocketResult saveRole(WebSocketNode node) {
 		List<RoleBean> listbean = new ArrayList<>();
 		ObjectBean codebean = new ObjectBean();
-		if (JsonConverter.parse(node.getData(), (data) -> {
+		if (JsonConverter.parseObject(node.getData(), (data) -> {
 			if (Util.JsonIsKey(data, "key") && !Util.StringIsEmptyOrNull(data.getString("key"))) {
 				codebean.setData(data.getString("key"));
 			} else {
@@ -244,10 +202,5 @@ public class CardViewRoleContoller extends IWorkflow {
 		} else {
 			return createWebSocketResult(createNotification(NotificationType.Danger, "The role was error."), node);
 		}
-	}
-
-	@Override
-	protected NavigateNode[] navigation() {
-		return navi;
 	}
 }

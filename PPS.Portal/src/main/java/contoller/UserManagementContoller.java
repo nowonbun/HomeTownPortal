@@ -1,8 +1,8 @@
 package contoller;
 
 import java.util.ArrayList;
+import common.Controller;
 import common.FactoryDao;
-import common.IWorkflow;
 import common.JsonConverter;
 import common.NotificationType;
 import common.Util;
@@ -24,10 +24,18 @@ import reference.RoleMaster;
 import reference.StateMaster;
 
 @Workflow(name = "usermanagement", cardrole = CardMaster.USER_MANAGEMENT)
-public class UserManagementContoller extends IWorkflow {
+public class UserManagementContoller extends Controller {
 
-	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode(CardMaster.getAdminCard()),
-			new NavigateNode(CardMaster.getUserManagementCard()) };
+	private static NavigateNode[] navi = new NavigateNode[] { new NavigateNode(CardMaster.getAdminCard()), new NavigateNode(CardMaster.getUserManagementCard()) };
+
+	protected Class<?> setLogClass() {
+		return ProfileContoller.class;
+	}
+
+	@Override
+	protected NavigateNode[] navigation() {
+		return navi;
+	}
 
 	@Override
 	public WebSocketResult init(WebSocketNode node) {
@@ -38,27 +46,16 @@ public class UserManagementContoller extends IWorkflow {
 
 	public WebSocketResult initAdd(WebSocketNode node) {
 		UserBean data = new UserBean();
-		data.setCompanyList(new ArrayList<>());
+		data.setCompanyList(getSelectCompany());
 		data.setGroupList(new ArrayList<>());
-		FactoryDao.getDao(CompanyDao.class).getCompanyAll().forEach(x -> {
-			SelectNode select = new SelectNode();
-			data.getCompanyList().add(select);
-			select.setValue(String.valueOf(x.getId()));
-			select.setName(x.getName());
-		});
-		FactoryDao.getDao(GroupDao.class).getGroupAll().forEach(x -> {
-			SelectNode select = new SelectNode();
-			data.getGroupList().add(select);
-			select.setValue(String.valueOf(x.getId()));
-			select.setName(x.getName());
-		});
 		return createWebSocketResult(data.toJson(), node);
 	}
 
+	//TODO :: This function need be check that current  ID exist.
 	public WebSocketResult addUser(WebSocketNode node) {
 		try {
 			User sessionuser = getUserinfo(node.getSession()).getUser();
-			JsonConverter.parse(node.getData(), (data) -> {
+			JsonConverter.parseObject(node.getData(), (data) -> {
 				User user = new User(sessionuser.getName(), StateMaster.getPrivateId());
 				user.setId(data.getString("uid"));
 				Password pwd = new Password(user, sessionuser.getName());
@@ -107,7 +104,7 @@ public class UserManagementContoller extends IWorkflow {
 			data.setImg_url(user.getImgUrl());
 		} else {
 			data.setIs_img_blob(true);
-			data.setImg_blob(user.getImgBlob());
+			data.setImg_blob(new String(user.getImgBlob()));
 		}
 		data.setCanModifyPassword(!StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId()));
 		data.setCanModifyCompany(ActionRoleCache.hasPermission(sessionuser, RoleMaster.getCompanyChange()));
@@ -138,9 +135,12 @@ public class UserManagementContoller extends IWorkflow {
 		return createWebSocketResult(node);
 	}
 
-	@Override
-	protected NavigateNode[] navigation() {
-		return navi;
+	public WebSocketResult getGroup(WebSocketNode node) {
+		int key = JsonConverter.parseObject(node.getData(), (data) -> {
+			return data.getInt("key");
+		});
+		ObjectBean bean = new ObjectBean();
+		bean.setData(key != 0 ? getSelectGroup(key) : new ArrayList<>());
+		return createWebSocketResult(bean.toJson(), node);
 	}
-
 }
