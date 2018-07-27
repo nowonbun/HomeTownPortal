@@ -27,9 +27,6 @@ public class User extends TransactionModel implements Serializable {
 	@Column(name = "GIVEN_NAME")
 	private String givenName;
 
-	@Column(name = "IMG_URL")
-	private String imgUrl;
-
 	@Lob
 	@Column(name = "IMG_BLOB")
 	private byte[] imgBlob;
@@ -97,14 +94,6 @@ public class User extends TransactionModel implements Serializable {
 
 	public void setGivenName(String givenName) {
 		this.givenName = givenName;
-	}
-
-	public String getImgUrl() {
-		return this.imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
 	}
 
 	public byte[] getImgBlob() {

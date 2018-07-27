@@ -151,17 +151,17 @@ public class CardViewRoleContoller extends Controller {
 				JsonObject obj = (JsonObject) list.get(i);
 				RoleBean bean = new RoleBean();
 				bean.setCode(codebean.getData().toString());
-				if (Util.JsonIsKey(obj, "com") && !Util.StringIsEmptyOrNull(obj.getString("com"))) {
+				if (!Util.JsonStringIsEmptyOrNull(obj, "com")) {
 					bean.setCompany(Integer.parseInt(obj.getString("com")));
 				} else {
 					continue;
 				}
-				if (Util.JsonIsKey(obj, "grp") && !Util.StringIsEmptyOrNull(obj.getString("grp"))) {
+				if (!Util.JsonStringIsEmptyOrNull(obj, "grp")) {
 					bean.setGroup(Integer.parseInt(obj.getString("grp")));
 				} else {
 					continue;
 				}
-				if (Util.JsonIsKey(obj, "usr") && !Util.StringIsEmptyOrNull(obj.getString("usr"))) {
+				if (!Util.JsonStringIsEmptyOrNull(obj, "usr")) {
 					bean.setUser(obj.getString("usr"));
 				} else {
 					continue;

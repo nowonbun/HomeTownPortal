@@ -13,7 +13,7 @@
 						<div class="col align-self-end text-align-right">
 							<button type="button" id="addbtn" class="btn btn-success custom-button" ng-click="userAdd();">Add</button>
 							<button type="button" id="editbtn" class="btn btn-warning custom-button" disabled ng-click="userEdit();">Edit</button>
-							<button type="button" id="deletebtn" class="btn btn-danger custom-button" disabled  ng-click="userDelete();">Delete</button>
+							<button type="button" id="deletebtn" class="btn btn-danger custom-button" disabled data-toggle="modal" data-target="#deleteModal">Delete</button>
 						</div>
 					</div>
 				</div>
@@ -39,6 +39,22 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><i class="fa fa-close"></i></span>
+				</button>
+			</div>
+			<div class="modal-body">Are you sure want to delete?</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+				<button class="btn btn-danger " type="button" ng-click="userDelete();">Delete</button>
 			</div>
 		</div>
 	</div>

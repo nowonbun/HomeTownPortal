@@ -67,6 +67,10 @@ public class Util {
 		}
 		return false;
 	}
+	
+	public static boolean JsonStringIsEmptyOrNull(JsonObject jsonobj, String key) {
+		return !JsonIsKey(jsonobj, key) || StringIsEmptyOrNull(jsonobj.getString(key));
+	}
 
 	public static boolean JsonIsKey(JsonObject jsonobj, String key) {
 		return jsonobj.keySet().contains(key) && !jsonobj.isNull(key);

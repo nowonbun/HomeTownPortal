@@ -1,4 +1,4 @@
-app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', function($scope, _ws, _loader, _safeApply, _extendModal) {
+app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendModal', '_filereader', '_notification', function($scope, _ws, _loader, _safeApply, _extendModal, _filereader, _notification) {
 	_loader.controller.hide();
 	$scope.title = "User Management";
 	$scope.canCorrentPassword = false;
@@ -16,20 +16,10 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 		if ($scope.nick_name !== null) {
 			$("#nick_name_label").addClass("active");
 		}
-		if (node.is_img_blob) {
-			if ($scope.is_img_blob == null) {
-				node.is_img_blob = false;
-				$scope.img_url = CONTENTS + "no_photo.png";
-			} else {
-				$scope.is_img_blob = true;
-			}
+		if (node.img_blob == null) {
+			$scope.img_blob = CONTENTS + "no_photo.png";
 		} else {
-			$scope.is_img_blob = false;
-			if ($scope.img_url == null) {
-				$scope.img_url = CONTENTS + "no_photo.png";
-			} else {
-				$scope.img_url = node.img_url;
-			}
+			$scope.img_blob = node.img_blob;
 		}
 		$scope.canModifyPassword = node.canModifyPassword;
 		$scope.canModifyCompany = node.canModifyCompany;
@@ -79,7 +69,7 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 		});
 		_loader.controller.show();
 	});
-	
+
 	$scope.checkPassword = function() {
 		if ($.trim($scope.password) !== $.trim($scope.password_confirm)) {
 			$scope.isPasswordError = true;
@@ -91,7 +81,18 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 		$("#password").removeClass('error-focus');
 		$("#password_confirm").removeClass('error-focus');
 	}
-	
+
+	$scope.fileupload = function() {
+		var file = _filereader.getFile($("#img_file"));
+		if (file.size > CARD_FILE_SIZE_LIMIT) {
+			_notification("danger", "The file maximum size has been exceeded. max-size : 60KB");
+			return;
+		}
+		_filereader.readFile(file, function(node) {
+			$scope.img_blob = node.binary;
+		});
+	}
+
 	$scope.apply = function() {
 		if ($.trim($scope.given_name) === "") {
 			_notification("danger", "Please input the text of 'Given name'", function() {
@@ -176,22 +177,30 @@ app.controller("useredit", [ '$scope', '_ws', '_loader', '_safeApply', '_extendM
 			$("#group").removeClass('error-focus');
 		}
 
+		if ($scope.img_blob.indexOf("no_photo.png") > 0) {
+			$scope.img_blob = null;
+		}
+
 		var data = {
+			uid : $scope.selectid,
 			given_name : $scope.given_name,
 			name : $scope.name,
 			nick_name : $scope.nick_name,
-			img_url : $scope.img_url,
-			is_img_blob : $scope.is_img_blob,
+			img_blob : $scope.img_blob,
 			current_password : $scope.current_password,
 			password : $scope.password,
 			company : $scope.company,
 			group : $scope.group
 		};
 		_loader.show();
-		_ws.send("usermanagement", "applyEdit", JSON.stringify(data),function(data) {
+		_ws.send("usermanagement", "applyEdit", JSON.stringify(data), function(data) {
 			var msg = JSON.parse(data);
 			_loader.hide();
 			_notification(msg.type, msg.msg);
+			if (msg.type === "success") {
+				$scope.reloadTable();
+				$("#profileModal").modal("hide");
+			}
 		});
 		return;
 	}

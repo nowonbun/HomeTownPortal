@@ -118,7 +118,7 @@ public abstract class IServlet extends HttpServlet {
 		}
 		entity.setIpaddress(Util.getRemoteAddr(getRequest()));
 		entity.setLastConnectDate(new Date());
-		dao.create(entity);
+		dao.update(entity);
 	}
 
 	protected abstract void doGet();

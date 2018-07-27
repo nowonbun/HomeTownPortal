@@ -212,7 +212,8 @@ public class UserService {
 		this.user.setGivenName(this.givenName);
 		this.user.setName(this.displayName);
 		this.user.setNickName(this.nickname);
-		this.user.setImgUrl(this.image_url);
+		//This need conversion to blob from url
+		//this.user.setImgUrl(this.image_url);
 		this.user.setBackgroundImg(this.coverPhoto_url);
 		this.user.setCompany(FactoryDao.getDao(CompanyDao.class).getDefaultCompany());
 		this.user.setGroup(FactoryDao.getDao(GroupDao.class).getDefaultGroup());
@@ -225,7 +226,6 @@ public class UserService {
 		this.givenName = this.user.getGivenName();
 		this.displayName = this.user.getName();
 		this.nickname = this.user.getNickName();
-		this.image_url = this.user.getImgUrl();
 		this.coverPhoto_url = this.user.getBackgroundImg();
 	}
 }

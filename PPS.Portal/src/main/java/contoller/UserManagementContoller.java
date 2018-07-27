@@ -51,38 +51,46 @@ public class UserManagementContoller extends Controller {
 		return createWebSocketResult(data.toJson(), node);
 	}
 
-	//TODO :: This function need be check that current  ID exist.
 	public WebSocketResult addUser(WebSocketNode node) {
 		try {
 			User sessionuser = getUserinfo(node.getSession()).getUser();
-			JsonConverter.parseObject(node.getData(), (data) -> {
+			if (JsonConverter.parseObject(node.getData(), (data) -> {
+				if (FactoryDao.getDao(UserDao.class).getUser(Util.JsonString(data, "uid")) != null) {
+					return false;
+				}
 				User user = new User(sessionuser.getName(), StateMaster.getPrivateId());
-				user.setId(data.getString("uid"));
+				user.setId(Util.JsonString(data, "uid"));
 				Password pwd = new Password(user, sessionuser.getName());
-				pwd.setPassword(Util.convertMD5(data.getString("password")));
+				pwd.setPassword(Util.convertMD5(Util.JsonString(data, "password")));
 				user.setPasswords(new ArrayList<>());
 				user.getPasswords().add(pwd);
-				user.setGivenName(data.getString("given_name"));
-				user.setName(data.getString("name"));
-				user.setNickName(data.getString("nick_name"));
-				if (Util.JsonIsKey(data, "is_img_blob")) {
-					if (data.getBoolean("is_img_blob")) {
-						user.setImgUrl(null);
-						// TODO:blobimage
-						user.setImgBlob(null);
-					} else {
-						user.setImgUrl(data.getString("img_url"));
-						user.setImgBlob(null);
-					}
-				}
-				user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(data.getString("company"))));
-				user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(data.getString("group"))));
+				user.setGivenName(Util.JsonString(data, "given_name"));
+				user.setName(Util.JsonString(data, "name"));
+				user.setNickName(Util.JsonString(data, "nick_name"));
+				user.setImgBlob(Util.JsonBytes(data, "img_blob"));
+				user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Integer.parseInt(Util.JsonString(data, "company"))));
+				user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Integer.parseInt(Util.JsonString(data, "group"))));
 				FactoryDao.getDao(UserDao.class).update(user);
-			});
-			return createWebSocketResult(createNotification(NotificationType.Success, "The user was added"), node);
+				return true;
+			})) {
+				return createWebSocketResult(createNotification(NotificationType.Success, "The user was added."), node);
+			} else {
+				return createWebSocketResult(createNotification(NotificationType.Danger, "Update failed."), node);
+			}
 		} catch (Throwable e) {
-			return createWebSocketError(node);
+			return createWebSocketResult(node);
 		}
+	}
+
+	public WebSocketResult checkUid(WebSocketNode node) {
+		String uid = node.getData();
+		ObjectBean bean = new ObjectBean();
+		if (FactoryDao.getDao(UserDao.class).getUser(uid) != null) {
+			bean.setData(true);
+		} else {
+			bean.setData(false);
+		}
+		return createWebSocketResult(bean.toJson(), node);
 	}
 
 	public WebSocketResult initEdit(WebSocketNode node) {
@@ -99,11 +107,7 @@ public class UserManagementContoller extends Controller {
 		data.setGiven_name(user.getGivenName());
 		data.setName(user.getName());
 		data.setNick_name(user.getNickName());
-		if (user.getImgBlob() == null) {
-			data.setIs_img_blob(false);
-			data.setImg_url(user.getImgUrl());
-		} else {
-			data.setIs_img_blob(true);
+		if (user.getImgBlob() != null) {
 			data.setImg_blob(new String(user.getImgBlob()));
 		}
 		data.setCanModifyPassword(!StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId()));
@@ -131,8 +135,23 @@ public class UserManagementContoller extends Controller {
 		return createWebSocketResult(data.toJson(), node);
 	}
 
-	public WebSocketResult initDelete(WebSocketNode node) {
-		return createWebSocketResult(node);
+	public WebSocketResult delete(WebSocketNode node) {
+		try {
+			String id = node.getData();
+			User user = FactoryDao.getDao(UserDao.class).getUser(id);
+			if (user == null) {
+				return createWebSocketResult(createNotification(NotificationType.Danger, "The user is not exist."), node);
+			}
+			String idconvert = user.getId() + "_" + Util.createCookieKey();
+			user.setId(idconvert);
+			user.getStateInfo().setIsDelete(true);
+			FactoryDao.getDao(UserDao.class).update(user);
+			return createNotificationResult(NotificationType.Success, "The data was updated.", node);
+		} catch (Throwable e) {
+			getLogger().error(e);
+			getLogger().error("Data value : " + node.getData());
+			return createNotificationResult(NotificationType.Danger, "The key data is wrong.", node);
+		}
 	}
 
 	public WebSocketResult getGroup(WebSocketNode node) {
@@ -142,5 +161,59 @@ public class UserManagementContoller extends Controller {
 		ObjectBean bean = new ObjectBean();
 		bean.setData(key != 0 ? getSelectGroup(key) : new ArrayList<>());
 		return createWebSocketResult(bean.toJson(), node);
+	}
+
+	public WebSocketResult applyEdit(WebSocketNode node) {
+		try {
+			if (JsonConverter.parseObject(node.getData(), (data) -> {
+				User user = FactoryDao.getDao(UserDao.class).getUser(Util.JsonString(data, "uid"));
+				if (user == null) {
+					return false;
+				}
+				if (!Util.JsonStringIsEmptyOrNull(data, "current_password")) {
+					boolean passwordcheck = false;
+					String password = Util.convertMD5(Util.JsonString(data, "current_password"));
+					for (Password item : user.getPasswords()) {
+						if (item.getStateInfo().getIsDelete()) {
+							continue;
+						}
+						if (item.getPassword().toUpperCase().equals(password.toUpperCase())) {
+							passwordcheck = true;
+							item.getStateInfo().setIsDelete(true);
+							break;
+						}
+					}
+					if (!passwordcheck) {
+						return false;
+					}
+					Password pwd = new Password(user, user.getName());
+					pwd.setPassword(Util.convertMD5(data.getString("password")));
+					if (user.getPasswords() == null) {
+						user.setPasswords(new ArrayList<>());
+					}
+					user.getPasswords().add(pwd);
+				}
+				user.setGivenName(Util.JsonString(data, "given_name"));
+				user.setName(Util.JsonString(data, "name"));
+				user.setNickName(Util.JsonString(data, "nick_name"));
+				user.setImgBlob(Util.JsonBytes(data, "img_blob"));
+				if (Util.JsonIsKey(data, "company")) {
+					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Util.JsonInteger(data, "company")));
+				}
+				if (Util.JsonIsKey(data, "group")) {
+					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Util.JsonInteger(data, "group")));
+				}
+				FactoryDao.getDao(UserDao.class).update(user);
+				return true;
+			})) {
+				return createWebSocketResult(createNotification(NotificationType.Success, "The user information is updated"), node);
+			} else {
+				return createWebSocketResult(createNotification(NotificationType.Danger, "The user information is incorrect."), node);
+			}
+
+		} catch (Throwable e) {
+			getLogger().error(e);
+			return createWebSocketError(node);
+		}
 	}
 }

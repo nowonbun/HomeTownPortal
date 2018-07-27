@@ -34,7 +34,14 @@ app.controller("usermanagement", [ '$scope', '_ws', '_loader', '_safeApply', '_e
 			_extendModal.mainModal("./views/profile.tpl.jsp", "useredit", $scope);
 		}
 		$scope.userDelete = function() {
-			// location.href = "./#!/userdelete/" + $scope.selectid;
+			_loader.show();
+			_ws.send("usermanagement", "delete", $scope.selectid, function(data) {
+				var msg = JSON.parse(data);
+				_loader.hide();
+				_notification(msg.type, msg.msg);
+				$scope.reloadTable();
+				$("#deleteModal").modal("hide");
+			});
 		}
 		$scope.reloadTable = function() {
 			table.ajax.reload();

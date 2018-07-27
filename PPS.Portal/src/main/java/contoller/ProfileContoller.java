@@ -41,11 +41,7 @@ public class ProfileContoller extends Controller {
 		data.setGiven_name(user.getGivenName());
 		data.setName(user.getName());
 		data.setNick_name(user.getNickName());
-		if (user.getImgBlob() == null) {
-			data.setIs_img_blob(false);
-			data.setImg_url(user.getImgUrl());
-		} else {
-			data.setIs_img_blob(true);
+		if (user.getImgBlob() != null) {
 			data.setImg_blob(new String(user.getImgBlob()));
 		}
 		data.setCanModifyPassword(!StateMaster.equals(user.getStateInfo().getState(), StateMaster.getGoogleId()));
@@ -67,9 +63,9 @@ public class ProfileContoller extends Controller {
 		try {
 			User user = getUserinfo(node.getSession()).getUser();
 			if (JsonConverter.parseObject(node.getData(), (data) -> {
-				if (Util.JsonIsKey(data, "current_password") && !Util.StringIsEmptyOrNull(data.getString("current_password"))) {
+				if (!Util.JsonStringIsEmptyOrNull(data, "current_password")) {
 					boolean passwordcheck = false;
-					String password = Util.convertMD5(data.getString("current_password"));
+					String password = Util.convertMD5(Util.JsonString(data, "current_password"));
 					for (Password item : user.getPasswords()) {
 						if (item.getStateInfo().getIsDelete()) {
 							continue;
@@ -90,33 +86,19 @@ public class ProfileContoller extends Controller {
 					}
 					user.getPasswords().add(pwd);
 				}
-				if (Util.JsonIsKey(data, "given_name") && !Util.StringIsEmptyOrNull(data.getString("given_name"))) {
-					user.setGivenName(data.getString("given_name"));
-				}
-				if (Util.JsonIsKey(data, "name") && !Util.StringIsEmptyOrNull(data.getString("name"))) {
-					user.setName(data.getString("name"));
-				}
-				if (Util.JsonIsKey(data, "nick_name") && !Util.StringIsEmptyOrNull(data.getString("nick_name"))) {
-					user.setNickName(data.getString("nick_name"));
-				}
-				if (Util.JsonIsKey(data, "is_img_blob")) {
-					if (data.getBoolean("is_img_blob")) {
-						user.setImgUrl(null);
-						user.setImgBlob(data.getString("img_url").getBytes());
-					} else {
-						user.setImgUrl(data.getString("img_url"));
-						user.setImgBlob(null);
-					}
-				}
+				user.setGivenName(Util.JsonString(data, "given_name"));
+				user.setName(Util.JsonString(data, "name"));
+				user.setNickName(Util.JsonString(data, "nick_name"));
+				user.setImgBlob(Util.JsonBytes(data, "img_blob"));
 				if (Util.JsonIsKey(data, "company")) {
-					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(data.getInt("company")));
+					user.setCompany(FactoryDao.getDao(CompanyDao.class).getComany(Util.JsonInteger(data, "company")));
 				}
 				if (Util.JsonIsKey(data, "group")) {
-					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(data.getInt("group")));
+					user.setGroup(FactoryDao.getDao(GroupDao.class).getGroup(Util.JsonInteger(data, "group")));
 				}
+				FactoryDao.getDao(UserDao.class).update(user);
 				return true;
 			})) {
-				FactoryDao.getDao(UserDao.class).update(user);
 				return createWebSocketResult(createNotification(NotificationType.Success, "The profile is updated"), node);
 			} else {
 				return createWebSocketResult(createNotification(NotificationType.Danger, "The password is incorrect."), node);
@@ -130,7 +112,7 @@ public class ProfileContoller extends Controller {
 
 	public WebSocketResult getGroup(WebSocketNode node) {
 		int key = JsonConverter.parseObject(node.getData(), (data) -> {
-			return data.getInt("key");
+			return Util.JsonInteger(data, "key");
 		});
 		ObjectBean bean = new ObjectBean();
 		bean.setData(key != 0 ? getSelectGroup(key) : new ArrayList<>());

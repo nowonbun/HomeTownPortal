@@ -105,13 +105,13 @@ public class ComGroupSettingContoller extends Controller {
 	public WebSocketResult applyEdit(WebSocketNode node) {
 		User user = getUserinfo(node.getSession()).getUser();
 		if (JsonConverter.parseObject(node.getData(), (data) -> {
-			if (!Util.JsonIsKey(data, "id") || Util.StringIsEmptyOrNull(data.getString("id"))) {
+			if (Util.JsonStringIsEmptyOrNull(data, "id")) {
 				return false;
 			}
-			if (!Util.JsonIsKey(data, "company") || Util.StringIsEmptyOrNull(data.getString("company"))) {
+			if (Util.JsonStringIsEmptyOrNull(data, "company")) {
 				return false;
 			}
-			if (!Util.JsonIsKey(data, "group") || Util.StringIsEmptyOrNull(data.getString("group"))) {
+			if (Util.JsonStringIsEmptyOrNull(data, "group")) {
 				return false;
 			}
 			String[] index = data.getString("id").split("-");
@@ -149,10 +149,10 @@ public class ComGroupSettingContoller extends Controller {
 	public WebSocketResult applyAdd(WebSocketNode node) {
 		User user = getUserinfo(node.getSession()).getUser();
 		if (JsonConverter.parseObject(node.getData(), (data) -> {
-			if (!Util.JsonIsKey(data, "company") || Util.StringIsEmptyOrNull(data.getString("company"))) {
+			if (!Util.JsonStringIsEmptyOrNull(data, "company")) {
 				return false;
 			}
-			if (!Util.JsonIsKey(data, "group") || Util.StringIsEmptyOrNull(data.getString("group"))) {
+			if (!Util.JsonStringIsEmptyOrNull(data, "group")) {
 				return false;
 			}
 			Company company = FactoryDao.getDao(CompanyDao.class).getCompanyByName(data.getString("company"));

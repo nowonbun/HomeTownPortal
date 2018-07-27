@@ -6,10 +6,11 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 	$scope.canModifyPassword = true;
 	$scope.canModifyCompany = true;
 	$scope.canModifyGroup = true;
+	$scope.existID = false;
 
 	_ws.send("usermanagement", "initAdd", null, function(data) {
 		var node = JSON.parse(data);
-		$scope.img_url = CONTENTS + "no_photo.png";
+		$scope.img_blob = CONTENTS + "no_photo.png";
 		$scope.companyList = node.companyList;
 		$(document).off("change", "#company").on("change", "#company", function() {
 			_safeApply(function() {
@@ -44,9 +45,12 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 
 	$scope.fileupload = function() {
 		var file = _filereader.getFile($("#img_file"));
+		if (file.size > CARD_FILE_SIZE_LIMIT) {
+			_notification("danger", "The file maximum size has been exceeded. max-size : 60KB");
+			return;
+		}
 		_filereader.readFile(file, function(node) {
-			$scope.img_url = node.binary;
-			$scope.is_img_blob = true;
+			$scope.img_blob = node.binary;
 		});
 	}
 
@@ -62,9 +66,31 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 		$("#password_confirm").removeClass('error-focus');
 	}
 
+	$scope.uidCheck = function() {
+		_ws.send("usermanagement", "checkUid", $scope.uid, function(data) {
+			var node = JSON.parse(data);
+			if (node.data) {
+				$("#uid").addClass('error-focus');
+				$scope.existID = true;
+				return true;
+			} else {
+				$("#uid").removeClass('error-focus');
+				$scope.existID = false;
+				return false;
+			}
+		});
+	}
+
 	$scope.apply = function() {
 		if ($.trim($scope.uid) === "") {
 			_notification("danger", "Please input the text of 'User Id'", function() {
+				$("#uid").removeClass('error-focus');
+			});
+			$("#uid").addClass('error-focus');
+			return;
+		}
+		if ($scope.existID) {
+			_notification("danger", "This id is exist.", function() {
 				$("#uid").removeClass('error-focus');
 			});
 			$("#uid").addClass('error-focus');
@@ -144,13 +170,16 @@ app.controller("useradd", [ '$scope', '_ws', '_loader', '_filereader', '_safeApp
 		}
 		$("#group").removeClass('error-focus');
 
+		if ($scope.img_blob.indexOf("no_photo.png") > 0) {
+			$scope.img_blob = null;
+		}
+
 		var data = {
 			uid : $scope.uid,
 			given_name : $scope.given_name,
 			name : $scope.name,
 			nick_name : $scope.nick_name,
-			img_url : $scope.img_url,
-			is_img_blob : $scope.is_img_blob,
+			img_blob : $scope.img_blob,
 			password : $scope.password,
 			company : $scope.company,
 			group : $scope.group

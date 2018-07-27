@@ -86,12 +86,8 @@ public class ActionRoleController extends Controller {
 	public WebSocketResult getCompany(WebSocketNode node) {
 		ObjectBean bean = new ObjectBean();
 		JsonConverter.parseObject(node.getData(), (data) -> {
-			if (Util.JsonIsKey(data, "val") && !data.isNull("val")) {
-				bean.setData(data.getInt("val"));
-			}
-			if (Util.JsonIsKey(data, "idx") && !data.isNull("idx")) {
-				bean.setData3(data.getInt("idx"));
-			}
+			bean.setData(Util.JsonInteger(data, "val"));
+			bean.setData3(Util.JsonInteger(data, "idx"));
 		});
 		bean.setData2(getSelectCompany());
 		return createWebSocketResult(bean.toJson(), node);
@@ -100,12 +96,8 @@ public class ActionRoleController extends Controller {
 	public WebSocketResult getGroup(WebSocketNode node) {
 		ObjectBean bean = new ObjectBean();
 		JsonConverter.parseObject(node.getData(), (data) -> {
-			if (Util.JsonIsKey(data, "val") && !data.isNull("val")) {
-				bean.setData(data.getInt("val"));
-			}
-			if (Util.JsonIsKey(data, "idx") && !data.isNull("idx")) {
-				bean.setData3(data.getInt("idx"));
-			}
+			bean.setData(Util.JsonInteger(data, "val"));
+			bean.setData3(Util.JsonInteger(data, "idx"));
 			bean.setData2(data.getInt("key"));
 		});
 		int key = (int) bean.getData2();
@@ -116,16 +108,14 @@ public class ActionRoleController extends Controller {
 	public WebSocketResult getUser(WebSocketNode node) {
 		ObjectBean bean = new ObjectBean();
 		JsonConverter.parseObject(node.getData(), (data) -> {
-			if (Util.JsonIsKey(data, "val") && !data.isNull("val")) {
+			if (Util.JsonIsKey(data, "val")) {
 				if (data.getValueType() == ValueType.STRING) {
-					bean.setData(data.getString("val"));
+					bean.setData(Util.JsonString(data, "val"));
 				} else {
-					bean.setData(data.getInt("val"));
+					bean.setData(Util.JsonInteger(data, "val"));
 				}
 			}
-			if (Util.JsonIsKey(data, "idx") && !data.isNull("idx")) {
-				bean.setData3(data.getInt("idx"));
-			}
+			bean.setData3(Util.JsonInteger(data, "idx"));
 			bean.setData2(data.getInt("key"));
 		});
 		int key = (int) bean.getData2();
@@ -137,32 +127,30 @@ public class ActionRoleController extends Controller {
 		List<RoleBean> listbean = new ArrayList<>();
 		ObjectBean codebean = new ObjectBean();
 		if (JsonConverter.parseObject(node.getData(), (data) -> {
-			if (Util.JsonIsKey(data, "key") && !Util.StringIsEmptyOrNull(data.getString("key"))) {
-				codebean.setData(data.getString("key"));
-			} else {
+			if (Util.JsonStringIsEmptyOrNull(data, "key")) {
 				return false;
 			}
 			if (!Util.JsonIsKey(data, "data")) {
 				return false;
 			}
-
+			codebean.setData(Util.JsonString(data, "key"));
 			JsonArray list = data.getJsonArray("data");
 			for (int i = 0; i < list.size(); i++) {
 				JsonObject obj = (JsonObject) list.get(i);
 				RoleBean bean = new RoleBean();
 				bean.setCode(codebean.getData().toString());
-				if (Util.JsonIsKey(obj, "com") && !Util.StringIsEmptyOrNull(obj.getString("com"))) {
-					bean.setCompany(Integer.parseInt(obj.getString("com")));
+				if (!Util.JsonStringIsEmptyOrNull(obj, "com")) {
+					bean.setCompany(Integer.parseInt(Util.JsonString(obj, "com")));
 				} else {
 					continue;
 				}
-				if (Util.JsonIsKey(obj, "grp") && !Util.StringIsEmptyOrNull(obj.getString("grp"))) {
-					bean.setGroup(Integer.parseInt(obj.getString("grp")));
+				if (!Util.JsonStringIsEmptyOrNull(obj, "grp")) {
+					bean.setGroup(Integer.parseInt(Util.JsonString(obj, "grp")));
 				} else {
 					continue;
 				}
-				if (Util.JsonIsKey(obj, "usr") && !Util.StringIsEmptyOrNull(obj.getString("usr"))) {
-					bean.setUser(obj.getString("usr"));
+				if (!Util.JsonStringIsEmptyOrNull(obj, "usr")) {
+					bean.setUser(Util.JsonString(obj, "usr"));
 				} else {
 					continue;
 				}

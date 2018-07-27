@@ -16,20 +16,10 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 		if ($scope.nick_name !== null) {
 			$("#nick_name_label").addClass("active");
 		}
-		if (node.is_img_blob) {
-			if ($scope.is_img_blob == null) {
-				node.is_img_blob = false;
-				$scope.img_url = CONTENTS + "no_photo.png";
-			} else {
-				$scope.is_img_blob = true;
-			}
+		if (node.img_blob == null) {
+			$scope.img_blob = CONTENTS + "no_photo.png";
 		} else {
-			$scope.is_img_blob = false;
-			if ($scope.img_url == null) {
-				$scope.img_url = CONTENTS + "no_photo.png";
-			} else {
-				$scope.img_url = node.img_url;
-			}
+			$scope.img_blob = node.img_blob;
 		}
 		$scope.canCorrentPassword = node.canModifyPassword;
 		$scope.canModifyPassword = node.canModifyPassword;
@@ -89,8 +79,7 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			return;
 		}
 		_filereader.readFile(file, function(node) {
-			$scope.img_url = node.binary;
-			$scope.is_img_blob = true;
+			$scope.img_blob = node.binary;
 		});
 	}
 
@@ -189,20 +178,23 @@ app.controller("profile", [ '$scope', '_ws', '_notification', '_filereader', '_l
 			}
 			$("#group").removeClass('error-focus');
 		}
+		
+		if ($scope.img_blob.indexOf("no_photo.png") > 0) {
+			$scope.img_blob = null;
+		}
 
 		var data = {
 			given_name : $scope.given_name,
 			name : $scope.name,
 			nick_name : $scope.nick_name,
-			img_url : $scope.img_url,
-			is_img_blob : $scope.is_img_blob,
+			img_blob : $scope.img_blob,
 			current_password : $scope.current_password,
 			password : $scope.password,
 			company : $scope.company,
 			group : $scope.group
 		};
 		_loader.show();
-		_ws.send("profile", "apply", JSON.stringify(data),function(data) {
+		_ws.send("profile", "apply", JSON.stringify(data), function(data) {
 			var msg = JSON.parse(data);
 			_loader.hide();
 			_notification(msg.type, msg.msg);

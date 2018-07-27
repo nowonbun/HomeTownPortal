@@ -9,8 +9,6 @@ public class UserBean extends ObjectBean {
 	private String given_name;
 	private String name;
 	private String nick_name;
-	private boolean is_img_blob;
-	private String img_url;
 	private String img_blob;
 	private boolean canModifyPassword;
 	private boolean canModifyCompany;
@@ -80,22 +78,6 @@ public class UserBean extends ObjectBean {
 
 	public void setNick_name(String nick_name) {
 		this.nick_name = nick_name;
-	}
-
-	public boolean isIs_img_blob() {
-		return is_img_blob;
-	}
-
-	public void setIs_img_blob(boolean is_img_blob) {
-		this.is_img_blob = is_img_blob;
-	}
-
-	public String getImg_url() {
-		return img_url;
-	}
-
-	public void setImg_url(String img_url) {
-		this.img_url = img_url;
 	}
 
 	public String getImg_blob() {
